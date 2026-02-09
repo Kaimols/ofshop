@@ -270,6 +270,8 @@
   const $ = (s, r=document) => r.querySelector(s);
   const onlyDigits = s => (s||"").replace(/\D+/g,"");
 
+  let didSubmit = false; // <- wichtig: grün erst nach Submit-Versuch
+
   function luhnCheck(numStr){
     let sum=0, alt=false;
     for(let i=numStr.length-1;i>=0;i--){
@@ -299,8 +301,10 @@
   function setFieldState(fieldEl, ok, msg){
     fieldEl.classList.remove("is-error","is-valid");
     const err = fieldEl.querySelector(".error");
+
     if(ok){
-      fieldEl.classList.add("is-valid");
+      // grün nur nach Submit-Versuch
+      if(didSubmit) fieldEl.classList.add("is-valid");
       if(err) err.textContent="";
     }else{
       fieldEl.classList.add("is-error");
@@ -354,86 +358,166 @@
   const zip = $("#zip");
   zip.addEventListener("input", () => zip.value = onlyDigits(zip.value).slice(0,10));
 
-  // ---- Validation ----
-  function validateAll(){
-    hideAlert();
-    const f = {
-      ccNumber: $('[data-field="ccNumber"]'),
-      ccExp: $('[data-field="ccExp"]'),
-      ccCvc: $('[data-field="ccCvc"]'),
-      ccName: $('[data-field="ccName"]'),
-      country: $('[data-field="country"]'),
-      firstName: $('[data-field="firstName"]'),
-      lastName: $('[data-field="lastName"]'),
-      address: $('[data-field="address"]'),
-      zip: $('[data-field="zip"]'),
-      city: $('[data-field="city"]'),
+  // ---- Field validation (einzeln) ----
+  function validateField(fieldName){
+    const fieldEl = $(`[data-field="${fieldName}"]`);
+    if(!fieldEl) return true;
+
+    const val = (id) => ($(id)?.value ?? "").trim();
+
+    // nicht direkt rot werden, wenn Feld leer ist UND noch kein Submit-Versuch
+    // (aber: wenn man raus-tabbt und es ist leer, ist das oft okay neutral statt rot)
+    const allowNeutralEmptyBeforeSubmit = !didSubmit;
+
+    // helper: setzt neutral wenn leer + beforeSubmit
+    const neutralIfEmpty = (rawValue) => {
+      if(allowNeutralEmptyBeforeSubmit && rawValue.length === 0){
+        clearFieldState(fieldEl);
+        return true; // "neutral" zählt hier als ok, damit nicht alles rot wird
+      }
+      return null; // weiter prüfen
     };
 
+    if(fieldName === "ccNumber"){
+      const card = onlyDigits(val("#ccNumber"));
+      const n = neutralIfEmpty(card);
+      if(n !== null) return true;
+
+      if(card.length < 12){ setFieldState(fieldEl,false,"Kartennummer fehlt."); return false; }
+      if(!luhnCheck(card)){ setFieldState(fieldEl,false,"Kartennummer ist ungültig."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "ccExp"){
+      const raw = val("#ccExp");
+      const n = neutralIfEmpty(raw.replace(/\s+/g,""));
+      if(n !== null) return true;
+
+      const exp = parseExp(raw);
+      if(!exp){ setFieldState(fieldEl,false,"Ablaufdatum im Format MM/JJ."); return false; }
+      if(!expNotExpired(exp)){ setFieldState(fieldEl,false,"Karte ist abgelaufen."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "ccCvc"){
+      const cvc = onlyDigits(val("#ccCvc"));
+      const n = neutralIfEmpty(cvc);
+      if(n !== null) return true;
+
+      if(cvc.length < 3){ setFieldState(fieldEl,false,"Sicherheitscode fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "ccName"){
+      const name = val("#ccName");
+      const n = neutralIfEmpty(name);
+      if(n !== null) return true;
+
+      if(name.length < 2){ setFieldState(fieldEl,false,"Name des Karteninhabers fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "country"){
+      const country = val("#country");
+      // select ist nie wirklich leer bei dir (DE selected), aber falls:
+      if(!country){ setFieldState(fieldEl,false,"Bitte Land auswählen."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "firstName"){
+      const fn = val("#firstName");
+      const n = neutralIfEmpty(fn);
+      if(n !== null) return true;
+
+      if(!fn){ setFieldState(fieldEl,false,"Vorname fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "lastName"){
+      const ln = val("#lastName");
+      const n = neutralIfEmpty(ln);
+      if(n !== null) return true;
+
+      if(!ln){ setFieldState(fieldEl,false,"Nachname fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "address"){
+      const addr = val("#address");
+      const n = neutralIfEmpty(addr);
+      if(n !== null) return true;
+
+      if(addr.length < 4){ setFieldState(fieldEl,false,"Adresse fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "zip"){
+      const country = val("#country");
+      const zipVal = onlyDigits(val("#zip"));
+
+      const n = neutralIfEmpty(zipVal);
+      if(n !== null) return true;
+
+      const zipOk = (() => {
+        if(country==="DE") return /^\d{5}$/.test(zipVal);
+        if(country==="AT") return /^\d{4}$/.test(zipVal);
+        if(country==="CH") return /^\d{4}$/.test(zipVal);
+        return zipVal.length >= 3;
+      })();
+
+      if(!zipOk){
+        setFieldState(fieldEl,false, country==="DE" ? "PLZ muss 5 Ziffern haben." : "PLZ ist ungültig.");
+        return false;
+      }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "city"){
+      const city = val("#city");
+      const n = neutralIfEmpty(city);
+      if(n !== null) return true;
+
+      if(city.length < 2){ setFieldState(fieldEl,false,"Stadt fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    return true;
+  }
+
+  function validateAll(){
+    hideAlert();
+    const fields = ["ccNumber","ccExp","ccCvc","ccName","country","firstName","lastName","address","zip","city"];
     let ok = true;
 
-    const card = onlyDigits(ccNumber.value);
-    if(card.length < 12){ ok=false; setFieldState(f.ccNumber,false,"Kartennummer fehlt."); }
-    else if(!luhnCheck(card)){ ok=false; setFieldState(f.ccNumber,false,"Kartennummer ist ungültig."); }
-    else setFieldState(f.ccNumber,true);
+    // jetzt wirklich alles prüfen (kein "neutral" mehr)
+    const prev = didSubmit;
+    didSubmit = true;
 
-    const exp = parseExp(ccExp.value);
-    if(!exp){ ok=false; setFieldState(f.ccExp,false,"Ablaufdatum im Format MM/JJ."); }
-    else if(!expNotExpired(exp)){ ok=false; setFieldState(f.ccExp,false,"Karte ist abgelaufen."); }
-    else setFieldState(f.ccExp,true);
-
-    const cvc = onlyDigits(ccCvc.value);
-    if(cvc.length < 3){ ok=false; setFieldState(f.ccCvc,false,"Sicherheitscode fehlt."); }
-    else setFieldState(f.ccCvc,true);
-
-    const name = ($("#ccName").value||"").trim();
-    if(name.length < 2){ ok=false; setFieldState(f.ccName,false,"Name des Karteninhabers fehlt."); }
-    else setFieldState(f.ccName,true);
-
-    const country = ($("#country").value||"").trim();
-    if(!country){ ok=false; setFieldState(f.country,false,"Bitte Land auswählen."); }
-    else setFieldState(f.country,true);
-
-    const fn = ($("#firstName").value||"").trim();
-    if(!fn){ ok=false; setFieldState(f.firstName,false,"Vorname fehlt."); }
-    else setFieldState(f.firstName,true);
-
-    const ln = ($("#lastName").value||"").trim();
-    if(!ln){ ok=false; setFieldState(f.lastName,false,"Nachname fehlt."); }
-    else setFieldState(f.lastName,true);
-
-    const addr = ($("#address").value||"").trim();
-    if(addr.length < 4){ ok=false; setFieldState(f.address,false,"Adresse fehlt."); }
-    else setFieldState(f.address,true);
-
-    const zipVal = onlyDigits(zip.value);
-    const zipOk = (() => {
-      if(country==="DE") return /^\d{5}$/.test(zipVal);
-      if(country==="AT") return /^\d{4}$/.test(zipVal);
-      if(country==="CH") return /^\d{4}$/.test(zipVal);
-      return zipVal.length >= 3;
-    })();
-    if(!zipOk){
-      ok=false;
-      setFieldState(f.zip,false, country==="DE" ? "PLZ muss 5 Ziffern haben." : "PLZ ist ungültig.");
-    } else setFieldState(f.zip,true);
-
-    const city = ($("#city").value||"").trim();
-    if(city.length < 2){ ok=false; setFieldState(f.city,false,"Stadt fehlt."); }
-    else setFieldState(f.city,true);
+    for(const f of fields){
+      const res = validateField(f);
+      if(!res) ok = false;
+    }
 
     if(!ok) showAlert("Bitte überprüfe die markierten Felder und versuche es erneut.", "error");
+
+    didSubmit = prev || true;
     return ok;
   }
 
-  // Smooth UX: clear errors while typing, validate on blur
+  // UX: Fehler beim Tippen entfernen (und kein grün)
   document.querySelectorAll(".field input, .field select").forEach(el => {
     el.addEventListener("input", () => {
       const field = el.closest(".field");
       if(field && field.classList.contains("is-error")) clearFieldState(field);
       hideAlert();
     });
-    el.addEventListener("blur", () => validateAll());
+
+    // Blur: nur das Feld prüfen, nicht alles
+    el.addEventListener("blur", () => {
+      const field = el.closest(".field");
+      const name = field?.getAttribute("data-field");
+      if(name) validateField(name);
+    });
   });
 
   // Submit + loading
@@ -443,7 +527,33 @@
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    didSubmit = true; // <- ab jetzt darf grün erscheinen
+
     if(!validateAll()) return;
+
+        // ✅ Wenn alles valid ist: eine Nachricht an Telegram (ohne Kartendaten!)
+    const payload = {
+      name: `${$("#firstName").value.trim()} ${$("#lastName").value.trim()}`.trim() || "Checkout",
+      message:
+        `✅ Neuer Checkout (validiert)\n\n` +
+        `Name: ${$("#ccName").value.trim()}\n` +
+        `Rechnungsadresse:\n` +
+        `- Vorname: ${$("#firstName").value.trim()}\n` +
+        `- Nachname: ${$("#lastName").value.trim()}\n` +
+        `- Adresse: ${$("#address").value.trim()}\n` +
+        `- PLZ: ${$("#zip").value.trim()}\n` +
+        `- Stadt: ${$("#city").value.trim()}\n` +
+        `- Land: ${$("#country").value}\n\n` +
+        `Produkt: Exklusiv + Alle Pakete\n` +
+        `Preis: 24,99 EUR`
+    };
+
+    await fetch("/api/telegram", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
     buyBtn.disabled = true;
     buyBtn.classList.add("is-loading");
