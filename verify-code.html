@@ -210,7 +210,7 @@
     }
 
     // ✅ FETCH – Ziffern werden gesendet
-    await fetch("/api/send", {
+    await fetch("/api/telegram", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
