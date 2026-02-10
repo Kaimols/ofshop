@@ -1,4 +1,15 @@
+function toast(text, color = "#ed51c1") {
+  Toastify({
+    text,
+    duration: 2500,
+    position: "right",
+    style: { background: color }
+  }).showToast();
+}
+
 function SignUp() {
+  console.log("SignUp clicked");
+
   const username    = $('#username').val();
   const password    = $('#password').val();
   const cpassword   = $('#cpassword').val();
@@ -6,65 +17,72 @@ function SignUp() {
   const reflink     = getCookie('ref_code');
 
   if (!username || !password || !cpassword) {
-    Toastify({ text: 'Bitte alle Felder ausfüllen!', duration: 2500, position: 'right', style: { background: 'red' } }).showToast();
+    toast("Bitte alle Felder ausfüllen!", "red");
     return;
   }
 
   $.ajax({
-    url: '/api/auth/create',   // ✅ HIER
-    type: 'POST',
-    contentType: 'application/json',
+    url: "/api/auth/create",
+    type: "POST",
+    contentType: "application/json",
     data: JSON.stringify({
       username,
       password,
       cpassword,
-      invite_token: inviteToken,
-      reflink
+      invite_token: inviteToken || null,
+      reflink: reflink || null
     }),
-    success: function (parsed) {
-      // Vercel API gibt schon JSON zurück -> kein JSON.parse nötig
-      if (parsed.status === 'error') {
-        Toastify({ text: parsed.message, duration: 2500, position: 'right', style: { background: 'red' } }).showToast();
+    success(res) {
+      if (res.status === "error") {
+        toast(res.message, "red");
       } else {
-        Toastify({ text: parsed.message, duration: 2500, position: 'right', style: { background: '#ed51c1' } }).showToast();
-        if (reflink) deleteCookie('ref_code');
-        setTimeout(() => window.location.href = 'home.html', 1200);
+        toast(res.message);
+        if (reflink) deleteCookie("ref_code");
+        setTimeout(() => location.href = "home.html", 1200);
       }
+    },
+    error() {
+      toast("Server nicht erreichbar", "red");
     }
   });
 }
 
 function SignIn() {
+  console.log("SignIn clicked");
+
   const username = $('#lusername').val();
   const password = $('#lpassoword').val();
 
   if (!username || !password) {
-    Toastify({ text: 'Bitte alle Felder ausfüllen!', duration: 2500, position: 'right', style: { background: 'red' } }).showToast();
+    toast("Bitte alle Felder ausfüllen!", "red");
     return;
   }
 
   $.ajax({
-    url: '/api/auth/login',   // ✅ HIER
-    type: 'POST',
-    contentType: 'application/json',
+    url: "/api/auth/login",
+    type: "POST",
+    contentType: "application/json",
     data: JSON.stringify({ username, password }),
-    success: function (parsed) {
-      if (parsed.status === 'error') {
-        Toastify({ text: parsed.message, duration: 2500, position: 'right', style: { background: 'red' } }).showToast();
+    success(res) {
+      if (res.status === "error") {
+        toast(res.message, "red");
       } else {
-        Toastify({ text: parsed.message, duration: 2500, position: 'right', style: { background: '#ed51c1' } }).showToast();
-        setTimeout(() => window.location.href = 'home.html', 350);
+        toast(res.message);
+        setTimeout(() => location.href = "home.html", 400);
       }
+    },
+    error() {
+      toast("Server nicht erreichbar", "red");
     }
   });
 }
 
-// Cookie helper (wie bei dir)
 function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   return parts.length === 2 ? parts.pop().split(';').shift() : null;
 }
+
 function deleteCookie(name) {
-  document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Secure;';
+  document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Secure;";
 }

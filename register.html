@@ -1,300 +1,219 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OFLeaks.tv &mdash; Registrieren</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OFLeaks.tv &mdash; Registrieren</title>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-561238451"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-561238451"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-561238451');
+  </script>
 
-      gtag('config', 'AW-561238451');
-    </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
-        /* Animierter Hintergrund mit verbessertem Farbschema */
-        body {
-            background: linear-gradient(-45deg, #0c0413, #09061d, #3a0f63, #330028);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            font-family: 'Inter', sans-serif;
-            height: 100vh;
-            margin: 0;
-            overflow-x: hidden;
-        }
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+  <!-- Toastify CSS (wenn du es nutzt) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
-        .card {
-            backdrop-filter: blur(16px);
-            background: rgba(12, 12, 14, 0.75);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .input-field {
-            background: rgba(31, 31, 35, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-        }
-        
-        .input-field:focus {
-            background: rgba(40, 40, 45, 0.8);
-            border-color: #ba94ff;
-            box-shadow: 0 0 0 2px rgba(186, 148, 255, 0.25);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #ba94ff, #9d6fff);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(186, 148, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 6px 15px rgba(186, 148, 255, 0.4);
-        }
-        
-        .btn-primary:active {
-            transform: translateY(0) scale(0.98);
-        }
-        
-        .btn-secondary {
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .discord-btn {
-            background: linear-gradient(135deg, #7388DA, #5865F2);
-            box-shadow: 0 4px 12px rgba(115, 136, 218, 0.3);
-        }
-        
-        .discord-btn:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 6px 15px rgba(115, 136, 218, 0.4);
-        }
-        
-        .shop-btn {
-            background: linear-gradient(135deg, #FED600, #FF9900);
-            box-shadow: 0 4px 12px rgba(254, 214, 0, 0.3);
-            color: #000;
-        }
-        
-        .shop-btn:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 6px 15px rgba(254, 214, 0, 0.4);
-        }
-        
-        .info-box {
-            background: rgba(30, 30, 35, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .link-highlight {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .link-highlight:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background: #ba94ff;
-            transition: width 0.3s ease;
-        }
-        
-        .link-highlight:hover:after {
-            width: 100%;
-        }
-        
-        .buy-access-icon {
-            height: 24px;
-            width: 24px;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-        }
-        
-        /* Floating animation for card */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .float-animation {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        /* Glow effect for inputs on focus */
-        .glow-focus:focus {
-            box-shadow: 0 0 15px rgba(186, 148, 255, 0.5);
-        }
-    </style>
-</head>
-<body>
-    <!-- Blurred circles for visual effect -->
-    <div class="fixed -top-20 -left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-    <div class="fixed top-60 -right-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-    <div class="fixed -bottom-20 left-40 w-72 h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-
-    <div class="flex items-center justify-center min-h-screen px-5 py-10">
-        <div class="card p-8 sm:p-10 rounded-2xl max-w-md w-full float-animation">
-            <div class="flex justify-center mb-6">
-                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-user-plus text-white text-2xl"></i>
-                </div>
-            </div>
-            
-            <h1 class="text-3xl font-bold text-white mb-2 text-center">Account erstellen</h1>
-            <p class="text-gray-400 text-center mb-8">Registriere dich für vollen Zugang</p>
-
-            <div class="space-y-5">
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
-                        <i class="fas fa-user"></i>
-                    </span>
-                    <input id="username" class="input-field glow-focus w-full p-3 pl-10 rounded-xl bg-opacity-60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" type="text" placeholder="Benutzername" required>
-                </div>
-                
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                    <input id="password" class="input-field glow-focus w-full p-3 pl-10 rounded-xl bg-opacity-60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" type="password" placeholder="Passwort" required>
-                </div>
-                
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
-                        <i class="fas fa-lock-open"></i>
-                    </span>
-                    <input id="cpassword" class="input-field glow-focus w-full p-3 pl-10 rounded-xl bg-opacity-60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" type="password" placeholder="Passwort bestätigen" required>
-                </div>
-                
-                <div class="flex items-center mb-2">
-                    <input type="checkbox" id="has_key" class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600 rounded focus:ring-purple-500 focus:ring-2 cursor-pointer">
-                    <label for="has_key" class="ml-2 text-sm text-gray-400 cursor-pointer">Ich hab schon einen Key</label>
-                </div>
-                
-                <div id="key_input_container" class="hidden">
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
-                            <i class="fas fa-key"></i>
-                        </span>
-                        <input id="invite_token" class="input-field glow-focus w-full p-3 pl-10 rounded-xl bg-opacity-60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" type="text" placeholder="Rang-Key eingeben">
-                    </div>
-                    <p class="text-gray-400 text-xs mt-1">Du kannst dein Account auch im Nachhinein upgraden</p>
-                </div>
-                
-                <input name='token' id='token' value='7ec5a82df3828c23ec6019b4504af3e3ded64a2e2f05b9cf243045c111cc78a0' type='hidden'>                <input id="token" type="hidden" value="">
-                
-                <button onclick="SignUp()" class="btn-primary w-full p-3 rounded-xl text-white font-semibold transition-all flex items-center justify-center">
-                    <span>Registrieren</span>
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </button>
-            </div>
-
-            <p class="text-gray-400 mt-6 text-center">
-                Bereits einen Account? <a href="login.html" class="text-[#ba94ff] font-medium link-highlight">Einloggen</a>
-            </p>
-
-            <!-- Divider -->
-            <div class="flex items-center my-6">
-                <div class="flex-grow border-t border-gray-700"></div>
-                <span class="mx-4 text-gray-500 text-sm">Oder</span>
-                <div class="flex-grow border-t border-gray-700"></div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-                <a href="preview.html" target="_blank" class="btn-secondary flex items-center justify-center p-3 rounded-xl bg-gray-800 text-white font-medium transition-all">
-                    <i class="fas fa-eye mr-2"></i>
-                    <span>Vorschau</span>
-                </a>
-                <a href="#" 
-   class="discord-btn flex items-center justify-center p-3 rounded-xl text-white font-medium transition-all"
-   onclick="event.preventDefault();">
-                    <i class="fab fa-discord mr-2"></i>
-                    <span>Discord</span>
-                </a>
-            </div>
-
-            <a href="index.html" target="_blank" class="shop-btn flex items-center justify-center mt-4 p-3 rounded-xl font-semibold transition-all">
-                <i class="fas fa-shopping-cart mr-2"></i>
-                <span>Externer Shop (Alternative)</span>
-            </a>
-
-            <div class="info-box text-gray-400 mt-6 text-sm text-center p-4 rounded-xl">
-                <p>Nach der Registrierung kannst du Ränge direkt auf unserer Seite kaufen.</p>
-                <p class="mt-1">Alternativ kannst du auch über den externen Shop: <a href="index.html" class="text-[#ba94ff] link-highlight">Shop besuchen</a></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- jQuery -->
-    <script src="./assets/vendor/jquery/jquery.min.js"></script>
-    <!-- Toastify JS -->
-    <script type="text/javascript" src="./assets/vendor/toastify/toastify.min.js"></script>
-    <!-- Auth Scripts -->
-    <script src="./assets/js/auth.js?v=1770680842"></script>
-    
-    <script>
-        // Show/hide key input field based on checkbox
-        $(document).ready(function() {
-            $('#has_key').on('change', function() {
-                if ($(this).is(':checked')) {
-                    $('#key_input_container').removeClass('hidden').slideDown(300);
-                    $('#invite_token').focus();
-                } else {
-                    $('#key_input_container').slideUp(300, function() {
-                        $(this).addClass('hidden');
-                        $('#invite_token').val('');
-                    });
-                }
-            });
-        });
-    </script>
-    <script>
-fetch('rest/auth/api.php?csrf')
-  .then(r => r.json())
-  .then(d => {
-    if (d.csrf) {
-      document.getElementById('token').value = d.csrf;
+  <style>
+    body {
+      background: linear-gradient(-45deg, #0c0413, #09061d, #3a0f63, #330028);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      font-family: 'Inter', sans-serif;
+      height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
     }
-  });
-</script>
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .card {
+      backdrop-filter: blur(16px);
+      background: rgba(12, 12, 14, 0.75);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3); }
+    .input-field {
+      background: rgba(31, 31, 35, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s ease;
+    }
+    .input-field:focus {
+      background: rgba(40, 40, 45, 0.8);
+      border-color: #ba94ff;
+      box-shadow: 0 0 0 2px rgba(186, 148, 255, 0.25);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #ba94ff, #9d6fff);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(186, 148, 255, 0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 15px rgba(186, 148, 255, 0.4); }
+    .btn-primary:active { transform: translateY(0) scale(0.98); }
+    .btn-secondary { transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.08); }
+    .btn-secondary:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.1); }
+    .discord-btn { background: linear-gradient(135deg, #7388DA, #5865F2); box-shadow: 0 4px 12px rgba(115, 136, 218, 0.3); }
+    .discord-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 15px rgba(115, 136, 218, 0.4); }
+    .shop-btn { background: linear-gradient(135deg, #FED600, #FF9900); box-shadow: 0 4px 12px rgba(254, 214, 0, 0.3); color: #000; }
+    .shop-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 15px rgba(254, 214, 0, 0.4); }
+    .info-box { background: rgba(30, 30, 35, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
+    .link-highlight { position: relative; transition: all 0.3s ease; }
+    .link-highlight:after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background: #ba94ff; transition: width 0.3s ease; }
+    .link-highlight:hover:after { width: 100%; }
+    @keyframes float { 0% { transform: translateY(0px);} 50% { transform: translateY(-10px);} 100% { transform: translateY(0px);} }
+    .float-animation { animation: float 6s ease-in-out infinite; }
+    .glow-focus:focus { box-shadow: 0 0 15px rgba(186, 148, 255, 0.5); }
+  </style>
+</head>
+
+<body>
+  <!-- Blurred circles -->
+  <div class="fixed -top-20 -left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+  <div class="fixed top-60 -right-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+  <div class="fixed -bottom-20 left-40 w-72 h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+
+  <div class="flex items-center justify-center min-h-screen px-5 py-10">
+    <div class="card p-8 sm:p-10 rounded-2xl max-w-md w-full float-animation">
+
+      <div class="flex justify-center mb-6">
+        <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <i class="fas fa-user-plus text-white text-2xl"></i>
+        </div>
+      </div>
+
+      <h1 class="text-3xl font-bold text-white mb-2 text-center">Account erstellen</h1>
+      <p class="text-gray-400 text-center mb-8">Registriere dich für vollen Zugang</p>
+
+      <div class="space-y-5">
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+            <i class="fas fa-user"></i>
+          </span>
+          <input id="username" class="input-field glow-focus w-full p-3 pl-10 rounded-xl bg-opacity-60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                 type="text" placeholder="Benutzername" required>
+        </div>
+
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+            <i class="fas fa-lock"></i>
+          </span>
+          <input id="password" class="input-field glow-focus w-full p-3 pl-10 rounded-xl bg-opacity-60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                 type="password" placeholder="Passwort" required>
+        </div>
+
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+            <i class="fas fa-lock-open"></i>
+          </span>
+          <input id="cpassword" class="input-field glow-focus w-full p-3 pl-10 rounded-xl bg-opacity-60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                 type="password" placeholder="Passwort bestätigen" required>
+        </div>
+
+        <div class="flex items-center mb-2">
+          <input type="checkbox" id="has_key"
+                 class="w-4 h-4 text-purple-600 bg-gray-700 border-gray-600 rounded focus:ring-purple-500 focus:ring-2 cursor-pointer">
+          <label for="has_key" class="ml-2 text-sm text-gray-400 cursor-pointer">Ich hab schon einen Key</label>
+        </div>
+
+        <div id="key_input_container" class="hidden">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+              <i class="fas fa-key"></i>
+            </span>
+            <input id="invite_token" class="input-field glow-focus w-full p-3 pl-10 rounded-xl bg-opacity-60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                   type="text" placeholder="Rang-Key eingeben">
+          </div>
+          <p class="text-gray-400 text-xs mt-1">Du kannst dein Account auch im Nachhinein upgraden</p>
+        </div>
+
+        <!-- ✅ WICHTIG: kein token/CSRF hier nötig -->
+        <button type="button" onclick="SignUp()"
+                class="btn-primary w-full p-3 rounded-xl text-white font-semibold transition-all flex items-center justify-center">
+          <span>Registrieren</span>
+          <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+
+      <p class="text-gray-400 mt-6 text-center">
+        Bereits einen Account? <a href="login.html" class="text-[#ba94ff] font-medium link-highlight">Einloggen</a>
+      </p>
+
+      <div class="flex items-center my-6">
+        <div class="flex-grow border-t border-gray-700"></div>
+        <span class="mx-4 text-gray-500 text-sm">Oder</span>
+        <div class="flex-grow border-t border-gray-700"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+        <a href="preview.html" target="_blank" class="btn-secondary flex items-center justify-center p-3 rounded-xl bg-gray-800 text-white font-medium transition-all">
+          <i class="fas fa-eye mr-2"></i>
+          <span>Vorschau</span>
+        </a>
+
+        <!-- Discord soll NICHT funktionieren -->
+        <a href="#"
+           class="discord-btn flex items-center justify-center p-3 rounded-xl text-white font-medium transition-all"
+           onclick="event.preventDefault();">
+          <i class="fab fa-discord mr-2"></i>
+          <span>Discord</span>
+        </a>
+      </div>
+
+      <a href="index.html" target="_blank" class="shop-btn flex items-center justify-center mt-4 p-3 rounded-xl font-semibold transition-all">
+        <i class="fas fa-shopping-cart mr-2"></i>
+        <span>Externer Shop (Alternative)</span>
+      </a>
+
+      <div class="info-box text-gray-400 mt-6 text-sm text-center p-4 rounded-xl">
+        <p>Nach der Registrierung kannst du Ränge direkt auf unserer Seite kaufen.</p>
+        <p class="mt-1">Alternativ kannst du auch über den externen Shop:
+          <a href="index.html" class="text-[#ba94ff] link-highlight">Shop besuchen</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ✅ Scripts: genau EINMAL, in der richtigen Reihenfolge -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="./assets/js/auth.js"></script>
+
+  <script>
+    // Show/hide key input field based on checkbox
+    $(document).ready(function() {
+      $('#has_key').on('change', function() {
+        if ($(this).is(':checked')) {
+          $('#key_input_container').removeClass('hidden').slideDown(300);
+          $('#invite_token').focus();
+        } else {
+          $('#key_input_container').slideUp(300, function() {
+            $(this).addClass('hidden');
+            $('#invite_token').val('');
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
