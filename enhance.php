@@ -1,0 +1,2302 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <title>OFLeaks.tv &mdash; Home</title>
+
+    <!-- Pagination Scroll-Fix - MUSS ganz am Anfang sein -->
+    <script>
+    if (sessionStorage.getItem('scrollTop') === '1') {
+        sessionStorage.removeItem('scrollTop');
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        // Mehrfach versuchen um Browser-Restore zu überschreiben
+        window.scrollTo(0, 0);
+        document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
+        window.addEventListener('load', function() { window.scrollTo(0, 0); });
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/vendor/toastify/toastify.min.css" />
+    <script src="./assets/vendor/jquery/jquery.min.js"></script>
+    <script src="./assets/vendor/fontawesome/3dc1b48f3d.js"></script>
+    <link rel="stylesheet" href="./assets/vendor/sweetalert/borderless.min.css" />
+    <script src="./assets/vendor/sweetalert/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="./assets/vendor/fancybox/fancybox.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.0.8/lozad.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            height: 100dvh; /* Dynamic viewport height für iOS */
+            width: 280px;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch; /* Smooth scroll auf iOS */
+            overscroll-behavior: contain; /* Verhindert Scroll-Bleeding zur Hauptseite */
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-220px);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            left: 280px;
+            top: 20px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, rgba(230, 56, 181, 0.9), rgba(147, 51, 234, 0.9));
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0 12px 12px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(230, 56, 181, 0.4), 0 0 20px rgba(230, 56, 181, 0.2);
+        }
+
+        .sidebar.collapsed + .sidebar-toggle {
+            left: 60px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(230, 56, 181, 0.5), 0 0 25px rgba(230, 56, 181, 0.3);
+        }
+
+        .sidebar-toggle:hover {
+            background: linear-gradient(135deg, rgba(230, 56, 181, 1), rgba(147, 51, 234, 1));
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(230, 56, 181, 0.6), 0 0 30px rgba(230, 56, 181, 0.4);
+        }
+        
+        .sidebar-toggle i {
+            font-size: 16px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: 60px;
+        }
+
+        /* Logo */
+        .sidebar-logo {
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .logo-circle {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff007f, #a145ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(255, 0, 127, 0.4);
+        }
+
+        .premium-indicator {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #ff007f, #a145ff);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulse-shadow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 127, 0.5); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 127, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 127, 0); }
+        }
+
+        .logo-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text {
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.collapsed .logo-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        /* Nav Items */
+        .nav-section {
+            padding: 16px 12px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 0 12px 8px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.collapsed .nav-section-title {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            margin: 4px 0;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(230, 56, 181, 0.15);
+            color: #E638B5;
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 24px;
+            background: #E638B5;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Kostenlos Zugang Link - Minimaler Glow Effekt */
+        .nav-item-free-access {
+            background: rgba(230, 56, 181, 0.08);
+            border: 1px solid rgba(230, 56, 181, 0.2);
+            box-shadow: 0 0 12px rgba(230, 56, 181, 0.15), 0 0 6px rgba(147, 51, 234, 0.1);
+        }
+
+        .nav-item-free-access:hover {
+            background: rgba(230, 56, 181, 0.12);
+            box-shadow: 0 0 16px rgba(230, 56, 181, 0.25), 0 0 8px rgba(147, 51, 234, 0.15);
+            border-color: rgba(230, 56, 181, 0.3);
+        }
+
+        .nav-item-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .nav-item-text {
+            white-space: nowrap;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.collapsed .nav-item-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .sidebar.collapsed .nav-item {
+            justify-content: center;
+            padding: 12px;
+        }
+
+        /* Submenu */
+        .nav-item-submenu {
+            display: none;
+            padding-left: 28px;
+            margin-top: 4px;
+        }
+
+        .nav-item-submenu.active {
+            display: block !important;
+        }
+
+        .sidebar.collapsed .nav-item-submenu {
+            display: none !important;
+        }
+
+        .nav-item-chevron {
+            margin-left: auto;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .nav-item.expanded .nav-item-chevron {
+            transform: rotate(90deg);
+        }
+
+        .nav-item.expanded .nav-item-chevron i {
+            transform: rotate(90deg);
+        }
+
+        .sidebar.collapsed .nav-item-chevron {
+            display: none;
+        }
+
+        /* Online Counter */
+        .online-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            margin: 12px;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                opacity: 1;
+                box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+            }
+            50% {
+                opacity: 0.8;
+                box-shadow: 0 0 20px rgba(236, 72, 153, 0.8);
+            }
+        }
+
+        .sidebar.collapsed .online-counter {
+            flex-direction: column;
+            gap: 4px;
+            padding: 8px;
+        }
+
+        .sidebar.collapsed .online-counter span {
+            display: none;
+        }
+
+        /* Mobile - Complete Rework */
+        @media (max-width: 768px) {
+            /* Sidebar Base */
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                height: 100dvh; /* Dynamic viewport height für iOS Safari */
+                height: -webkit-fill-available; /* Fallback für ältere iOS */
+                width: 280px;
+                transform: translateX(-280px);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch; /* Smooth scroll auf iOS */
+                overscroll-behavior: contain; /* Verhindert Scroll-Bleeding zur Hauptseite */
+                background: rgba(18, 18, 18, 0.98);
+                backdrop-filter: blur(10px);
+                padding-bottom: env(safe-area-inset-bottom, 20px); /* Safe area für iPhone mit Home-Indicator */
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0) !important;
+            }
+
+            .sidebar:not(.mobile-open) {
+                transform: translateX(-280px) !important;
+            }
+
+            /* Force show all content - override collapsed state */
+            .sidebar.mobile-open,
+            .sidebar.mobile-open.collapsed {
+                width: 280px !important;
+                transform: translateX(0) !important;
+            }
+
+            .sidebar.mobile-open .logo-text,
+            .sidebar.mobile-open.collapsed .logo-text {
+                opacity: 1 !important;
+                width: auto !important;
+                display: flex !important;
+            }
+
+            .sidebar.mobile-open .logo-icon,
+            .sidebar.mobile-open.collapsed .logo-icon {
+                display: flex !important;
+            }
+
+            .sidebar.mobile-open .nav-item-text,
+            .sidebar.mobile-open.collapsed .nav-item-text {
+                opacity: 1 !important;
+                width: auto !important;
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-section-title,
+            .sidebar.mobile-open.collapsed .nav-section-title {
+                opacity: 1 !important;
+                height: auto !important;
+                padding: 0 12px 8px !important;
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-item,
+            .sidebar.mobile-open.collapsed .nav-item {
+                justify-content: flex-start !important;
+                padding: 12px 16px !important;
+                gap: 12px !important;
+            }
+
+            .sidebar.mobile-open .nav-item-chevron,
+            .sidebar.mobile-open.collapsed .nav-item-chevron {
+                display: flex !important;
+                margin-left: auto !important;
+                opacity: 1 !important;
+            }
+
+            .sidebar.mobile-open .nav-item-submenu,
+            .sidebar.mobile-open.collapsed .nav-item-submenu {
+                display: none;
+                padding-left: 0 !important;
+            }
+
+            .sidebar.mobile-open .nav-item-submenu.active,
+            .sidebar.mobile-open.collapsed .nav-item-submenu.active {
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-item-submenu .nav-item,
+            .sidebar.mobile-open.collapsed .nav-item-submenu .nav-item {
+                padding: 10px 16px 10px 40px !important;
+                font-size: 14px !important;
+            }
+
+            .sidebar.mobile-open .online-counter,
+            .sidebar.mobile-open.collapsed .online-counter {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 8px !important;
+                padding: 12px 16px !important;
+            }
+
+            .sidebar.mobile-open .online-counter span,
+            .sidebar.mobile-open.collapsed .online-counter span {
+                display: inline !important;
+            }
+
+            /* Hide desktop toggle button */
+            .sidebar-toggle {
+                display: none !important;
+            }
+
+            /* Main content no margin on mobile */
+            .main-content {
+                margin-left: 0 !important;
+            }
+
+            /* Mobile overlay */
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.75);
+                z-index: 999;
+                backdrop-filter: blur(3px);
+            }
+
+            .mobile-overlay.active {
+                display: block;
+            }
+
+            /* Clean spacing */
+            .sidebar-logo {
+                padding: 24px 20px;
+                gap: 12px;
+            }
+
+            .search-container {
+                padding: 16px 20px;
+            }
+
+            .nav-section {
+                padding: 16px 12px;
+            }
+
+            .nav-item {
+                margin: 2px 0;
+            }
+
+            .nav-section-title {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        /* Top Bar Mobile */
+        .top-bar-mobile {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 998;
+            padding: 0 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+            .top-bar-mobile {
+                display: flex;
+            }
+
+            .main-content {
+                padding-top: 80px;
+            }
+        }
+
+        /* Category Pills */
+        .category-pills {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 16px 0;
+            scrollbar-width: none;
+        }
+
+        .category-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-pill {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .category-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .category-pill.active {
+            background: rgba(230, 56, 181, 0.15);
+            border-color: rgba(230, 56, 181, 0.3);
+            color: #E638B5;
+        }
+
+        /* Search */
+        .search-container {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 16px 12px 40px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(230, 56, 181, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 32px;
+            top: 28px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Notification Bell Styles */
+        .notification-bell-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .notification-bell:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+            line-height: 1.2;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.5);
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 100%;
+            margin-top: 8px;
+            width: 380px;
+            max-width: calc(100vw - 40px);
+            background: rgba(18, 18, 18, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 10000;
+            display: none;
+            overflow: hidden;
+        }
+
+        /* Desktop: Öffne nach rechts (außerhalb der Sidebar) */
+        .sidebar .notification-bell-container .notification-dropdown.show {
+            position: fixed !important;
+            z-index: 10001 !important;
+            display: block !important;
+        }
+
+        /* Mobile: Öffne nach links (oben rechts im Viewport) */
+        .mobile-notification-bell .notification-dropdown {
+            right: 0;
+            left: auto;
+        }
+
+        .notification-dropdown.show {
+            display: block !important;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-header {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+        }
+
+        .notification-mark-all {
+            background: none;
+            border: none;
+            color: rgba(230, 56, 181, 0.8);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .notification-mark-all:hover {
+            background: rgba(230, 56, 181, 0.1);
+            color: #E638B5;
+        }
+
+        .notification-header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .notification-delete-all {
+            background: none;
+            border: none;
+            color: rgba(239, 68, 68, 0.8);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .notification-delete-all:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notification-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .notification-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .notification-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            gap: 12px;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .notification-item.unread {
+            background: rgba(230, 56, 181, 0.05);
+        }
+
+        .notification-item.unread:hover {
+            background: rgba(230, 56, 181, 0.1);
+        }
+
+        .notification-item-actions {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .notification-item:hover .notification-item-actions {
+            opacity: 1;
+        }
+
+        .notification-action-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 12px;
+        }
+
+        .notification-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .notification-action-btn.mark-read {
+            color: rgba(34, 197, 94, 0.8);
+        }
+
+        .notification-action-btn.mark-read:hover {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .notification-action-btn.delete {
+            color: rgba(239, 68, 68, 0.8);
+        }
+
+        .notification-action-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(230, 56, 181, 0.2), rgba(147, 51, 234, 0.2));
+        }
+
+        .notification-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 4px;
+        }
+
+        .notification-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .notification-empty i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        /* Mobile Notification Bell */
+        .mobile-notification-bell {
+            position: relative;
+            margin-right: 12px;
+        }
+
+        .mobile-notification-bell .notification-bell {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- Mobile Top Bar -->
+    <div class="top-bar-mobile">
+        <div class="flex items-center gap-3">
+            <button id="mobileSidebarToggle" class="text-white">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <div class="logo-circle">
+                <span style="color: white; font-weight: 900; font-size: 16px;">OF</span>
+            </div>
+            <span style="font-size: 1.2rem; font-weight: 800; background: linear-gradient(90deg, #E638B5, #9333EA); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">OFLeaks.tv</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="mobile-notification-bell notification-bell-container">
+                <div class="notification-bell" onclick="toggleNotificationDropdown(event)">
+                    <i class="fas fa-bell text-xl"></i>
+                    <span class="notification-badge" id="mobileNotificationBadge" style="display: none;">0</span>
+                </div>
+                <div class="notification-dropdown" id="mobileNotificationDropdown">
+                    <div class="notification-header">
+                        <h3>Benachrichtigungen</h3>
+                        <div class="notification-header-actions">
+                            <button class="notification-mark-all" onclick="markAllNotificationsAsRead()">Alle als gelesen</button>
+                            <button class="notification-delete-all" onclick="deleteAllNotifications()">Alle löschen</button>
+                        </div>
+                    </div>
+                    <div class="notification-list" id="mobileNotificationList">
+                        <div class="notification-empty">
+                            <i class="fas fa-bell-slash"></i>
+                            <p>Keine Benachrichtigungen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <a href="/home" class="sidebar-logo" style="text-decoration: none;">
+            <div class="logo-icon">
+                <div class="logo-circle" style="animation: pulse-shadow 2s infinite;">
+                    <span style="color: white; font-weight: 900; font-size: 18px; letter-spacing: -1px;">OF</span>
+                    <span class="premium-indicator">VIP</span>
+                </div>
+            </div>
+            <div class="logo-text">
+                <span style="font-size: 1.7rem; font-weight: 900; line-height: 1; background: linear-gradient(90deg, #ff007f, #a145ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; filter: drop-shadow(0 2px 3px rgba(255, 0, 127, 0.3));">
+                    OFLeaks<span style="color: white; -webkit-text-fill-color: white;">.tv</span>
+                </span>
+                <span style="font-size: 0.7rem; color: rgba(255,255,255,0.6); margin-left: auto;">Premium Content</span>
+            </div>
+        </a>
+
+        <!-- Search -->
+        <div class="search-container" style="position: relative;">
+            <i class="fas fa-search search-icon"></i>
+                        <input type="search" id="search" name="search" class="search-input" placeholder="Suche..." autocomplete="off" disabled style="cursor: not-allowed; opacity: 0.5;">
+            <p style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); margin-top: 4px; text-align: center;">Du benötigst einen Rang zum Suchen</p>
+                    </div>
+
+        <!-- Online Counter -->
+        <div class="online-counter">
+            <div class="online-dot"></div>
+            <span>
+                85 online            </span>
+        </div>
+
+        <!-- Main Navigation -->
+        <div class="nav-section">
+            <div class="nav-section-title" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>Hauptmenü</span>
+                <div class="notification-bell-container" style="margin-left: auto;">
+                    <div class="notification-bell" onclick="toggleNotificationDropdown(event)">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="desktopNotificationBadge" style="display: none;">0</span>
+                    </div>
+                    <div class="notification-dropdown" id="desktopNotificationDropdown">
+                        <div class="notification-header">
+                            <h3>Benachrichtigungen</h3>
+                            <div class="notification-header-actions">
+                                <button class="notification-mark-all" onclick="markAllNotificationsAsRead()">Alle als gelesen</button>
+                                <button class="notification-delete-all" onclick="deleteAllNotifications()">Alle löschen</button>
+                            </div>
+                        </div>
+                        <div class="notification-list" id="desktopNotificationList">
+                            <div class="notification-empty">
+                                <i class="fas fa-bell-slash"></i>
+                                <p>Keine Benachrichtigungen</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="/home" class="nav-item ">
+                <div class="nav-item-icon">🏠</div>
+                <div class="nav-item-text">Startseite</div>
+            </a>
+                        <a href="/referral_program" class="nav-item nav-item-free-access " onclick="trackReferralSidebarClick(event)">
+                <div class="nav-item-icon">🎁</div>
+                <div class="nav-item-text">Kostenlos Zugang</div>
+            </a>
+                        <a href="/customdl.php" class="nav-item ">
+                <div class="nav-item-icon">📥</div>
+                <div class="nav-item-text">Downloader</div>
+            </a>
+            <a href="/undress" class="nav-item " style="position: relative; overflow: hidden;">
+                <div class="nav-item-icon">✨</div>
+                <div class="nav-item-text" style="background: linear-gradient(90deg, #8b5cf6, #ec4899, #8b5cf6); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradient-shift 3s ease infinite; font-weight: 600;">AI Undress</div>
+                <span style="position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: bold; animation: pulse-glow 2s ease-in-out infinite;">NEU</span>
+            </a>
+            <a href="/teenleaks" class="nav-item ">
+                <div class="nav-item-icon">🔞</div>
+                <div class="nav-item-text">Leaks</div>
+            </a>
+            <a href="/enhance.php" class="nav-item active">
+                <div class="nav-item-icon">✨</div>
+                <div class="nav-item-text">AI Enhancer</div>
+            </a>
+            <a href="/porntok" class="nav-item ">
+                <div class="nav-item-icon">🎥</div>
+                <div class="nav-item-text">PornTok</div>
+            </a>
+            <a href="/bbc" class="nav-item ">
+                <div class="nav-item-icon">🍆</div>
+                <div class="nav-item-text">Porn Videos</div>
+            </a>
+                    </div>
+
+        <!-- Categories Dropdown -->
+        <div class="nav-section">
+            <div class="nav-section-title">Kategorien</div>
+            <div class="nav-item" id="categoriesToggle" style="cursor: pointer;">
+                <div class="nav-item-icon">📂</div>
+                <div class="nav-item-text">Alle Kategorien</div>
+                <div class="nav-item-chevron">
+                    <i class="fas fa-chevron-right" style="font-size: 12px;"></i>
+                </div>
+            </div>
+            <div class="nav-item-submenu" id="categoriesSubmenu">
+                <a href="/home?c=0" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">🌐</div><div class="nav-item-text">Main</div></a><a href="/home?c=1" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">✨</div><div class="nav-item-text">Beliebt</div></a><a href="/home?c=2" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">❤️</div><div class="nav-item-text">Favoriten</div></a><a href="/home?c=27" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">💙</div><div class="nav-item-text">OnlyFans</div></a><a href="/home?c=29" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">🇩🇪</div><div class="nav-item-text">Deutsche</div></a><a href="/home?c=31" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">📁</div><div class="nav-item-text">Mega Post</div></a>            </div>
+        </div>
+
+        <!-- Shop Navigation -->
+        <div class="nav-section">
+            <div class="nav-section-title">Shop</div>
+            <a href="/shop" class="nav-item">
+                <div class="nav-item-icon">🛒</div>
+                <div class="nav-item-text">Extra-Shop</div>
+            </a>
+            <a href="/rank_upgrade" class="nav-item">
+                <div class="nav-item-icon">💎</div>
+                <div class="nav-item-text">Rang Shop</div>
+            </a>
+            <a href="/upgrade" class="nav-item">
+                <div class="nav-item-icon">⬆️</div>
+                <div class="nav-item-text">Rang Upgraden</div>
+            </a>
+        </div>
+
+        <!-- Extras -->
+        <div class="nav-section">
+            <div class="nav-section-title">Extras</div>
+            <a href="/smash_or_pass" class="nav-item">
+                <div class="nav-item-icon">❤️</div>
+                <div class="nav-item-text">Smash/Pass</div>
+            </a>
+            <a href="/amateur" class="nav-item">
+                <div class="nav-item-icon">📸</div>
+                <div class="nav-item-text">Amateur Content</div>
+            </a>
+        </div>
+
+        <!-- Account -->
+        <div class="nav-section">
+            <div class="nav-section-title">Account</div>
+            <a href="/profile" class="nav-item ">
+                <div class="nav-item-icon">👤</div>
+                <div class="nav-item-text">Profil</div>
+            </a>
+            <a href="javascript:SignOut()" class="nav-item">
+                <div class="nav-item-icon">🚪</div>
+                <div class="nav-item-text">Logout</div>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Sidebar Toggle -->
+    <div class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-chevron-left text-white"></i>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+
+    <script>
+        // Tracking für Referral Sidebar-Klicks
+        function trackReferralSidebarClick(event) {
+            // Tracking asynchron senden (blockiert Navigation nicht)
+            fetch('/api/track_referral_event.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'event_type=sidebar_click',
+                keepalive: true
+            }).catch(err => console.error('Tracking error:', err));
+            
+            // Navigation normal weiterleiten
+            // event.preventDefault() wird NICHT aufgerufen, damit der Link normal funktioniert
+        }
+        
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const toggleIcon = sidebarToggle.querySelector('i');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+
+        // Desktop Toggle
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            if (sidebar.classList.contains('collapsed')) {
+                toggleIcon.classList.remove('fa-chevron-left');
+                toggleIcon.classList.add('fa-chevron-right');
+            } else {
+                toggleIcon.classList.remove('fa-chevron-right');
+                toggleIcon.classList.add('fa-chevron-left');
+            }
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+
+        // Mobile Toggle - mit Body Scroll Lock für iOS
+        mobileSidebarToggle?.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+            mobileOverlay.classList.toggle('active');
+            // Verhindere Body-Scroll wenn Sidebar offen
+            if (sidebar.classList.contains('mobile-open')) {
+                document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+                document.body.style.top = `-${window.scrollY}px`;
+            } else {
+                const scrollY = document.body.style.top;
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+                document.body.style.top = '';
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
+        });
+
+        mobileOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('active');
+            // Body-Scroll wieder aktivieren
+            const scrollY = document.body.style.top;
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.top = '';
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        });
+
+        // Remember sidebar state
+        const sidebarCollapsed = localStorage.getItem('sidebarCollapsed');
+        if (sidebarCollapsed === 'true') {
+            sidebar.classList.add('collapsed');
+            toggleIcon.classList.remove('fa-chevron-left');
+            toggleIcon.classList.add('fa-chevron-right');
+        }
+
+        // iOS Safari: Verhindere Scroll-Bleeding von Sidebar zur Hauptseite
+        sidebar.addEventListener('touchmove', function(e) {
+            // Erlaube Scrollen nur wenn Sidebar scrollbar ist
+            const isScrollable = sidebar.scrollHeight > sidebar.clientHeight;
+            const isAtTop = sidebar.scrollTop === 0;
+            const isAtBottom = sidebar.scrollTop + sidebar.clientHeight >= sidebar.scrollHeight;
+            
+            // Bestimme Scroll-Richtung
+            const touch = e.touches[0];
+            const lastTouchY = sidebar._lastTouchY || touch.clientY;
+            const deltaY = lastTouchY - touch.clientY;
+            sidebar._lastTouchY = touch.clientY;
+            
+            // Verhindere Scroll wenn am Ende/Anfang und in diese Richtung gescrollt wird
+            if (!isScrollable || (isAtTop && deltaY < 0) || (isAtBottom && deltaY > 0)) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        sidebar.addEventListener('touchstart', function(e) {
+            sidebar._lastTouchY = e.touches[0].clientY;
+        }, { passive: true });
+
+        // Categories Dropdown Toggle
+        const categoriesToggle = document.getElementById('categoriesToggle');
+        const categoriesSubmenu = document.getElementById('categoriesSubmenu');
+
+        if (categoriesToggle && categoriesSubmenu) {
+            // Check if any category is active and expand automatically
+            const hasActiveCategory = categoriesSubmenu.querySelector('.nav-item.active');
+            if (hasActiveCategory) {
+                categoriesSubmenu.classList.add('active');
+                categoriesToggle.classList.add('expanded');
+                console.log('Auto-expanded categories because active category found');
+            }
+
+            categoriesToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const isActive = categoriesSubmenu.classList.toggle('active');
+                categoriesToggle.classList.toggle('expanded');
+
+                console.log('Categories dropdown toggled:', isActive ? 'open' : 'closed');
+            });
+
+            // Log to verify element exists
+            console.log('Categories toggle initialized');
+        } else {
+            console.error('Categories elements not found!', {
+                toggle: !!categoriesToggle,
+                submenu: !!categoriesSubmenu
+            });
+        }
+
+        // Search Autocomplete
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search');
+            const searchResults = document.getElementById('search-results');
+            const searchResultsContainer = searchResults?.querySelector('.search-results-container');
+            let searchTimeout;
+
+            if (searchInput && searchResults && searchResultsContainer) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.trim();
+
+                    clearTimeout(searchTimeout);
+
+                    if (query.length < 2) {
+                        searchResults.classList.add('hidden');
+                        return;
+                    }
+
+                    searchTimeout = setTimeout(() => {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'search_suggestions.php', true);
+                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                try {
+                                    const results = JSON.parse(xhr.responseText);
+
+                                    if (results.error) {
+                                        searchResults.classList.add('hidden');
+                                        return;
+                                    }
+
+                                    if (results && results.length > 0) {
+                                        searchResultsContainer.innerHTML = results.map(result => `
+                                            <a href="/gallery?post_id=${result.id}"
+                                               class="block px-4 py-3 text-white hover:bg-[#373747] transition-colors" style="text-decoration: none;">
+                                                <div class="flex items-center gap-3">
+                                                    ${result.thumbnail ?
+                                                        `<img src="./uploads/${result.thumbnail}" alt="${result.title}" class="w-10 h-10 rounded object-cover flex-shrink-0">` :
+                                                        `<i class="fas fa-image text-gray-400 w-10 h-10 flex items-center justify-center"></i>`
+                                                    }
+                                                    <span class="flex-1 truncate">${result.title}</span>
+                                                </div>
+                                            </a>
+                                        `).join('');
+                                        searchResults.classList.remove('hidden');
+                                    } else {
+                                        searchResults.classList.add('hidden');
+                                    }
+                                } catch (e) {
+                                    searchResults.classList.add('hidden');
+                                }
+                            }
+                        };
+
+                        xhr.onerror = function() {
+                            searchResults.classList.add('hidden');
+                        };
+
+                        xhr.send('query=' + encodeURIComponent(query));
+                    }, 300);
+                });
+
+                // Hide results when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                        searchResults.classList.add('hidden');
+                    }
+                });
+            }
+        });
+
+        // Notification System
+        let notificationUpdateInterval = null;
+        
+        function toggleNotificationDropdown(event) {
+            event.stopPropagation();
+            const isMobile = window.innerWidth < 768;
+            const dropdown = isMobile ? document.getElementById('mobileNotificationDropdown') : document.getElementById('desktopNotificationDropdown');
+            const bellButton = event.currentTarget;
+            const isOpen = dropdown.classList.contains('show');
+            
+            // Schließe alle Dropdowns
+            document.querySelectorAll('.notification-dropdown').forEach(d => {
+                d.classList.remove('show');
+                d.style.left = '';
+                d.style.top = '';
+                d.style.right = '';
+                d.style.display = '';
+            });
+            
+            if (!isOpen) {
+                // Desktop: Verschiebe Dropdown außerhalb der Sidebar ins Body
+                if (!isMobile) {
+                    const bellRect = bellButton.getBoundingClientRect();
+                    const sidebar = document.getElementById('sidebar');
+                    
+                    // Verschiebe Dropdown ins Body, falls es noch in der Sidebar ist
+                    if (dropdown.parentElement && dropdown.parentElement.closest('.sidebar')) {
+                        document.body.appendChild(dropdown);
+                    }
+                    
+                    if (sidebar) {
+                        const sidebarRect = sidebar.getBoundingClientRect();
+                        dropdown.style.position = 'fixed';
+                        dropdown.style.left = (sidebarRect.right + 8) + 'px';
+                        dropdown.style.top = bellRect.top + 'px';
+                        dropdown.style.right = 'auto';
+                        dropdown.style.zIndex = '10001';
+                        dropdown.style.display = 'block';
+                    }
+                }
+                
+                // Zeige Dropdown
+                dropdown.classList.add('show');
+                
+                // Prüfe Position nach Rendering (nur Desktop)
+                if (!isMobile) {
+                    setTimeout(() => {
+                        const dropdownRect = dropdown.getBoundingClientRect();
+                        const sidebar = document.getElementById('sidebar');
+                        if (sidebar) {
+                            const sidebarRect = sidebar.getBoundingClientRect();
+                            
+                            // Prüfe ob Dropdown über den rechten Bildschirmrand hinausgeht
+                            if (dropdownRect.right > window.innerWidth - 20) {
+                                dropdown.style.left = 'auto';
+                                dropdown.style.right = (window.innerWidth - sidebarRect.left + 8) + 'px';
+                            }
+                            
+                            // Prüfe ob Dropdown über den unteren Bildschirmrand hinausgeht
+                            if (dropdownRect.bottom > window.innerHeight - 20) {
+                                dropdown.style.top = (window.innerHeight - dropdownRect.height - 20) + 'px';
+                            }
+                            
+                            // Prüfe ob Dropdown über den oberen Bildschirmrand hinausgeht
+                            if (dropdownRect.top < 20) {
+                                dropdown.style.top = '20px';
+                            }
+                        }
+                    }, 50);
+                }
+                
+                loadNotifications();
+            }
+        }
+        
+        function loadNotifications() {
+            fetch('/api/get_notifications.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateNotificationBadge(data.unread_count);
+                        renderNotifications(data.notifications);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading notifications:', error);
+                });
+        }
+        
+        function updateNotificationBadge(count) {
+            const mobileBadge = document.getElementById('mobileNotificationBadge');
+            const desktopBadge = document.getElementById('desktopNotificationBadge');
+            
+            if (count > 0) {
+                // Zeige "9+" wenn mehr als 9 ungelesene Notifications
+                const badgeText = count > 9 ? '9+' : count.toString();
+                mobileBadge.textContent = badgeText;
+                mobileBadge.style.display = 'block';
+                desktopBadge.textContent = badgeText;
+                desktopBadge.style.display = 'block';
+            } else {
+                mobileBadge.style.display = 'none';
+                desktopBadge.style.display = 'none';
+            }
+        }
+        
+        function renderNotifications(notifications) {
+            const isMobile = window.innerWidth < 768;
+            const list = isMobile ? document.getElementById('mobileNotificationList') : document.getElementById('desktopNotificationList');
+            
+            if (notifications.length === 0) {
+                list.innerHTML = `
+                    <div class="notification-empty">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>Keine Benachrichtigungen</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = notifications.map(notif => {
+                const icon = getNotificationIcon(notif.type);
+                const unreadClass = notif.is_read ? '' : 'unread';
+                return `
+                    <div class="notification-item ${unreadClass}" onclick="handleNotificationClick(${notif.id}, '${notif.link || ''}')">
+                        <div class="notification-icon">
+                            <i class="${icon}"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">${escapeHtml(notif.title)}</div>
+                            <div class="notification-message">${escapeHtml(notif.message || '')}</div>
+                            <div class="notification-time">${notif.time_ago}</div>
+                        </div>
+                        <div class="notification-item-actions" onclick="event.stopPropagation()">
+                            ${!notif.is_read ? `
+                                <button class="notification-action-btn mark-read" onclick="markNotificationAsRead(${notif.id}, event)" title="Als gelesen markieren">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            <button class="notification-action-btn delete" onclick="deleteNotification(${notif.id}, event)" title="Löschen">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getNotificationIcon(type) {
+            const icons = {
+                'customdl_complete': 'fas fa-download',
+                'customdl_update': 'fas fa-sync-alt',
+                'default': 'fas fa-bell'
+            };
+            return icons[type] || icons['default'];
+        }
+        
+        function handleNotificationClick(notificationId, link) {
+            // Markiere als gelesen
+            fetch('/api/mark_notification_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `notification_id=${notificationId}`
+            });
+            
+            // Schließe Dropdown
+            document.querySelectorAll('.notification-dropdown').forEach(d => d.classList.remove('show'));
+            
+            // Navigiere zur Link-Zielseite
+            if (link) {
+                window.location.href = link;
+            } else {
+                // Fallback: Gehe zu CustomDL
+                window.location.href = '/customdl.php';
+            }
+            
+            // Aktualisiere Badge
+            setTimeout(() => {
+                loadNotifications();
+            }, 500);
+        }
+        
+        function markAllNotificationsAsRead() {
+            fetch('/api/mark_all_notifications_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error marking all as read:', error);
+            });
+        }
+
+        function deleteAllNotifications() {
+            if (!confirm('Möchtest du wirklich alle Benachrichtigungen löschen?')) {
+                return;
+            }
+            
+            fetch('/api/delete_all_notifications.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting all notifications:', error);
+            });
+        }
+
+        function markNotificationAsRead(notificationId, event) {
+            event.stopPropagation();
+            
+            fetch('/api/mark_notification_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `notification_id=${notificationId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error marking notification as read:', error);
+            });
+        }
+
+        function deleteNotification(notificationId, event) {
+            event.stopPropagation();
+            
+            fetch('/api/delete_notification.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `notification_id=${notificationId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting notification:', error);
+            });
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Schließe Dropdown beim Klick außerhalb
+        document.addEventListener('click', function(e) {
+            const bellContainer = e.target.closest('.notification-bell-container');
+            const dropdown = e.target.closest('.notification-dropdown');
+            const actionBtn = e.target.closest('.notification-action-btn');
+            const headerBtn = e.target.closest('.notification-mark-all, .notification-delete-all');
+            
+            // Schließe nicht, wenn auf Bell, Dropdown, Action-Button oder Header-Button geklickt wird
+            if (bellContainer || dropdown || actionBtn || headerBtn) {
+                return;
+            }
+            
+            // Schließe alle Dropdowns
+            document.querySelectorAll('.notification-dropdown').forEach(d => {
+                d.classList.remove('show');
+                d.style.display = '';
+            });
+        });
+        
+        // Lade Notifications beim Seitenaufruf
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNotifications();
+            
+            // Aktualisiere alle 30 Sekunden
+            notificationUpdateInterval = setInterval(() => {
+                loadNotifications();
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
+
+    <style>
+        .upload-zone {
+            border: 3px dashed #8b5cf6;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .upload-zone:hover {
+            border-color: #ec4899;
+            background: rgba(236, 72, 153, 0.1);
+        }
+
+        .upload-zone.dragover {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .enhancement-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .enhancement-option:hover {
+            transform: translateY(-2px);
+        }
+
+        .enhancement-option.selected {
+            border-color: #8b5cf6 !important;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            height: 4px;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="max-w-6xl mx-auto px-4">
+                <!-- Header -->
+                <div class="mb-8 flex items-start justify-between">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+                            <i class="fas fa-wand-magic-sparkles mr-2 md:mr-3"></i>AI Photo Enhancer
+                        </h1>
+                        <p class="text-gray-400 mt-2 text-sm md:text-base">Verbessere deine Bilder mit KI - komplett kostenlos!</p>
+                    </div>
+
+                                    </div>
+
+                <!-- Feature Description -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl">
+                    <h2 class="text-xl font-bold text-white mb-3">
+                        <i class="fas fa-sparkles mr-2 text-purple-400"></i>Was kann der AI Enhancer?
+                    </h2>
+                    <div class="space-y-3 text-gray-300">
+                        <p class="leading-relaxed">
+                            <strong class="text-purple-400">💡 Belichtung verbessern:</strong> Bilder in schlechtem Licht oder schwarz/weiß Aufnahmen werden aufgehellt und optimiert. Perfekt um dunkle Nudes oder schlecht belichtete private Fotos aufzuwerten!
+                        </p>
+                        <p class="leading-relaxed">
+                            <strong class="text-pink-400">🔥 Nippel Enhancement:</strong> Verstärkt die Sichtbarkeit durch Kleidung. Wenn man Nippel leicht durchs Shirt erahnen kann, macht dieser Modus sie deutlich sichtbarer durch optimierte Kontraste und Schärfe.
+                        </p>
+                        <p class="leading-relaxed">
+                            <strong class="text-cyan-400">✨ Allgemeine Verbesserung:</strong> Schärfe, Details und Bildqualität werden rundum verbessert. Ideal um unscharfe oder pixelige Nudes in High-Quality zu verwandeln!
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-purple-500/20">
+                            <p class="text-sm text-gray-400">
+                                <i class="fas fa-gift mr-2 text-green-400"></i><strong>100% kostenlos</strong> - Keine Tokens, keine Limits, einfach hochladen und enhancen!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Upload Section -->
+                    <div>
+                        <div class="bg-[#1a1d2e] rounded-xl p-6 border border-purple-500/20">
+                            <h2 class="text-xl font-bold text-white mb-4">
+                                <i class="fas fa-upload mr-2 text-purple-500"></i>Foto hochladen
+                            </h2>
+
+                            <!-- Upload Zone -->
+                            <div id="uploadZone" class="upload-zone mb-4">
+                                <i class="fas fa-cloud-upload-alt text-6xl text-purple-400 mb-4"></i>
+                                <p class="text-white font-semibold mb-2">Bild hier ablegen oder klicken</p>
+                                <p class="text-gray-400 text-sm">JPG, PNG bis zu 10MB</p>
+                                <input type="file" id="fileInput" accept="image/jpeg,image/png,image/jpg" style="display: none;">
+                            </div>
+
+                            <!-- Preview -->
+                            <div id="previewContainer" class="hidden mb-4">
+                                <img id="preview" class="w-full rounded-lg border border-gray-700" alt="Preview">
+                                <button id="removeBtn" class="mt-2 text-red-400 hover:text-red-300 text-sm">
+                                    <i class="fas fa-times mr-1"></i>Entfernen
+                                </button>
+                            </div>
+
+                            <!-- Enhancement Options -->
+                            <div id="optionsContainer" class="hidden mb-4">
+                                <h3 class="text-white font-semibold mb-3">Enhancement wählen:</h3>
+                                <div class="grid grid-cols-1 gap-3">
+                                    <!-- Lighting Enhancement -->
+                                    <div class="enhancement-option bg-[#121520] border-2 border-gray-700 rounded-lg p-4" data-type="lighting">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-sun text-white text-xl"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-white font-semibold">Belichtung verbessern</h4>
+                                                <p class="text-gray-400 text-sm">Optimiert Helligkeit, Kontrast und Farben</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Nipple Enhancement -->
+                                    <div class="enhancement-option bg-[#121520] border-2 border-gray-700 rounded-lg p-4" data-type="nipple">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-eye text-white text-xl"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-white font-semibold">Nippel Enhance</h4>
+                                                <p class="text-gray-400 text-sm">Verstärkt Sichtbarkeit durch Kleidung</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- General Enhancement -->
+                                    <div class="enhancement-option bg-[#121520] border-2 border-gray-700 rounded-lg p-4" data-type="general">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-sparkles text-white text-xl"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-white font-semibold">Allgemeine Verbesserung</h4>
+                                                <p class="text-gray-400 text-sm">Schärfe, Details und Qualität verbessern</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Start Button -->
+                            <button id="startBtn" disabled class="w-full mt-6 px-6 py-4 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg font-semibold text-lg hover:from-purple-600 hover:to-pink-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fas fa-magic mr-2"></i>Enhancement starten
+                            </button>
+
+                            <!-- Info Box -->
+                            <div class="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                                <h3 class="font-semibold text-blue-400 mb-2">
+                                    <i class="fas fa-lightbulb mr-2"></i>Tipps
+                                </h3>
+                                <ul class="text-sm text-gray-300 space-y-2">
+                                    <li>• <strong>Nippel Enhance:</strong> Funktioniert am besten bei weißen Shirts, bei anderen Farben einfach rumprobieren</li>
+                                    <li>• <strong>Alte Nudes restaurieren:</strong> Perfekt um alte, unscharfe oder dunkle Nudes aufzupolieren und in HD-Qualität zu bringen!</li>
+                                    <li>• <strong>Verarbeitung:</strong> Dauert nur 5-10 Sekunden</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Result Section -->
+                    <div>
+                        <div class="bg-[#1a1d2e] rounded-xl p-6 border border-purple-500/20">
+                            <h2 class="text-xl font-bold text-white mb-4">
+                                <i class="fas fa-image mr-2 text-pink-500"></i>Ergebnis
+                            </h2>
+
+                            <!-- Status Display -->
+                            <div id="statusDisplay" class="text-center py-12">
+                                <i class="fas fa-image text-6xl text-gray-600 mb-4"></i>
+                                <p class="text-gray-400">Lade ein Bild hoch und wähle eine Enhancement-Option</p>
+                            </div>
+
+                            <!-- Processing Display -->
+                            <div id="processingDisplay" class="hidden text-center py-12">
+                                <div class="pulse-animation mb-4">
+                                    <i class="fas fa-wand-magic-sparkles text-6xl text-purple-400"></i>
+                                </div>
+                                <p class="text-white font-semibold mb-2" id="processingText">KI arbeitet an deinem Bild...</p>
+                                <div class="w-full bg-gray-700 rounded-full h-2 mb-4">
+                                    <div id="progressBar" class="progress-bar w-0"></div>
+                                </div>
+                                <p class="text-gray-400 text-sm" id="progressText">0%</p>
+                            </div>
+
+                            <!-- Result Display -->
+                            <div id="resultDisplay" class="hidden">
+                                <img id="resultImage" class="w-full rounded-lg border border-purple-500/30 mb-4" alt="Enhanced Result">
+
+                                <!-- Download Button -->
+                                <a id="downloadBtn" download class="block w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg font-semibold text-center hover:from-green-600 hover:to-emerald-700 transition">
+                                    <i class="fas fa-download mr-2"></i>Enhanced Bild herunterladen
+                                </a>
+
+                                <!-- New Enhancement Button -->
+                                <button id="newEnhancementBtn" class="w-full mt-3 px-6 py-3 bg-[#121520] border border-purple-500/30 rounded-lg font-semibold hover:bg-[#1a1d2e] transition">
+                                    <i class="fas fa-plus mr-2"></i>Neues Bild enhancen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rate Limit Modal -->
+    <div id="rateLimitModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
+        <div class="bg-[#0f1117] border-2 border-red-500/50 rounded-xl max-w-md w-full p-6 shadow-2xl">
+            <div class="text-center">
+                <div class="mb-4">
+                    <i class="fas fa-clock text-6xl text-red-400"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">Rate Limit erreicht!</h2>
+                <p class="text-gray-300 mb-4">
+                    Du hast das Limit von <strong class="text-purple-400">15 Bildern pro 5 Minuten</strong> erreicht.
+                </p>
+                <p class="text-gray-400 text-sm mb-6">
+                    Bitte warte noch <strong class="text-red-400" id="remainingTime"></strong>, dann kannst du wieder Bilder hochladen.
+                </p>
+                <button onclick="closeRateLimitModal()" class="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-700 transition">
+                    Verstanden
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- No Rank Modal -->
+    <div id="noRankModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
+        <div class="bg-[#0f1117] border-2 border-purple-500/50 rounded-xl max-w-md w-full p-6 shadow-2xl">
+            <div class="text-center">
+                <div class="mb-4">
+                    <i class="fas fa-crown text-6xl text-purple-400"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">Rang erforderlich</h2>
+                <p class="text-gray-300 mb-4">
+                    Um den <strong class="text-purple-400">AI Enhancer</strong> zu nutzen, benötigst du einen Premium-Rang.
+                </p>
+                <p class="text-gray-400 text-sm mb-6">
+                    Mit einem Rang erhältst du Zugriff auf alle Features, unbegrenzte Leaks und natürlich den AI Enhancer!
+                </p>
+                <a href="/rank_upgrade.php" class="block w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-700 transition mb-3">
+                    <i class="fas fa-shopping-cart mr-2"></i>Rang kaufen
+                </a>
+                <button onclick="closeNoRankModal()" class="w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition">
+                    Abbrechen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const hasRank = false;
+
+        let selectedFile = null;
+        let selectedType = null;
+        let currentJobId = null;
+        let statusCheckInterval = null;
+
+        // Upload Zone Elements
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const preview = document.getElementById('preview');
+        const removeBtn = document.getElementById('removeBtn');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const startBtn = document.getElementById('startBtn');
+
+        // Upload Zone Click
+        uploadZone.addEventListener('click', () => fileInput.click());
+
+        // Drag & Drop
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        // File Input Change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        // Handle File
+        function handleFile(file) {
+            if (!file.type.match('image/jpeg') && !file.type.match('image/png') && !file.type.match('image/jpg')) {
+                alert('Bitte nur JPG oder PNG Bilder hochladen.');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Datei zu groß! Maximal 10MB erlaubt.');
+                return;
+            }
+
+            selectedFile = file;
+
+            // Show Preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+                uploadZone.classList.add('hidden');
+                optionsContainer.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+
+            updateStartButton();
+        }
+
+        // Remove Button
+        removeBtn.addEventListener('click', () => {
+            selectedFile = null;
+            selectedType = null;
+            fileInput.value = '';
+            previewContainer.classList.add('hidden');
+            uploadZone.classList.remove('hidden');
+            optionsContainer.classList.add('hidden');
+            document.querySelectorAll('.enhancement-option').forEach(opt => opt.classList.remove('selected'));
+            updateStartButton();
+        });
+
+        // Enhancement Options
+        document.querySelectorAll('.enhancement-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.enhancement-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedType = option.dataset.type;
+                updateStartButton();
+            });
+        });
+
+        // Update Start Button
+        function updateStartButton() {
+            startBtn.disabled = !(selectedFile && selectedType);
+        }
+
+        // Start Enhancement
+        startBtn.addEventListener('click', async () => {
+            if (!selectedFile || !selectedType) return;
+
+            // Prüfe ob User einen Rang hat
+            if (!hasRank) {
+                showNoRankModal();
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', selectedFile);
+            formData.append('type', selectedType);
+
+            try {
+                const response = await fetch('/process_enhance.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentJobId = data.job_id;
+
+                    // Wenn es ein Duplikat ist, zeige sofort das Ergebnis
+                    if (data.is_duplicate) {
+                        showProcessing();
+                        // Scroll auf Mobile zum Result
+                        scrollToResult();
+                        // Simuliere kurze Verzögerung für bessere UX
+                        setTimeout(() => {
+                            checkStatus();
+                        }, 500);
+                    } else {
+                        showProcessing();
+                        // Scroll auf Mobile zum Result
+                        scrollToResult();
+                        startStatusCheck();
+                    }
+                } else {
+                    // Rate Limit Fehler mit speziellem Modal
+                    if (data.rate_limit) {
+                        showRateLimitModal(data.remaining_minutes);
+                    } else {
+                        alert(data.error || 'Ein Fehler ist aufgetreten');
+                    }
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('Ein Fehler ist aufgetreten. Bitte versuche es erneut.');
+            }
+        });
+
+        // Show Processing
+        function showProcessing() {
+            document.getElementById('statusDisplay').classList.add('hidden');
+            document.getElementById('processingDisplay').classList.remove('hidden');
+            document.getElementById('resultDisplay').classList.add('hidden');
+        }
+
+        // Scroll to Result (nur auf Mobile/Tablet)
+        function scrollToResult() {
+            // Prüfe ob Mobile (Viewport < 1024px)
+            if (window.innerWidth < 1024) {
+                setTimeout(() => {
+                    const processingDisplay = document.getElementById('processingDisplay');
+                    if (processingDisplay) {
+                        processingDisplay.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }, 200);
+            }
+        }
+
+        // Start Status Check
+        function startStatusCheck() {
+            statusCheckInterval = setInterval(checkStatus, 2000);
+        }
+
+        // Check Status
+        async function checkStatus() {
+            try {
+                const response = await fetch(`/check_enhance_status.php?job_id=${currentJobId}`);
+                const data = await response.json();
+
+                document.getElementById('progressBar').style.width = data.progress + '%';
+                document.getElementById('progressText').textContent = data.progress + '%';
+                document.getElementById('processingText').textContent = data.message;
+
+                if (data.status === 'completed') {
+                    clearInterval(statusCheckInterval);
+                    showResult(data.result_url);
+                } else if (data.status === 'error') {
+                    clearInterval(statusCheckInterval);
+                    alert('Fehler: ' + data.error);
+                    resetToUpload();
+                }
+            } catch (error) {
+                console.error('Status check error:', error);
+            }
+        }
+
+        // Show Result
+        function showResult(resultUrl) {
+            document.getElementById('processingDisplay').classList.add('hidden');
+            document.getElementById('resultDisplay').classList.remove('hidden');
+            document.getElementById('resultImage').src = resultUrl;
+            document.getElementById('downloadBtn').href = resultUrl;
+        }
+
+        // New Enhancement
+        document.getElementById('newEnhancementBtn').addEventListener('click', () => {
+            resetToUpload();
+        });
+
+        function resetToUpload() {
+            selectedFile = null;
+            selectedType = null;
+            currentJobId = null;
+            fileInput.value = '';
+
+            previewContainer.classList.add('hidden');
+            uploadZone.classList.remove('hidden');
+            optionsContainer.classList.add('hidden');
+            document.getElementById('statusDisplay').classList.remove('hidden');
+            document.getElementById('processingDisplay').classList.add('hidden');
+            document.getElementById('resultDisplay').classList.add('hidden');
+            document.querySelectorAll('.enhancement-option').forEach(opt => opt.classList.remove('selected'));
+
+            updateStartButton();
+        }
+
+        // Rate Limit Modal Functions
+        function showRateLimitModal(remainingMinutes) {
+            const modal = document.getElementById('rateLimitModal');
+            const timeText = document.getElementById('remainingTime');
+
+            if (remainingMinutes === 1) {
+                timeText.textContent = 'ca. 1 Minute';
+            } else {
+                timeText.textContent = `ca. ${remainingMinutes} Minuten`;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeRateLimitModal() {
+            document.getElementById('rateLimitModal').classList.add('hidden');
+        }
+
+        // Close modal on background click
+        document.getElementById('rateLimitModal').addEventListener('click', (e) => {
+            if (e.target.id === 'rateLimitModal') {
+                closeRateLimitModal();
+            }
+        });
+
+        // No Rank Modal Functions
+        function showNoRankModal() {
+            document.getElementById('noRankModal').classList.remove('hidden');
+        }
+
+        function closeNoRankModal() {
+            document.getElementById('noRankModal').classList.add('hidden');
+        }
+
+        // Close modal on background click
+        document.getElementById('noRankModal').addEventListener('click', (e) => {
+            if (e.target.id === 'noRankModal') {
+                closeNoRankModal();
+            }
+        });
+    </script>
+
+    </div> <!-- End main-content -->
+
+    <footer class="footer flex justify-center items-center p-4 text-neutral-content mt-8 w-full">
+        <div class="flex items-center space-x-4">
+            <a class="text-lg font-bold text-white" href="/">🎀 • OFLeaks.tv</a>
+            <span class="border-l border-gray-400 h-6 mx-2"></span>
+            <a href="https://discord.celebroom.de" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Discord">
+                <i class="fab fa-discord fa-lg"></i>
+                <span class="sr-only">Discord</span>
+            </a>
+            <a href="https://ofleaks.tv/shop" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Shop">
+                <i class="fa fa-shopping-cart fa-lg"></i>
+                <span class="sr-only">Shop</span>
+            </a>
+        </div>
+    </footer>
+
+    <!-- Popup Include -->
+    
+    <script type="text/javascript" src="./assets/vendor/toastify/toastify.min.js"></script>
+    <script src="./assets/vendor/flowbite/flowbite.min.js"></script>
+    <script src="./assets/vendor/fancybox/fancybox.umd.js"></script>
+
+<!-- Fancybox CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+
+<!-- lozad.js -->
+<script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+<!-- Fancybox JS -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+<script>
+    // Initialize lozad
+    const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+    observer.observe();
+
+    // Initialize Fancybox
+    Fancybox.bind("[data-fancybox]", {
+        // Globale Einstellungen
+        Toolbar: {
+            display: [
+                "close",
+                "prev",
+                "next",
+                "download",
+                "fullscreen",
+                "zoom",
+                "slideshow",
+                "thumbs"
+            ],
+        },
+        // Spezifische Einstellungen für Videos
+        Video: {
+            autoStart: false, // Stelle sicher, dass Videos nicht automatisch starten
+            preventCaptionOverlap: false,
+            idleTime: false,
+            clickToPlay: true,
+            loop: false,
+            // Weitere Video-spezifische Optionen
+        },
+    });
+</script>                     
+    <script src="./assets/js/main.js?v=1770682561"></script>
+
+    <!-- Debug Flowbite Dropdowns -->
+    <script>
+        console.log('Checking Flowbite...');
+        
+        // Warte bis alles geladen ist
+        window.addEventListener('load', function() {
+            console.log('Page loaded, checking dropdowns...');
+            
+            // Finde alle dropdown toggles
+            const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
+            console.log('Found dropdown toggles:', dropdownToggles.length);
+            
+            dropdownToggles.forEach((toggle, index) => {
+                const targetId = toggle.getAttribute('data-dropdown-toggle');
+                const target = document.getElementById(targetId);
+                console.log(`Dropdown ${index + 1}: Toggle found, Target ID: ${targetId}, Target exists:`, !!target);
+            });
+            
+            // Prüfe ob Flowbite geladen ist
+            console.log('Flowbite available:', typeof Flowbite !== 'undefined');
+            console.log('initFlowbite available:', typeof initFlowbite !== 'undefined');
+            
+            // Force Flowbite init wenn verfügbar
+            if (typeof initFlowbite !== 'undefined') {
+                setTimeout(() => {
+                    initFlowbite();
+                    console.log('Flowbite manually initialized');
+                }, 500);
+            }
+            
+            // Z-Index Fix für geöffnete Dropdowns
+            setTimeout(() => {
+                const allDropdowns = document.querySelectorAll('[id^="mod-dropdown-"]');
+                
+                allDropdowns.forEach(dropdown => {
+                    // MutationObserver um auf Klassen-Änderungen zu reagieren
+                    const observer = new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
+                            if (mutation.attributeName === 'class') {
+                                const postCard = dropdown.closest('.post-card');
+                                if (postCard) {
+                                    if (dropdown.classList.contains('hidden')) {
+                                        // Dropdown geschlossen - normaler z-index
+                                        postCard.style.zIndex = '1';
+                                    } else {
+                                        // Dropdown geöffnet - hoher z-index
+                                        postCard.style.zIndex = '9998';
+                                    }
+                                }
+                            }
+                        });
+                    });
+                    
+                    observer.observe(dropdown, { attributes: true });
+                });
+                
+                console.log('Z-Index observers attached to', allDropdowns.length, 'dropdowns');
+            }, 600);
+        });
+    </script>
+
+</body>
+</html>

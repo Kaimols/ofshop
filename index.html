@@ -1,1093 +1,1584 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DeinProjekt</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OFLeaks.tv - Info</title>
+	<!-- Meta-Tags für SEO (Deutsch) -->
+	<meta name="description" content="OFLeaks.tv – OnlyFans Leaks aus Deutschland! Sofortiger Zugriff auf geleakte Inhalte von Corinna Kopf, Sophie Rain, Amouranth, Belle Delphine & vielen mehr – ganz ohne Abo.">
+	<meta name="keywords" content="OnlyFans Leaks, kostenlose OnlyFans Inhalte, Corinna Kopf Leak, Sophie Rain OF, Amouranth geleakt, Belle Delphine OnlyFans kostenlos, OF Premium gratis, OF Inhalte ohne Abo">
+	<meta name="robots" content="index, follow">
+	<meta name="author" content="OFLeaks.tv">
+	<meta name="language" content="de">
 
-<style>
-:root{
-  --bg0:#07040d;
-  --bg1:#12071f;
-  --bg2:#1a0a2b;
-  --text:rgba(255,255,255,.92);
-  --muted:rgba(255,255,255,.65);
-  --accent1:#b58cff;
-  --accent2:#ff4fd8;
-}
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "Website",
+	  "name": "OFLeaks.tv",
+	  "url": "https://ofleaks.tv",
+	  "description": "OFLeaks.tv bietet dir kostenlosen Zugriff auf die beliebtesten OnlyFans-Leaks – ganz ohne monatliches Abo. Entdecke Inhalte von Corinna Kopf, Amouranth, Belle Delphine, Sophie Rain und vielen weiteren OF-Stars.",
+	  "image": "https://i.ibb.co/R0cfLHr/image.png",
+	  "keywords": "OnlyFans Leaks, Corinna Kopf OnlyFans kostenlos, Sophie Rain Leak, Amouranth gratis Inhalte, Belle Delphine OnlyFans ohne Abo, OF Premium kostenlos, OF Inhalte geleakt"
+	}
+		</script>
 
-/* RESET */
-*{box-sizing:border-box}
-html,body{height:100%}
 
-/* ===== Global coherent background (base + one overlay) ===== */
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-  color:var(--text);
-  background: linear-gradient(180deg,var(--bg0),var(--bg1) 35%,var(--bg2));
-  overflow-x:hidden;
-  position:relative;
-}
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:0;
-  background:
-    radial-gradient(1200px 600px at 20% 15%, rgba(181,140,255,.22), transparent 60%),
-    radial-gradient(900px 600px at 80% 22%, rgba(255,79,216,.16), transparent 60%),
-    radial-gradient(2px 2px at 12% 28%, rgba(255,255,255,.07), transparent 60%),
-    radial-gradient(2px 2px at 70% 35%, rgba(255,255,255,.06), transparent 60%),
-    radial-gradient(1.5px 1.5px at 35% 72%, rgba(255,255,255,.05), transparent 60%),
-    radial-gradient(1.5px 1.5px at 85% 78%, rgba(255,255,255,.045), transparent 60%);
-  opacity:.95;
-}
-/* alles über dem Overlay */
-body > *{ position:relative; z-index:1; }
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
-a{text-decoration:none;color:inherit}
-.container{width:min(1120px,92vw);margin:0 auto}
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-/* ================= NAVBAR ================= */
-header{
-  position:sticky;
-  top:0;
-  z-index:20;
-  height:72px;
-  backdrop-filter: blur(14px) saturate(120%);
-  background: linear-gradient(180deg, rgba(12,8,20,.85), rgba(12,8,20,.55));
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.nav{
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.logo{
-  font-size:21px;
-  font-weight:900;
-  letter-spacing:.3px;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  text-shadow:0 0 18px rgba(181,140,255,.25);
-  white-space:nowrap;
-}
-nav{
-  display:flex;
-  align-items:center;
-  gap:22px;
-}
-nav a{
-  font-size:14px;
-  font-weight:700;
-  color:#fff;
-  opacity:.9;
-  transition:opacity .2s ease, transform .2s ease;
-}
-nav a:hover{ opacity:1; transform:translateY(-1px); }
-nav .cta{
-  margin-left:8px;
-  padding:10px 18px;
-  border-radius:999px;
-  font-size:14px;
-  font-weight:900;
-  color:#fff;
-  background:linear-gradient(135deg,var(--accent1),var(--accent2));
-  box-shadow: 0 14px 40px rgba(255,79,216,.25), inset 0 1px 0 rgba(255,255,255,.35);
-  transition:transform .2s ease, box-shadow .2s ease;
-}
-nav .cta:hover{
-  transform:translateY(-1px);
-  box-shadow: 0 18px 55px rgba(255,79,216,.35), inset 0 1px 0 rgba(255,255,255,.45);
-}
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Flowbite CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-/* ================= HERO ================= */
-.hero{
-  position:relative;
-  padding:56px 0 128px;
-  min-height:calc(100vh - 72px);
-}
-.heroGrid{
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  gap:46px;
-  align-items:center;
-}
+    <style>
+        /* Animationen */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
 
-/* Animations */
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(14px);filter:blur(2px)}
-  to{opacity:1;transform:none;filter:none}
-}
-@keyframes fadeSoft{
-  from{opacity:0;filter:blur(4px)}
-  to{opacity:1;filter:none}
-}
-@keyframes floatSoft{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
-  100%{transform:translateY(0)}
-}
+        @keyframes sparkle {
+            0% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.5; transform: scale(1); }
+        }
 
-/* Hero Content */
-.heroLeft h1{animation:fadeUp .7s ease both}
-.heroLeft .subWrap{animation:fadeUp .75s ease .06s both}
-.heroLeft .stats{animation:fadeUp .8s ease .14s both}
-.heroLeft .buttons{animation:fadeUp .85s ease .22s both}
-.heroLeft .trust{animation:fadeUp .9s ease .3s both}
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-.logoBox{
-  animation:
-    fadeSoft .9s ease .1s both,
-    floatSoft 7.5s ease-in-out infinite;
-}
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
 
-h1{
-  font-size:clamp(50px, 6.2vw, 82px);
-  margin:0 0 16px;
-  line-height:1.02;
-  letter-spacing:-.6px;
-}
+        .sparkle {
+            animation: sparkle 2s infinite;
+        }
 
-/* ===== Typewriter Subline ===== */
-.subWrap{
-  margin-bottom:28px;
-  max-width:600px;
-}
-.sub{
-  font-size:20px;
-  line-height:1.55;
-  color:#fff;
-  margin:0;
-  display:inline-block;
-  white-space:normal;
-}
-.subText{display:inline}
+        .gradient-bg {
+            background: linear-gradient(-45deg, #0F0509, #030B13, #320c54, #140105);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
 
-.subFizzle{ animation: fizzleOut 3.2s ease forwards; }
-@keyframes fizzleOut{
-  to{ opacity:0; filter: blur(7px); transform: translateY(-4px); }
-}
+        .card-hover {
+            transition: all 0.3s ease;
+        }
 
-/* Stats */
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-  margin-bottom:24px;
-}
-.card{
-  padding:20px;
-  border-radius:18px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow: 0 18px 70px rgba(0,0,0,.18);
-}
-.num{font-size:30px;font-weight:900}
-.label{font-size:14px;color:var(--muted);margin-top:4px}
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(186, 148, 255, 0.2);
+        }
 
-/* Buttons */
-.buttons{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 14px}
-.btn{
-  padding:16px 22px;
-  border-radius:999px;
-  font-weight:900;
-  font-size:15px;
-  border:1px solid rgba(255,255,255,.12);
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  transition: transform .2s ease;
-}
-.btn:hover{transform:translateY(-1px)}
-.btn.primary{
-  background:linear-gradient(135deg,var(--accent1),var(--accent2));
-  color:#fff;
-  box-shadow: 0 22px 70px rgba(255,79,216,.20);
-}
-.btn.ghost{
-  background:rgba(255,255,255,.05);
-  color:rgba(255,255,255,.90);
-}
+        .glass-effect {
+            background: rgba(15, 14, 14, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
 
-/* Trust */
-.trust{
-  display:flex;
-  gap:18px;
-  font-size:14px;
-  color:rgba(255,255,255,.72);
-  margin-top:12px;
-  flex-wrap:wrap;
-}
+        .nav-link {
+            position: relative;
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+        }
 
-/* Logo SVG */
-.logoBox svg{
-  width:100%;
-  max-width:560px;
-  height:auto;
-  filter:drop-shadow(0 0 28px rgba(181,140,255,.45));
-  opacity:.95;
-}
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #ba94ff;
+            transition: width 0.3s ease;
+        }
 
-/* ================= FLOATING STATUS ================= */
-.floatingStatus{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:42px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:14px;
-  z-index:5;
-  animation:fadeUp .9s ease .35s both;
-}
+        .nav-link:hover::after {
+            width: 100%;
+        }
 
-.onlinePill{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 16px;
-  border-radius:999px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.10);
-  backdrop-filter:blur(10px);
-  box-shadow: 0 18px 70px rgba(0,0,0,.22);
-}
-.green{color:#2ee59d;font-weight:800}
+        .green-text {
+            color: #4ade80;
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+        }
 
-/* Pulse */
-@keyframes pulse{
-  0%{box-shadow:0 0 8px rgba(46,229,157,.45), 0 0 0 0 rgba(46,229,157,.35)}
-  60%{box-shadow:0 0 18px rgba(46,229,157,.75), 0 0 0 10px rgba(46,229,157,0)}
-  100%{box-shadow:0 0 8px rgba(46,229,157,.45), 0 0 0 0 rgba(46,229,157,0)}
-}
-.dot{
-  width:10px;height:10px;border-radius:50%;
-  background:#2ee59d;
-  animation:pulse 1.8s ease-out infinite;
-}
+        .highlight {
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
 
-/* Avatars */
-.avatars{
-  display:flex;
-  align-items:center;
-  padding:10px 12px;
-  border-radius:999px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.10);
-  backdrop-filter:blur(10px);
-  box-shadow: 0 18px 70px rgba(0,0,0,.18);
-}
-.stack{display:flex;align-items:center}
-.av{
-  width:34px;height:34px;border-radius:50%;
-  margin-left:-10px;
-  border:2px solid #0b0714;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 45%),
-    linear-gradient(135deg,var(--accent1),var(--accent2));
-}
-.av:first-child{margin-left:0}
-.more{
-  width:36px;height:36px;border-radius:50%;
-  margin-left:-10px;
-  display:grid;place-items:center;
-  font-weight:900;
-  font-size:12px;
-  background:linear-gradient(135deg,var(--accent1),var(--accent2));
-  color:#14081f;
-  border:2px solid #0b0714;
-}
-.bottomNote{
-  font-size:13px;
-  color:rgba(255,255,255,.62);
-  text-align:center;
-  margin-top:4px;
-}
+        .hero-title {
+            background: linear-gradient(45deg, #fff, #ba94ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientBG 5s ease infinite;
+        }
 
-/* MOBILE */
-@media(max-width:900px){
-  .hero{padding:34px 0 150px}
-  .heroGrid{grid-template-columns:1fr}
-  nav{display:none}
-  .stats{grid-template-columns:1fr}
-  h1{font-size:clamp(44px, 10vw, 62px)}
-  .sub{font-size:18px}
-  .num{font-size:28px}
-  .floatingStatus{bottom:26px}
-}
+        .price-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-/* Accessibility: weniger Motion */
-@media (prefers-reduced-motion: reduce){
-  .logoBox, .dot { animation: none !important; }
-  .subFizzle { animation: none !important; opacity:1 !important; filter:none !important; transform:none !important; }
-}
+        .price-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(186, 148, 255, 0.3);
+        }
 
-/* ================= PRICING ================= */
-.pricing{
-  padding:115px 0 140px;
-  text-align:center;
-  position:relative;
-}
-.pricing h2{
-  font-size:clamp(40px,5.2vw,62px);
-  margin:0;
-  font-weight:900;
-  letter-spacing:-.6px;
-}
-.pricing h2 span{
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  -webkit-background-clip:text;
-  color:transparent;
-}
-.pricing .subline{
-  margin:16px auto 42px;
-  max-width:720px;
-  font-size:16px;
-  color:rgba(255,255,255,.7);
-  line-height:1.7;
-}
-.pricing h2::after{
-  content:"";
-  display:block;
-  width:70px;
-  height:4px;
-  margin:16px auto 0;
-  border-radius:999px;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  opacity:.95;
-}
-.cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:28px;
-  margin-top:44px;
-  align-items:stretch;
-}
-.priceCard{
-  position:relative;
-  padding:34px 34px 26px;
-  border-radius:22px;
-  text-align:left;
-  display:flex;
-  flex-direction:column;
-  min-height:540px;
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
 
-  background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter: blur(14px) saturate(120%);
-  box-shadow:0 35px 140px rgba(0,0,0,.62), inset 0 1px 0 rgba(255,255,255,.14);
-}
-.priceCard::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:22px;
-  background:radial-gradient(500px 220px at 50% 0%, rgba(181,140,255,.16), transparent 65%);
-  opacity:.55;
-  pointer-events:none;
-}
-.tier-premium::before{ background:radial-gradient(520px 240px at 40% 0%, rgba(255,190,46,.10), transparent 68%); }
-.tier-supreme::before{ background:radial-gradient(520px 240px at 60% 0%, rgba(199,155,255,.12), transparent 68%); }
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
 
-.priceCard.popular{
-  background:linear-gradient(180deg, rgba(181,140,255,.20), rgba(255,79,216,.12));
-  transform:translateY(-14px);
-  border:1px solid rgba(255,255,255,.14);
-  box-shadow:0 40px 150px rgba(0,0,0,.58);
-}
-.priceCard.popular::before{
-  background:radial-gradient(520px 260px at 50% 0%, rgba(255,79,216,.18), transparent 66%);
-  opacity:.75;
-}
-.badge{
-  position:absolute;
-  top:-14px;
-  left:50%;
-  transform:translateX(-50%);
-  padding:7px 16px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.7px;
-  text-transform:uppercase;
-  background:linear-gradient(135deg,var(--accent1),var(--accent2));
-  color:#14081f;
-  box-shadow:0 18px 60px rgba(255,79,216,.22);
-}
-.priceCard h3{
-  font-size:24px;
-  margin:0;
-  font-weight:900;
-}
-.priceCard small{
-  display:block;
-  margin-top:6px;
-  color:rgba(255,255,255,.55);
-  font-weight:700;
-}
-.price{
-  margin:26px 0 18px;
-  font-size:46px;
-  font-weight:900;
-  text-align:center;
-  letter-spacing:-.4px;
-  text-shadow:0 0 18px rgba(255,255,255,.10);
-}
-.price span{
-  font-size:14px;
-  opacity:.65;
-  margin-left:6px;
-  font-weight:800;
-}
-.features{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  margin:18px 0 22px;
-  padding-top:18px;
-  border-top:1px solid rgba(255,255,255,.08);
-}
-.features span{
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-  font-size:14px;
-  color:rgba(255,255,255,.86);
-}
-.features i{
-  width:20px;
-  height:20px;
-  border-radius:999px;
-  display:inline-grid;
-  place-items:center;
-  font-style:normal;
-  font-weight:900;
-  font-size:12px;
-  margin-top:1px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
-}
+            .card-container {
+                padding: 1rem;
+            }
+        }
 
-/* Preisfarben */
-.tier-premium .price{ color:#ffbe2e; }
-.tier-exklusiv .price{ color:#ff63e8; }
-.tier-supreme .price{ color:#c79bff; }
+        /* Loading Animation */
+        .loading-dots::after {
+            content: '...';
+            animation: loading 1.5s infinite;
+        }
 
-.tier-premium .features i{ color:#ffbe2e; box-shadow:0 0 0 5px rgba(255,190,46,.08), inset 0 1px 0 rgba(255,255,255,.12); }
-.tier-exklusiv .features i{ color:#ff63e8; box-shadow:0 0 0 5px rgba(255,99,232,.08), inset 0 1px 0 rgba(255,255,255,.12); }
-.tier-supreme .features i{ color:#c79bff; box-shadow:0 0 0 5px rgba(199,155,255,.08), inset 0 1px 0 rgba(255,255,255,.12); }
+        @keyframes loading {
+            0% { content: '.'; }
+            33% { content: '..'; }
+            66% { content: '...'; }
+        }
 
-/* BUY Button */
-.buyBtn{
-  margin-top:auto;
-  width:100%;
-  height:56px;
-  border-radius:999px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  font-weight:900;
-  letter-spacing:.2px;
-  border:1px solid rgba(255,255,255,.10);
-  transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
-  color:#fff !important;
-  box-shadow:0 22px 90px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.25);
-}
-.buyBtn span{ font-size:18px; opacity:.9; transform:translateY(-1px); }
-.buyBtn:hover{
-  transform:translateY(-1px);
-  filter:saturate(1.08);
-  box-shadow:0 26px 105px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.28);
-}
-.buy-premium{ background:linear-gradient(90deg,#ffbe2e,#ff8a00); }
-.buy-exklusiv{ background:linear-gradient(90deg,#b58cff,#ff4fd8); }
-.buy-supreme{ background:linear-gradient(90deg,#a05cff,#6b2cff); }
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
 
-@media(max-width:900px){
-  .pricing{padding:80px 0 110px}
-  .cards{grid-template-columns:1fr}
-  .priceCard{min-height:auto}
-  .priceCard.popular{transform:none}
-}
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
 
-/* ================= WHY SECTION ================= */
-.why{
-  padding:120px 0 140px;
-  text-align:center;
-  position:relative;
-}
-.why h2{
-  font-size:clamp(38px,5vw,56px);
-  margin:0;
-  font-weight:900;
-}
-.why h2 span{
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  -webkit-background-clip:text;
-  color:transparent;
-}
-.why h2::after{
-  content:"";
-  display:block;
-  width:70px;
-  height:4px;
-  margin:16px auto 0;
-  border-radius:999px;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-}
-.why-sub{
-  max-width:720px;
-  margin:16px auto 48px;
-  font-size:16px;
-  color:rgba(255,255,255,.72);
-}
+        ::-webkit-scrollbar-track {
+            background: #0F0509;
+        }
 
-.why-cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:28px;
-}
-.why-card{
-  padding:36px 30px;
-  border-radius:22px;
-  background:rgba(255,255,255,.045);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(14px);
-  box-shadow:0 30px 120px rgba(0,0,0,.55);
-  transition:transform .25s ease, box-shadow .25s ease;
-}
-.why-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 40px 140px rgba(0,0,0,.65);
-}
-.why-card.highlight{
-  background:linear-gradient(180deg, rgba(181,140,255,.20), rgba(255,79,216,.14));
-  border:1px solid rgba(255,255,255,.16);
-}
-.why-icon{
-  width:56px;
-  height:56px;
-  margin:0 auto 18px;
-  border-radius:16px;
-  display:grid;
-  place-items:center;
-  font-size:26px;
-  background:linear-gradient(135deg,var(--accent1),var(--accent2));
-  color:#14081f;
-  box-shadow:0 18px 60px rgba(255,79,216,.25);
-}
-.why-card h3{
-  font-size:18px;
-  margin:10px 0 12px;
-  font-weight:900;
-}
-.why-card p{
-  font-size:14px;
-  line-height:1.6;
-  color:rgba(255,255,255,.78);
-}
-.why-cta{
-  margin:56px auto 0;
-  width:fit-content;
-  padding:18px 32px;
-  border-radius:999px;
-  display:inline-flex;
-  align-items:center;
-  gap:12px;
-  font-weight:900;
-  color:#fff;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  box-shadow:0 30px 120px rgba(255,79,216,.35);
-  transition:transform .2s ease, box-shadow .2s ease;
-}
-.why-cta:hover{
-  transform:translateY(-2px);
-  box-shadow:0 40px 150px rgba(255,79,216,.45);
-}
-@media(max-width:900px){
-  .why{padding:80px 0 110px}
-  .why-cards{grid-template-columns:1fr}
-}
+        ::-webkit-scrollbar-thumb {
+            background: #ba94ff;
+            border-radius: 5px;
+        }
 
-/* ================= FEATURES SECTION ================= */
-.featuresSec{
-  padding:120px 0 140px;
-  text-align:center;
-  position:relative;
-}
-.featuresSec h2{
-  font-size:clamp(40px,5.2vw,62px);
-  margin:0;
-  font-weight:900;
-  letter-spacing:-.6px;
-}
-.featuresSec h2 span{
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  -webkit-background-clip:text;
-  color:transparent;
-}
-.featuresSec h2::after{
-  content:"";
-  display:block;
-  width:70px;
-  height:4px;
-  margin:16px auto 0;
-  border-radius:999px;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-}
-.featuresSub{
-  max-width:820px;
-  margin:16px auto 56px;
-  color:rgba(255,255,255,.72);
-  line-height:1.7;
-  font-size:16px;
-}
-.featureGrid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:28px;
-}
-.fCard{
-  text-align:left;
-  padding:34px 30px;
-  border-radius:22px;
-  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(14px);
-  box-shadow:0 35px 140px rgba(0,0,0,.60), inset 0 1px 0 rgba(255,255,255,.12);
-  position:relative;
-  overflow:hidden;
-  min-height:220px;
-}
-.fCard::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:22px;
-  opacity:.55;
-  pointer-events:none;
-  background:radial-gradient(520px 260px at 40px 30px, rgba(181,140,255,.14), transparent 65%);
-}
-.fIcon{
-  width:56px;
-  height:56px;
-  border-radius:16px;
-  display:grid;
-  place-items:center;
-  font-size:24px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow:0 18px 70px rgba(0,0,0,.25);
-  margin-bottom:18px;
-}
-.fTop{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:10px;
-}
-.fCard h3{
-  margin:0;
-  font-size:18px;
-  font-weight:900;
-}
-.fCard p{
-  margin:10px 0 0;
-  color:rgba(255,255,255,.74);
-  line-height:1.6;
-  font-size:14px;
-}
-.fPill{
-  font-size:12px;
-  font-weight:900;
-  padding:6px 10px;
-  border-radius:999px;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  color:#14081f;
-}
-.b-pink{ border-color: rgba(255,79,216,.30); }
-.b-gold{ border-color: rgba(255,190,46,.30); }
-.b-green{ border-color: rgba(46,229,157,.26); }
-.b-blue{ border-color: rgba(120,170,255,.26); }
-.b-purple{ border-color: rgba(181,140,255,.30); }
-.b-red{ border-color: rgba(255,120,120,.26); }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9b74ff;
+        }
 
-.b-pink::before{  background:radial-gradient(520px 260px at 40px 30px, rgba(255,79,216,.14), transparent 65%); }
-.b-gold::before{  background:radial-gradient(520px 260px at 40px 30px, rgba(255,190,46,.12), transparent 65%); }
-.b-green::before{ background:radial-gradient(520px 260px at 40px 30px, rgba(46,229,157,.12), transparent 65%); }
-.b-blue::before{  background:radial-gradient(520px 260px at 40px 30px, rgba(120,170,255,.12), transparent 65%); }
-.b-purple::before{background:radial-gradient(520px 260px at 40px 30px, rgba(181,140,255,.14), transparent 65%); }
-.b-red::before{   background:radial-gradient(520px 260px at 40px 30px, rgba(255,120,120,.12), transparent 65%); }
+        /* Image Gallery */
+        .gallery-img {
+            transition: transform 0.3s ease;
+        }
 
-.featuresCta{
-  margin:58px auto 0;
-  width:fit-content;
-  padding:18px 34px;
-  border-radius:999px;
-  display:inline-flex;
-  align-items:center;
-  gap:12px;
-  font-weight:900;
-  color:#fff;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  box-shadow:0 30px 120px rgba(255,79,216,.35);
-  transition:transform .2s ease, box-shadow .2s ease;
-}
-.featuresCta:hover{
-  transform:translateY(-2px);
-  box-shadow:0 40px 150px rgba(255,79,216,.45);
-}
-.featuresCta span{ font-size:18px; transform:translateY(-1px); }
+        .gallery-img:hover {
+            transform: scale(1.05);
+        }
 
-@media(max-width:900px){
-  .featuresSec{padding:80px 0 110px}
-  .featureGrid{grid-template-columns:1fr}
-}
+        /* Fix für Button-Resizing */
+        .button-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-/* ================= FIXES (IMPORTANT) ================= */
+        .fixed-width-button {
+            min-width: 150px; /* Feste Mindestbreite */
+            text-align: center;
+        }
 
-/* 1) KEINE Section-Overlays: nur EIN Background (deins) */
-.pricing::before, .why::before, .featuresSec::before,
-.pricing::after,  .why::after,  .featuresSec::after{
-  content:none !important;
-}
-.pricing, .why, .featuresSec{
-  isolation:auto !important;
-  background:transparent !important;
-}
+        /* Enhanced Navigation Styles */
+        .enhanced-nav {
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            background: rgba(15, 5, 9, 0.75);
+            border-bottom: 1px solid rgba(186, 148, 255, 0.15);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
 
-/* 2) HERO: Platz für absolute floatingStatus, sonst “rutscht” Optik */
-.hero{
-  padding-bottom: 260px; /* <- FIX: damit das Ende vom Hero nicht in Section 2 reinläuft */
-}
-@media(max-width:900px){
-  .hero{
-    padding-bottom: 300px;
-  }
-}
+        .nav-item {
+            position: relative;
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            margin: 0 0.2rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-/* 3) SECTION SPACING: verhindert dass Buttons optisch in nächste Section ragen */
-.pricing{ padding-bottom: 190px; }
-.why{     padding-bottom: 190px; }
-.featuresSec{ padding-bottom: 210px; }
+        .nav-item:hover {
+            background: rgba(186, 148, 255, 0.15);
+            transform: translateY(-2px);
+        }
 
-/* 4) HARD GLOBAL BACKGROUND ENFORCER (damit es 100% EIN Background bleibt) */
-header, main, section, .pricing, .why, .featuresSec{
-  background:transparent !important;
-}
-</style>
+        .nav-item.active {
+            background: linear-gradient(45deg, rgba(186, 148, 255, 0.2), rgba(230, 56, 181, 0.2));
+            box-shadow: 0 0 10px rgba(186, 148, 255, 0.3);
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ba94ff, #E638B5);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            opacity: 0;
+        }
+
+        .nav-item:hover::before {
+            width: 80%;
+            opacity: 1;
+        }
+
+        .nav-logo {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 8px rgba(186, 148, 255, 0.5));
+        }
+
+        /* Mobile menu enhancements */
+        .mobile-menu {
+            background: rgba(25, 15, 25, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(186, 148, 255, 0.2);
+            transform-origin: top;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-nav-item {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border-left: 0px solid #ba94ff;
+        }
+
+        .mobile-nav-item:hover {
+            border-left: 4px solid #ba94ff;
+            padding-left: calc(0.75rem - 4px);
+            background: rgba(186, 148, 255, 0.1);
+        }
+    </style>
 </head>
+<body class="font-['Inter'] overflow-x-hidden gradient-bg">
 
-<body>
-<header>
-  <div class="container nav">
-    <div class="logo">DeinProjekt<span style="opacity:.7">.tv</span></div>
-    <nav>
-      <a href="#">Login</a>
-      <a href="#">Register</a>
-      <a href="#" class="cta">Kostenlos beitreten</a>
+    <!-- Enhanced Navigation -->
+    <nav class="fixed w-full z-50 enhanced-nav transition-all duration-300">
+        <div class="w-full max-w-screen-xl mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Logo with Animation -->
+                <div class="flex items-center">
+                    <a href="/" class="nav-logo">
+                        <img src="/assets/img/logo.png" alt="OFLeaks.tv Logo" class="h-11 w-auto">
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu with Enhanced Styling -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="login.html" class="nav-item">
+                        <i class="fas fa-sign-in-alt text-sm"></i>
+                        <span>Login</span>
+                    </a>
+                    <a href="register.html" class="nav-item">
+                        <i class="fas fa-user-plus text-sm"></i>
+                        <span>Register</span>
+                    </a>
+                   <span class="nav-item cursor-not-allowed opacity-60">
+    <i class="fab fa-discord text-sm"></i>
+    <span>Discord</span>
+</span>
+                        <i class="fab fa-discord text-sm"></i>
+                        <span>Discord</span>
+                    </a>
+                    <a href="contact.html" class="nav-item">
+                        <i class="fas fa-envelope text-sm"></i>
+                        <span>Contact / DMCA</span>
+                    </a>
+                    
+                    <!-- Special CTA Button -->
+                    <a href="#kaufsection" class="ml-2 px-4 py-2 bg-gradient-to-r from-[#ba94ff] to-[#E638B5] rounded-full text-white font-medium text-sm hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 transform hover:scale-105">
+                        Kostenlos beitreten
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button with Animation -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white p-2 rounded-full hover:bg-[#ba94ff]/20 transition-all duration-300 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+                             viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" 
+                                  stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Enhanced Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mobile-menu transform opacity-0 scale-95">
+            <div class="p-4 space-y-3">
+                <a href="/login" class="mobile-nav-item flex items-center space-x-3 px-4 py-3 rounded-lg text-white hover:text-[#ba94ff] transition-all">
+                    <i class="fas fa-sign-in-alt w-5 text-center"></i>
+                    <span class="font-medium">Login</span>
+                </a>
+                <a href="/register" class="mobile-nav-item flex items-center space-x-3 px-4 py-3 rounded-lg text-white hover:text-[#ba94ff] transition-all">
+                    <i class="fas fa-user-plus w-5 text-center"></i>
+                    <span class="font-medium">Register</span>
+                </a>
+                <a href="https://discord.celebroom.de" class="mobile-nav-item flex items-center space-x-3 px-4 py-3 rounded-lg text-white hover:text-[#ba94ff] transition-all">
+                    <i class="fab fa-discord w-5 text-center"></i>
+                    <span class="font-medium">Discord</span>
+                </a>
+                <a href="/contact" class="mobile-nav-item flex items-center space-x-3 px-4 py-3 rounded-lg text-white hover:text-[#ba94ff] transition-all">
+                    <i class="fas fa-envelope w-5 text-center"></i>
+                    <span class="font-medium">Contact / DMCA</span>
+                </a>
+                
+                <!-- Mobile CTA Button -->
+                <div class="pt-2 pb-1">
+                    <a href="#kaufsection" class="block w-full py-3 bg-gradient-to-r from-[#ba94ff] to-[#E638B5] rounded-lg text-white font-medium text-center hover:shadow-lg transition-all duration-300">
+                        Kostenlos beitreten
+                    </a>
+                </div>
+            </div>
+        </div>
     </nav>
-  </div>
-</header>
 
-<main class="hero">
-  <div class="container heroGrid">
-    <section class="heroLeft">
-      <h1>Dein<span style="color:#ff4fd8">Projekt</span>.tv</h1>
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
+        <!-- Enhanced Background elements -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#1a0c2e] via-[#10071c] to-[#0a0512] z-0"></div>
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAzNGMwIDMuMzE0LTIuNjg2IDYtNiA2cy02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiA2IDIuNjg2IDYgNnptMCAwYzAgMy4zMTQtMi42ODYgNi02IDZzLTYtMi42ODYtNi02IDIuNjg2LTYgNi02IDYgMi42ODYgNiA2eiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMDUiLz48L2c+PC9zdmc+')] bg-repeat opacity-5 z-0"></div>
+        
+        <!-- Animated background shapes with enhanced effects -->
+        <div class="absolute top-1/4 left-10 w-96 h-96 bg-[#E638B5]/10 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-[#ba94ff]/10 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 10s; animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-[#E638B5]/5 to-[#ba94ff]/5 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 15s;"></div>
+        
+        <div class="max-w-screen-xl mx-auto z-10 py-10">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                <!-- Left Content with enhanced animations -->
+                <div class="text-center md:text-left md:w-1/2 animate__animated animate__fadeIn">
+                    <!-- Enhanced Title with gradient and animation -->
+                    <div class="relative mb-6">
+                        <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
+                            <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-[#ba94ff] to-[#E638B5] pb-2 animate-gradient-x">OFLeaks.tv</span>
+                        </h1>
+                        <div class="absolute -bottom-3 left-0 w-20 h-1.5 bg-gradient-to-r from-[#ba94ff] to-[#E638B5] rounded-full md:block hidden animate-width"></div>
+                    </div>
+                    
+                    <!-- Enhanced Subtitle with typing animation -->
+                    <div class="h-[80px] md:h-[100px] lg:h-[120px] flex items-center mb-10">
+                        <p id="sub-header" class="text-gray-200 text-xl md:text-2xl lg:text-3xl font-light leading-relaxed">
+                            <!-- Dynamischer Text wird hier eingefügt -->
+                        </p>
+                    </div>
+                    
+                    <!-- Enhanced Stats Section -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+                        <div class="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+                            <div class="text-3xl font-bold text-white mb-1">740+</div>
+                            <div class="text-sm text-gray-400">Exklusive Models</div>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+                            <div class="text-3xl font-bold text-white mb-1">60k+</div>
+                            <div class="text-sm text-gray-400">Aktive Mitglieder</div>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 md:block hidden">
+                            <div class="text-3xl font-bold text-white mb-1">24/7</div>
+                            <div class="text-sm text-gray-400">Support</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Enhanced CTA Buttons with new design -->
+                    <div class="flex flex-col sm:flex-row items-center gap-5 justify-center md:justify-start">
+                        <!-- Primary CTA Button with enhanced effects -->
+                        <button onclick="document.getElementById('kaufsection').scrollIntoView({behavior: 'smooth'})" 
+                            class="group relative overflow-hidden rounded-full bg-gradient-to-r from-[#E638B5] to-[#ba94ff] px-8 py-4 text-xl font-medium text-white shadow-xl transition-all duration-300 hover:shadow-[0_0_25px_rgba(186,148,255,0.5)]">
+                            <!-- Shine effect overlay -->
+                            <span class="absolute inset-0 flex justify-center [transform:translateX(-100%)] group-hover:[transform:translateX(100%)] transition-all duration-700">
+                                <span class="h-full w-32 bg-white opacity-20 blur-md rotate-12"></span>
+                            </span>
+                            <!-- Text and icon -->
+                            <span class="relative flex items-center justify-center">
+                                <a href="/register" class="flex items-center">
+                                    <span>Kostenlos beitreten</span>
+                                    <svg class="ml-2 h-6 w-6 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                    </svg>
+                                </a>
+                            </span>
+                        </button>
+                        
+                        <!-- Secondary CTA Button with enhanced design -->
+                        <button onclick="document.getElementById('preview').scrollIntoView({behavior: 'smooth'})" 
+                            class="rounded-full border border-white/10 bg-white/5 backdrop-blur-lg px-6 py-4 text-lg text-white transition-all duration-300 hover:bg-white/10 hover:shadow-lg flex items-center">
+                            <span>Preview entdecken</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
 
-      <!-- Typewriter Subline (ohne Cursor) -->
-      <div class="subWrap">
-        <p class="sub" id="subLine">
-          <span class="subText" id="subText"></span>
-        </p>
-      </div>
+                    <!-- Trust Badges -->
+                    <div class="mt-8 flex flex-wrap justify-center md:justify-start gap-4">
+                        <div class="flex items-center space-x-2 text-sm text-gray-400">
+                            <i class="fas fa-shield-alt text-green-400"></i>
+                            <span>100% Sicher</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-gray-400">
+                            <i class="fas fa-bolt text-yellow-400"></i>
+                            <span>Sofortiger Zugang</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-gray-400">
+                            <i class="fas fa-lock text-blue-400"></i>
+                            <span>Anonym & Diskret</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Content with Enhanced Image and Effects -->
+                <div class="hidden md:block md:w-1/2 relative">
+                    <!-- Enhanced floating effect container -->
+                    <div class="relative">
+                        <!-- Glow effects -->
+                        <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-[#ba94ff]/20 to-transparent rounded-full filter blur-3xl opacity-30 animate-pulse" style="animation-duration: 5s;"></div>
+                        <div class="absolute -inset-4 bg-gradient-to-r from-[#E638B5]/20 to-[#ba94ff]/20 rounded-full filter blur-2xl opacity-20 animate-pulse" style="animation-duration: 7s;"></div>
+                        
+                        <!-- Main image with enhanced effects -->
+                        <img src="/assets/img/logoBig.png" alt="OFLeaks.tv" 
+                             class="floating max-w-full h-auto relative z-10 drop-shadow-[0_0_15px_rgba(186,148,255,0.5)] transform hover:scale-105 transition-transform duration-500"/>
+                        
+                        <!-- Decorative elements -->
+                        <div class="absolute -top-4 -right-4 w-24 h-24 bg-[#E638B5]/20 rounded-full filter blur-xl animate-pulse" style="animation-duration: 4s;"></div>
+                        <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-[#ba94ff]/20 rounded-full filter blur-xl animate-pulse" style="animation-duration: 6s;"></div>
+                    </div>
+                </div>
+            </div>
 
-      <div class="stats">
-        <div class="card"><div class="num">740+</div><div class="label">Projekte</div></div>
-        <div class="card"><div class="num">60k+</div><div class="label">User</div></div>
-        <div class="card"><div class="num">24/7</div><div class="label">Support</div></div>
-      </div>
+            <!-- Enhanced User Stats Section -->
+            <div class="mt-16 text-center">
+                <!-- Online Users Counter with improved visual -->
+                <div class="inline-block bg-white/5 backdrop-blur-md rounded-full px-6 py-3 border border-white/10 mb-6">
+                    <p class="text-green-400 font-medium flex items-center gap-2">
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                        </span>
+                        <span>
+                            <span class="highlight sparkle font-semibold" id="randomNumber"></span> User online auf OFLeaks.tv
+                        </span>
+                    </p>
+                </div>
 
-      <div class="buttons">
-        <a class="btn primary" href="#">Kostenlos beitreten <span aria-hidden="true">→</span></a>
-        <a class="btn ghost" href="#">Preview <span aria-hidden="true">👁</span></a>
-      </div>
-
-      <div class="trust">
-        <span>🛡️ Sicher</span>
-        <span>⚡ Sofort</span>
-        <span>🔒 Diskret</span>
-      </div>
+                <!-- Enhanced User Avatars with glass effect -->
+                <div class="flex flex-col items-center justify-center space-y-4">
+                    <div class="flex -space-x-4 rtl:space-x-reverse bg-white/5 backdrop-blur-md p-3 rounded-full border border-white/10">
+                        <img class="w-10 h-10 rounded-full border-2 border-[#0F0509] hover:z-10 transition-transform hover:scale-110" 
+                            src="https://www.famousbirthdays.com/faces/mathilda-mkh-image.jpg" alt="User 1">
+                        <img class="w-10 h-10 rounded-full border-2 border-[#0F0509] hover:z-10 transition-transform hover:scale-110" 
+                            src="https://i.ebayimg.com/images/g/Cn4AAOSwq9dkNiV2/s-l1600.jpg" alt="User 2">
+                        <img class="w-10 h-10 rounded-full border-2 border-[#0F0509] hover:z-10 transition-transform hover:scale-110" 
+                            src="https://www.watson.de/imgdb/1135/Qx,A,0,0,604,522,251,217,100,87/1741431296241491" alt="User 3">
+                        <a class="flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-[#ba94ff] border-2 rounded-full hover:bg-[#9f6ce3] border-[#0F0509] hover:scale-110 transition-transform" 
+                            href="/login">+99</a>
+                    </div>
+                    <p class="text-gray-300 text-sm font-medium">Direkter Zugang zu 740+ Models <span class="text-xs font-light text-gray-400">· Tritt noch heute bei</span></p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <div class="logoBox" aria-hidden="true">
-      <svg viewBox="0 0 520 360" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M110 260c-40-40-40-120 0-160 40-40 120-40 160 0l20 20-45 45-20-20c-15-15-45-15-60 0-15 15-15 45 0 60 15 15 45 15 60 0l85-85c40-40 120-40 160 0 40 40 40 120 0 160-40 40-120 40-160 0l-20-20 45-45 20 20c15 15 45 15 60 0 15-15 15-45 0-60-15-15-45-15-60 0l-85 85c-40 40-120 40-160 0Z"
-          stroke="rgba(210,170,255,.95)" stroke-width="10"/>
-        <circle cx="205" cy="180" r="22" stroke="rgba(210,170,255,.95)" stroke-width="10"/>
-        <circle cx="315" cy="180" r="22" stroke="rgba(210,170,255,.95)" stroke-width="10"/>
-      </svg>
+    <!-- Pricing Section -->
+      <section id="kaufsection" class="relative py-28 px-4 overflow-hidden">
+        <!-- Background elements -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#1a0c2e] via-[#10071c] to-[#0a0512] z-0"></div>
+        <div class="absolute inset-0 bg-[url('https://assets.codepen.io/1538474/star.svg')] bg-repeat opacity-5 z-0"></div>
+        
+        <!-- Animated background shapes -->
+        <div class="absolute top-1/4 left-10 w-96 h-96 bg-[#E638B5]/10 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 10s;"></div>
+        <div class="absolute bottom-1/4 right-10 w-80 h-80 bg-[#ba94ff]/10 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 8s; animation-delay: 1s;"></div>
+        
+        <div class="max-w-screen-xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold relative inline-block">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-[#ba94ff] to-[#E638B5]">Wähle ein Paket</span>
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-[#ba94ff] to-[#E638B5] rounded-full mx-auto mt-4"></div>
+                <h3 class="text-3xl md:text-4xl font-bold mt-2 text-white">
+                    was <span class="text-[#ba94ff]">zu dir passt</span>
+                </h3>
+                <p class="text-gray-300 mt-6 max-w-2xl mx-auto">Mit über 740 Models sind wir sicher, dass wir das haben was du suchst.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+			
+                <!-- Premium Plan -->
+                <div class="relative flex flex-col h-full transition-all duration-500 transform hover:-translate-y-2">
+                    <!-- Card background with glassmorphism -->
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl z-0"></div>
+                    
+                    <div class="bg-gradient-to-b from-[#17171b]/60 to-transparent p-8 rounded-t-2xl relative z-10">
+                        <h3 class="text-2xl font-semibold text-white mb-2">Premium</h3>
+                        <p class="text-gray-400 font-medium">Basic</p>
+                        <div class="flex justify-center items-baseline my-8">
+                            <span class="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-amber-300 to-amber-500">1.99€</span>
+                            <span class="text-gray-400 ml-1 font-medium">EUR</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8 flex-1 flex flex-col relative z-10">
+                        <ul class="space-y-4 mb-8 flex-1">
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-amber-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Direkter Zugang</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-amber-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Einmalige Zahlung</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-amber-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Zugriff zu Videos</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-amber-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>150GB Dropbox Links</span>
+                            </li>
+
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-amber-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Alle OF Leaks</span>
+                            </li>
+                        </ul>
+                        
+                        <button onclick="window.location.href = 'pay1.html'" class="relative overflow-hidden group bg-gradient-to-r from-amber-400 to-amber-600 rounded-full py-3 px-6 text-white font-medium hover:shadow-lg shadow-amber-500/20 transition-all duration-300">
+                            <span class="absolute inset-0 flex justify-center [transform:translateX(-100%)] group-hover:[transform:translateX(100%)] transition-all duration-700">
+                                <span class="h-full w-32 bg-white opacity-20 blur-md rotate-12"></span>
+                            </span>
+                            <span class="relative flex items-center justify-center">
+                                <span>Kaufen</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 ml-2 transform transition-transform duration-300 group-hover:translate-x-1">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Exklusiv Plan (Most Popular) -->
+                <div class="relative flex flex-col h-full transform scale-105 z-20 transition-all duration-500 hover:-translate-y-2">
+                    <!-- Highlight glow -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-[#ba94ff] to-[#E638B5] opacity-20 blur-lg rounded-2xl"></div>
+                    
+                    <!-- Card background with glassmorphism -->
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-[#ba94ff]/30 rounded-2xl z-0"></div>
+                    
+                    <!-- Most Popular badge -->
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30">
+                        <div class="bg-gradient-to-r from-[#ba94ff] to-[#E638B5] px-4 py-1.5 rounded-full text-xs font-bold text-white uppercase shadow-lg">
+                            Most Popular
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-b from-[#17171b]/60 to-transparent p-8 rounded-t-2xl relative z-10">
+                        <h3 class="text-2xl font-semibold text-white mb-2">Exklusiv</h3>
+                        <p class="text-gray-400 font-medium">Standard</p>
+                        <div class="flex justify-center items-baseline my-8">
+                            <span class="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#ba94ff] to-[#E638B5]">9.99€</span>
+                            <span class="text-gray-400 ml-1 font-medium">EUR</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8 flex-1 flex flex-col relative z-10">
+                        <ul class="space-y-4 mb-8 flex-1">
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-[#ba94ff]/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-[#ba94ff]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Direkter Zugang</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-[#ba94ff]/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-[#ba94ff]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Einmalige Zahlung</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-[#ba94ff]/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-[#ba94ff]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Zugriff zu Videos</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-[#ba94ff]/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-[#ba94ff]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Snapchat Paket</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-[#ba94ff]/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-[#ba94ff]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Voller Zugang zum Discord</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-[#ba94ff]/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-[#ba94ff]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Zugang zum Privat Telegram</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-[#ba94ff]/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-[#ba94ff]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Zugang zum Privat Discord</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-[#ba94ff]/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-[#ba94ff]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>250GB Dropbox Links</span>
+                            </li>
+                        </ul>
+                        
+                        <button onclick="window.location.href = 'pay2.html'" class="relative overflow-hidden group bg-gradient-to-r from-[#ba94ff] to-[#E638B5] rounded-full py-3 px-6 text-white font-medium shadow-lg shadow-[#ba94ff]/20 transition-all duration-300">
+                            <span class="absolute inset-0 flex justify-center [transform:translateX(-100%)] group-hover:[transform:translateX(100%)] transition-all duration-700">
+                                <span class="h-full w-32 bg-white opacity-20 blur-md rotate-12"></span>
+                            </span>
+                            <span class="relative flex items-center justify-center">
+                                <span>Kaufen</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 ml-2 transform transition-transform duration-300 group-hover:translate-x-1">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Supreme Plan -->
+                <div class="relative flex flex-col h-full transition-all duration-500 transform hover:-translate-y-2">
+                    <!-- Hot deal badge -->
+                    <div class="absolute -right-2 -top-2 z-20">
+                       <svg width="90" height="90" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" preserveAspectRatio="xMidYMid meet">
+                          <path d="M101.98 24.25s6.37-4.95 9.91-8.49c4.36-4.36 5.66-8.93 4.14-9.47c-1.52-.54-7.41.54-7.41.54l-17.64 8.6l-4.47 6.64l15.47 2.18z" fill="#69a246"></path>
+                          <path d="M28.36 21.96s-3.7-1.31-7.84-5.77c-4.04-4.36-5.23-7.3-4.68-8.93c.54-1.63 20.69 4.36 20.69 4.36l13.4 5.99l3.48 7.19l-25.05-2.84z" fill="#69a246"></path>
+                          <path d="M67.02 22.29s4.25-8.49 11.11-12.09s14.05-4.36 25.05-4.79s12.85.87 12.85.87s-8.28 3.92-16.23 7.62s-14.38 8.6-14.38 8.6L68.44 35.36L45.35 18.15s-8.06-4.03-14.7-6.53s-14.81-4.36-14.81-4.36s1.61-2.06 16.77-1.31c15.25.76 20.91 4.57 25.48 7.3s8.93 9.04 8.93 9.04z" fill="#82b032"></path>
+                          <radialGradient id="IconifyId17ecdb2904d178eab14766" cx="79.058" cy="16.909" r="88.809" gradientUnits="userSpaceOnUse">
+                             <stop offset="0.719" stop-color="#fe622b"></stop>
+                             <stop offset="0.78" stop-color="#fb582c"></stop>
+                             <stop offset="0.886" stop-color="#f23d2f"></stop>
+                             <stop offset="1" stop-color="#e71932"></stop>
+                          </radialGradient>
+                          <path d="M68.22 24.69c2.5-.22 7.98-7.82 22.95-6.61c14.97 1.2 37.81 18.2 31.66 50.08c-3.34 17.34-12.36 28.52-29.03 40.64c-11.78 8.56-23.77 14-29.31 14.08c-4.99.08-11.87-10.84-11.87-10.84l15.6-87.35z" fill="url(#IconifyId17ecdb2904d178eab14766)"></path>
+                          <radialGradient id="IconifyId17ecdb2904d178eab14767" cx="102.96" cy="33.821" r="28.35" gradientTransform="matrix(-.8071 .5904 -1.2855 -1.7574 229.539 32.471)" gradientUnits="userSpaceOnUse">
+                             <stop offset="0.371" stop-color="#ff9759"></stop>
+                             <stop offset="0.747" stop-color="#ff9759" stop-opacity="0"></stop>
+                          </radialGradient>
+                          <path d="M68.22 24.69c2.5-.22 7.98-7.82 22.95-6.61c14.04 1.13 34.99 16.14 32.49 44.28c-.17 1.88-2.09 9.95-5.88 10.35c-18.48 1.98-27.32-20.64-32.08-26.6c-9.1-11.37-17.48-21.42-17.48-21.42z" fill="url(#IconifyId17ecdb2904d178eab14767)"></path>
+                          <radialGradient id="IconifyId17ecdb2904d178eab14768" cx="53.531" cy="15.482" r="50.699" gradientUnits="userSpaceOnUse">
+                             <stop offset="0.481" stop-color="#ff9759"></stop>
+                             <stop offset="1" stop-color="#ff9759" stop-opacity="0"></stop>
+                          </radialGradient>
+                          <path d="M67.53 24.89c2.5-.22 8.67-8.02 23.64-6.82c11.37.91 27.26 10.93 31.58 29.65c1.01 4.4-4.78 9.44-8.55 10.09c-11.52 1.99-25.3-14.74-30.07-20.7c-6.47-8.09-11.74-9.86-14.47-10.78c-1.1-.38-2.13-1.44-2.13-1.44z" fill="url(#IconifyId17ecdb2904d178eab14768)"></path>
+                          <radialGradient id="IconifyId17ecdb2904d178eab14769" cx="55.211" cy="29.084" r="76.871" gradientUnits="userSpaceOnUse">
+                             <stop offset="0.701" stop-color="#fe622b"></stop>
+                             <stop offset="0.766" stop-color="#fd5d2b"></stop>
+                             <stop offset="0.84" stop-color="#f8502d"></stop>
+                             <stop offset="0.917" stop-color="#f1392f"></stop>
+                             <stop offset="0.998" stop-color="#e71a32"></stop>
+                             <stop offset="0.999" stop-color="#e71932"></stop>
+                          </radialGradient>
+                          <path d="M88.38 66.94l-2.19 23.04l-9.53 21.65l-7.95 9.73s-2.27 1.42-4.21 1.51c-1.95.08-16.45-4.09-29.36-12.83S11.98 90.83 7.53 79.06c-5.56-14.7-5.76-36.95 7.55-49.26S41.5 15.7 52.62 18.08s14.5 6.16 16.69 7.95s11.52 13.11 11.52 13.11l7.35 18.87l.2 8.93z" fill="url(#IconifyId17ecdb2904d178eab14769)"></path>
+                          <radialGradient id="IconifyId17ecdb2904d178eab14770" cx="44.682" cy="18.368" r="73.082" gradientTransform="matrix(.0177 .9998 -.7963 .0141 58.517 -26.566)" gradientUnits="userSpaceOnUse">
+                             <stop offset="0.638" stop-color="#ff9759"></stop>
+                             <stop offset="1" stop-color="#ff9759" stop-opacity="0"></stop>
+                          </radialGradient>
+                          <path d="M56.83 95.2c-24.2 3-44.92-11.51-49.37-23.28c-3.08-8.13-4.44-11.44-2.86-21.24c1.28-7.9 4.25-14.99 10.47-20.88c12.41-11.75 26.57-14.39 38.15-11.71c11.08 2.56 13.89 6.15 16.07 7.94s11.52 13.11 11.52 13.11l7.35 18.87c.02 0 1.52 33.12-31.33 37.19z" fill="url(#IconifyId17ecdb2904d178eab14770)"></path>
+                          <radialGradient id="IconifyId17ecdb2904d178eab14771" cx="77.948" cy="17.422" r="85.745" gradientUnits="userSpaceOnUse">
+                             <stop offset="0.499" stop-color="#f34124"></stop>
+                             <stop offset="0.999" stop-color="#d10d22"></stop>
+                          </radialGradient>
+                          <path d="M67.91 121.45c.43.12 4.58-1.88 7.19-5.13c7.01-8.75 15.91-20.91 17.49-43.44c2.37-33.8-19.57-46.25-20.9-46.85c-1.33-.59-3.26-.59-1.78 1.04c1.48 1.63 17.94 20.01 15.71 45.07c-1.99 22.42-10.82 39.58-13.94 43.44c-3.1 3.85-5.02 5.51-3.77 5.87z" fill="url(#IconifyId17ecdb2904d178eab14771)"></path>
+                          <radialGradient id="IconifyId17ecdb2904d178eab14772" cx="33.436" cy="35.616" r="23.33" gradientTransform="matrix(.8812 -.4727 .2402 .4479 -4.585 35.468)" gradientUnits="userSpaceOnUse">
+                             <stop offset="0.345" stop-color="#febd92"></stop>
+                             <stop offset="1" stop-color="#febd92" stop-opacity="0"></stop>
+                          </radialGradient>
+                          <path d="M28.31 50.94s-3.16 7.63-9.52 2.6c-3.46-2.74-3.23-9.81.14-15.71c4.12-7.24 11.89-12.22 22.26-13.63c9.26-1.26 15.55 1.37 16.7 6.83c1.4 6.6-4.47 6.33-4.47 6.33c-16.47-.52-22.7 8.1-25.11 13.58z" fill="url(#IconifyId17ecdb2904d178eab14772)"></path>
+                          <radialGradient id="IconifyId17ecdb2904d178eab14773" cx="40.626" cy="50.686" r="19.811" gradientTransform="matrix(.9695 -.5798 .4027 .6582 -16.188 41.227)" gradientUnits="userSpaceOnUse">
+                             <stop offset="0.799" stop-color="#ff9759"></stop>
+                             <stop offset="1" stop-color="#ff9759" stop-opacity="0"></stop>
+                          </radialGradient>
+                          <path d="M23.62 57.97c-.64-7.23 3.9-15.39 11.49-20.01c7.8-4.75 17.51-5.37 24.99-1.66L23.62 57.97z" fill="url(#IconifyId17ecdb2904d178eab14773)"></path>
+                          <g>
+                             <radialGradient id="IconifyId17ecdb2904d178eab14774" cx="35.598" cy="39.581" r="22.277" gradientTransform="matrix(.8689 -.4949 .2885 .5066 -6.754 37.149)" gradientUnits="userSpaceOnUse">
+                                <stop offset="0.745" stop-color="#ff9759" stop-opacity="0"></stop>
+                                <stop offset="0.974" stop-color="#ff9759"></stop>
+                             </radialGradient>
+                             <path d="M28.31 50.94s-3.16 7.63-9.52 2.6c-3.46-2.74-3.23-9.81.14-15.71c4.12-7.24 11.89-12.22 22.26-13.63c9.26-1.26 15.55 1.37 16.7 6.83c1.4 6.6-4.47 6.33-4.47 6.33c-16.47-.52-22.7 8.1-25.11 13.58z" fill="url(#IconifyId17ecdb2904d178eab14774)"></path>
+                          </g>
+                       </svg>
+                    </div>
+                    
+                    <!-- Card background with glassmorphism -->
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl z-0"></div>
+                    
+                    <div class="bg-gradient-to-b from-[#17171b]/60 to-transparent p-8 rounded-t-2xl relative z-10">
+                        <h3 class="text-2xl font-semibold text-white mb-2">Supreme</h3>
+                        <p class="text-gray-400 font-medium">Höchster Rang</p>
+                        <div class="flex justify-center items-baseline my-8">
+                            <span class="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-purple-600">24.99€</span>
+                            <span class="text-gray-400 ml-1 font-medium">EUR</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8 flex-1 flex flex-col relative z-10">
+                        <ul class="space-y-4 mb-8 flex-1">
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Direkter Zugang</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Alle Vorteile von Exklusiv und Premium</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Einmalige Zahlung</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Privat Supreme-Bereich in 18+ Community</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Exklusive Inhalte und Supreme-Content</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Einzigartiger Rang im Discord</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Wünsche werden sofort angenommen</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Zugang zum privat Discord</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Zugang zum privat Telegram</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>Unbegrenzte Anzahl an Wünschen</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-gray-200">
+                                <div class="rounded-full p-1 bg-purple-500/20 flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span>1TB Dropbox Links</span>
+                            </li>
+                        </ul>
+                        
+                        <button onclick="window.location.href = 'pay3.html'" class="relative overflow-hidden group bg-gradient-to-r from-purple-500 to-purple-700 rounded-full py-3 px-6 text-white font-medium hover:shadow-lg shadow-purple-500/20 transition-all duration-300">
+                            <span class="absolute inset-0 flex justify-center [transform:translateX(-100%)] group-hover:[transform:translateX(100%)] transition-all duration-700">
+                                <span class="h-full w-32 bg-white opacity-20 blur-md rotate-12"></span>
+                            </span>
+                            <span class="relative flex items-center justify-center">
+                                <span>Kaufen</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 ml-2 transform transition-transform duration-300 group-hover:translate-x-1">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </section>
+
+<!-- Warum Wir Section -->
+<section id="whyjoinus" class="relative py-28 px-4 overflow-hidden">
+    <!-- Background elements -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0a0512] via-[#10071c] to-[#1a0c2e] z-0"></div>
+    <div class="absolute inset-0 bg-[url('https://assets.codepen.io/1538474/star.svg')] bg-repeat opacity-5 z-0"></div>
+    
+    <!-- Animated background shapes -->
+    <div class="absolute top-1/3 right-10 w-72 h-72 bg-[#E638B5]/10 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 8s;"></div>
+    <div class="absolute bottom-1/3 left-10 w-80 h-80 bg-[#ba94ff]/10 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 10s; animation-delay: 1s;"></div>
+    
+    <div class="max-w-screen-xl mx-auto relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold relative inline-block mb-3">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-[#ba94ff] to-[#E638B5]">Warum wir?</span>
+                <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-[#ba94ff] to-[#E638B5] rounded-full"></div>
+            </h2>
+            <p class="text-gray-300 max-w-2xl mx-auto mt-6">Mit überzeugendem Service und erstklassigen Inhalten setzen wir neue Maßstäbe</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <!-- Card background with glassmorphism -->
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl z-0"></div>
+                <!-- Hover glow effect -->
+                <div class="absolute inset-0 bg-gradient-to-r from-[#ba94ff]/0 to-[#E638B5]/0 group-hover:from-[#ba94ff]/10 group-hover:to-[#E638B5]/10 transition-all duration-700 rounded-2xl z-0"></div>
+                
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-[#ba94ff]/20 to-[#E638B5]/20 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                        <img src="/assets/img/vote_icon.png" alt="Größte Auswahl an Models" class="w-10 h-10 transition-all duration-300 group-hover:scale-110">
+                    </div>
+                    
+                    <h3 class="text-white text-xl font-semibold mb-4 text-center">Größte Auswahl an Models</h3>
+                    
+                    <p class="text-gray-300 text-center">Mit unserem Paket erhältst du direkt Zugriff auf hunderte OF-Stars und es werden täglich mehr!</p>
+                </div>
+                
+                <!-- Bottom gradient line that appears on hover -->
+                <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#ba94ff] to-[#E638B5] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <!-- Card background with glassmorphism -->
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl z-0"></div>
+                <!-- Hover glow effect -->
+                <div class="absolute inset-0 bg-gradient-to-r from-[#ba94ff]/0 to-[#E638B5]/0 group-hover:from-[#ba94ff]/10 group-hover:to-[#E638B5]/10 transition-all duration-700 rounded-2xl z-0"></div>
+                
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-[#ba94ff]/20 to-[#E638B5]/20 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                        <img src="/assets/img/star_de.png" alt="Kunden geben uns 5 von 5 Sterne" class="w-10 h-10 transition-all duration-300 group-hover:scale-110">
+                    </div>
+                    
+                    <h3 class="text-white text-xl font-semibold mb-4 text-center">Kunden geben uns 5 von 5 Sterne</h3>
+                    
+                    <p class="text-gray-300 text-center">Kundenzufriedenheit steht an erster Stelle! Du hast ein Problem? Melde dich bei uns im Discord!</p>
+                </div>
+                
+                <!-- Bottom gradient line that appears on hover -->
+                <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#ba94ff] to-[#E638B5] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <!-- Card background with glassmorphism -->
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl z-0"></div>
+                <!-- Hover glow effect -->
+                <div class="absolute inset-0 bg-gradient-to-r from-[#ba94ff]/0 to-[#E638B5]/0 group-hover:from-[#ba94ff]/10 group-hover:to-[#E638B5]/10 transition-all duration-700 rounded-2xl z-0"></div>
+                
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-[#ba94ff]/20 to-[#E638B5]/20 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                        <img src="/assets/img/community_icon.png" alt="Über 60.000 Mitglieder in unserer Community" class="w-10 h-10 transition-all duration-300 group-hover:scale-110">
+                    </div>
+                    
+                    <h3 class="text-white text-xl font-semibold mb-4 text-center">Über 60.000 Mitglieder in unserer Community</h3>
+                    
+                    <p class="text-gray-300 text-center">Tritt einer der größten OF Communitys bei und bereichere dich an kostenlosem Content!</p>
+                </div>
+                
+                <!-- Bottom gradient line that appears on hover -->
+                <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#ba94ff] to-[#E638B5] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+            </div>
+        </div>
+        
+        <!-- Enhanced CTA with animation and glow effects -->
+        <div class="mt-20 text-center">
+            <div class="relative inline-block group">
+                <!-- Animated glow effect -->
+                <div class="absolute -inset-1 bg-gradient-to-r from-[#ba94ff] to-[#E638B5] rounded-full opacity-70 group-hover:opacity-100 blur-lg transition-all duration-500 group-hover:blur-xl"></div>
+                
+                <button onclick="document.getElementById('kaufsection').scrollIntoView({behavior: 'smooth'})" 
+                    class="relative bg-gradient-to-r from-[#ba94ff] to-[#E638B5] px-8 py-4 rounded-full text-white text-xl font-medium shadow-lg transition-all duration-300 transform group-hover:scale-[1.03] flex items-center">
+                    <span>Worauf wartest du?</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <div class="floatingStatus">
-    <div class="onlinePill">
-      <span class="dot"></span>
-      <span><strong id="online">416</strong> <span class="green">User online</span></span>
-    </div>
-
-    <div class="avatars" aria-label="Aktive Nutzer">
-      <div class="stack">
-        <span class="av" title="User"></span>
-        <span class="av" title="User"></span>
-        <span class="av" title="User"></span>
-        <span class="more" title="Mehr">+99</span>
-      </div>
-    </div>
-
-    <div class="bottomNote">
-      Direkter Zugang zu <strong>740+</strong> Projekten · Tritt noch heute bei
-    </div>
-  </div>
-</main>
-<section class="pricing" id="pricing">
-  <div class="container">
-    <h2>Wähle ein <span>Paket</span></h2>
-    <div class="subline">
-      <strong style="color:#fff;font-weight:900;">was</strong> <span style="color:rgba(255,255,255,.75)">zu dir passt</span><br>
-      Mit über <strong>740</strong> Models sind wir sicher, dass wir das haben was du suchst.
-    </div>
-
-    <div class="cards">
-  <!-- Premium -->
-  <article class="priceCard tier tier-premium">
-    <h3>Premium</h3>
-    <small>Basic</small>
-
-    <div class="price">9.99€ <span>EUR</span></div>
-
-    <div class="features">
-      <span><i>✓</i> Direkter Zugang</span>
-      <span><i>✓</i> Einmalige Zahlung</span>
-      <span><i>✓</i> Zugriff zu Videos</span>
-      <span><i>✓</i> Snapchat Paket</span>
-      <span><i>✓</i> 150GB Dropbox Links</span>
-    </div>
-
-   <a class="buyBtn buy-premium" href="pay.html">Kaufen <span>›</span></a>
-  </article>
-
-  <!-- Exklusiv (Most Popular) -->
-  <article class="priceCard popular tier tier-exklusiv">
-    <div class="badge">MOST POPULAR</div>
-    <h3>Exklusiv</h3>
-    <small>Standard</small>
-
-    <div class="price">19.99€ <span>EUR</span></div>
-
-    <div class="features">
-      <span><i>✓</i> Direkter Zugang</span>
-      <span><i>✓</i> Einmalige Zahlung</span>
-      <span><i>✓</i> Zugriff zu Videos</span>
-      <span><i>✓</i> Snapchat Paket</span>
-      <span><i>✓</i> Voller Zugang zum Discord</span>
-      <span><i>✓</i> 400GB Dropbox Links</span>
-    </div>
-
-    <a class="buyBtn buy-exklusiv" href="#">Kaufen <span>›</span></a>
-  </article>
-
-  <!-- Supreme -->
-  <article class="priceCard tier tier-supreme">
-    <h3>Supreme</h3>
-    <small>Höchster Rang</small>
-
-    <div class="price">49.99€ <span>EUR</span></div>
-
-    <div class="features">
-      <span><i>✓</i> Direkter Zugang</span>
-      <span><i>✓</i> Alle Vorteile von Exklusiv und Premium</span>
-      <span><i>✓</i> Einmalige Zahlung</span>
-      <span><i>✓</i> Privat Supreme-Bereich in 18+ Community</span>
-      <span><i>✓</i> Exklusive Inhalte und Supreme-Content</span>
-      <span><i>✓</i> 1TB Dropbox Links</span>
-    </div>
-
-    <a class="buyBtn buy-supreme" href="#">Kaufen <span>›</span></a>
-  </article>
-</div>
-  </div>
 </section>
-<section class="why">
-  <div class="container">
-    <h2>Warum <span>wir?</span></h2>
-    <p class="why-sub">
-      Mit überzeugendem Service und erstklassigen Inhalten setzen wir neue Maßstäbe
-    </p>
 
-    <div class="why-cards">
-      <article class="why-card">
-        <div class="why-icon">📂</div>
-        <h3>Größte Auswahl an Models</h3>
-        <p>
-          Mit unserem Paket erhältst du direkt Zugriff auf hunderte OF-Stars
-          und es werden täglich mehr!
-        </p>
-      </article>
+<!-- Features Section -->
+<section id="features" class="relative py-28 px-4 overflow-hidden">
+    <!-- Background elements -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0a0512] via-[#10071c] to-[#1a0c2e] z-0"></div>
+    <div class="absolute inset-0 bg-[url('https://assets.codepen.io/1538474/star.svg')] bg-repeat opacity-5 z-0"></div>
+    <!-- Animated background shapes -->
+    <div class="absolute top-1/3 right-10 w-72 h-72 bg-[#E638B5]/10 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 8s;"></div>
+    <div class="absolute bottom-1/3 left-10 w-80 h-80 bg-[#ba94ff]/10 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 10s; animation-delay: 1s;"></div>
+    <div class="max-w-screen-xl mx-auto relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold relative inline-block">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-[#ba94ff] to-[#E638B5]">Unsere Features</span>
+            </h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-[#ba94ff] to-[#E638B5] rounded-full mx-auto mt-4"></div>
+            <p class="text-gray-300 mt-6 max-w-2xl mx-auto text-xl font-semibold">Das gibt es NUR bei uns – entdecke die exklusivsten Funktionen und werde Teil der besten 18+ Community Deutschlands!</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- PornTok Feature -->
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-pink-500/30 rounded-2xl z-0"></div>
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-pink-400/30 to-purple-400/30 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h3 class="text-white text-xl font-semibold mb-4">PornTok <span class="text-xs bg-pink-500 text-white px-2 py-1 rounded-full ml-2">EXKLUSIV</span></h3>
+                    <p class="text-gray-300">Die 18+ TikTok-Alternative – nur bei uns! Scrolle durch heiße Clips, vote, like & entdecke neue Stars.</p>
+                </div>
+            </div>
+            <!-- Jeden Tag 3 neue Posts -->
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-amber-400/30 rounded-2xl z-0"></div>
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-amber-400/30 to-pink-400/30 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h3 class="text-white text-xl font-semibold mb-4">Täglich 3 neue Posts</h3>
+                    <p class="text-gray-300">Jeden Tag frischer Content – garantiert! Bleib immer up-to-date mit den heißesten Leaks.</p>
+                </div>
+            </div>
+            <!-- Amateur Sektion -->
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-green-400/30 rounded-2xl z-0"></div>
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-green-400/30 to-pink-400/30 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01"/></svg>
+                    </div>
+                    <h3 class="text-white text-xl font-semibold mb-4">Amateur Sektion</h3>
+                    <p class="text-gray-300">Echte Amateure, echte Leidenschaft – entdecke authentische User-Uploads und werde selbst zum Star!</p>
+                </div>
+            </div>
+            <!-- User Uploads -->
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-blue-400/30 rounded-2xl z-0"></div>
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-blue-400/30 to-pink-400/30 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                    </div>
+                    <h3 class="text-white text-xl font-semibold mb-4">User Uploads</h3>
+                    <p class="text-gray-300">Jeder kann Inhalte hochladen! Teile deine eigenen Leaks oder werde Teil der Community.</p>
+                </div>
+            </div>
+            <!-- Download Funktion -->
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-purple-400/30 rounded-2xl z-0"></div>
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h3 class="text-white text-xl font-semibold mb-4">Download Funktion</h3>
+                    <p class="text-gray-300">Lade dir deine Lieblingsinhalte direkt herunter – einfach, schnell & sicher!</p>
+                </div>
+            </div>
+            <!-- Smash or Pass -->
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-red-400/30 rounded-2xl z-0"></div>
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-red-400/30 to-pink-400/30 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <h3 class="text-white text-xl font-semibold mb-4">Smash or Pass</h3>
+                    <p class="text-gray-300">Voten, Spaß haben, mitreden! Entscheide mit der Community, was heiß ist – und was nicht.</p>
+                </div>
+            </div>
+            <!-- Bestehende Features (kurz und knackig) -->
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl z-0"></div>
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-[#ba94ff]/20 to-[#E638B5]/20 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                    </div>
+                    <h3 class="text-white text-xl font-semibold mb-4">740+ Models</h3>
+                    <p class="text-gray-300">Zugriff auf über 500 OnlyFans Creator mit täglichen Updates und neuen Inhalten.</p>
+                </div>
+            </div>
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl z-0"></div>
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-[#ba94ff]/20 to-[#E638B5]/20 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                    </div>
+                    <h3 class="text-white text-xl font-semibold mb-4">Riesige Community</h3>
+                    <p class="text-gray-300">Über 60.000 Mitglieder, Support rund um die Uhr und exklusive Discord-Bereiche.</p>
+                </div>
+            </div>
+            <div class="group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl z-0"></div>
+                <div class="p-8 relative z-10">
+                    <div class="bg-gradient-to-br from-[#ba94ff]/20 to-[#E638B5]/20 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h3 class="text-white text-xl font-semibold mb-4">24/7 Support</h3>
+                    <p class="text-gray-300">Unser Team ist rund um die Uhr für dich da – egal ob Frage, Problem oder Wunsch. Wir helfen sofort!</p>
+                </div>
+            </div>
+        </div>
+        <!-- CTA Button -->
+        <div class="mt-16 text-center">
+            <button onclick="document.getElementById('kaufsection').scrollIntoView({behavior: 'smooth'})" 
+                class="relative overflow-hidden group bg-gradient-to-r from-[#ba94ff] to-[#E638B5] px-8 py-4 rounded-full text-white text-xl font-bold shadow-lg transition-all duration-300 transform hover:scale-105">
+                <span class="absolute inset-0 flex justify-center [transform:translateX(-100%)] group-hover:[transform:translateX(100%)] transition-all duration-700">
+                    <span class="h-full w-32 bg-white opacity-20 blur-md rotate-12"></span>
+                </span>
+                <span class="relative flex items-center justify-center">
+                    <span>Jetzt exklusiven Zugang sichern!</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </span>
+            </button>
+        </div>
+    </div>
+</section>
 
-      <article class="why-card highlight">
-        <div class="why-icon">⭐</div>
-        <h3>Kunden geben uns 5 von 5 Sterne</h3>
-        <p>
-          Kundenzufriedenheit steht an erster Stelle!  
-          Du hast ein Problem? Melde dich bei uns im Discord!
-        </p>
-      </article>
+    <!-- Preview Section -->
+    <section id="preview" class="relative py-28 px-4 overflow-hidden">
+        <!-- Background elements -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0512] via-[#10071c] to-[#1a0c2e] z-0"></div>
+        <div class="absolute inset-0 bg-[url('https://assets.codepen.io/1538474/star.svg')] bg-repeat opacity-5 z-0"></div>
+        
+        <!-- Animated background shapes -->
+        <div class="absolute top-1/4 right-10 w-72 h-72 bg-[#E638B5]/10 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 10s;"></div>
+        <div class="absolute bottom-1/4 left-10 w-80 h-80 bg-[#ba94ff]/10 rounded-full filter blur-3xl animate-pulse" style="animation-duration: 8s; animation-delay: 1s;"></div>
+        
+        <div class="max-w-screen-xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold relative inline-block">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-[#ba94ff] to-[#E638B5]">Preview</span>
+                    <span class="ml-3 text-white">🔎</span>
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-[#ba94ff] to-[#E638B5] rounded-full mx-auto mt-4"></div>
+                <p class="text-gray-300 mt-6 max-w-2xl mx-auto">Durchstöbere eine kleine Auswahl unserer exklusiven Inhalte</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <!-- Gallery Image 1 -->
+                <div class="group relative overflow-hidden rounded-2xl transition-all duration-500 transform hover:-translate-y-2">
+                    <!-- Image container with overlay -->
+                    <div class="aspect-[4/3] w-full overflow-hidden relative">
+                        <!-- Glassmorphism overlay that appears on hover -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 z-10">
+                            <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                <div class="inline-block rounded-full px-3 py-1 bg-[#ba94ff]/30 backdrop-blur-sm text-white text-xs font-medium mb-2">Premium Content</div>
+                                <p class="text-white text-lg font-semibold">Exklusives Material</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Image with zoom effect -->
+                        <img src="/assets/img/prev1.jpg" alt="Preview 1" class="w-full h-full object-contain rounded-2xl transition-transform duration-500 group-hover:scale-110" style="border-radius: 16px;">
+                    </div>
+                </div>
+                
+                <!-- Gallery Image 2 -->
+                <div class="group relative overflow-hidden rounded-2xl transition-all duration-500 transform hover:-translate-y-2">
+                    <!-- Image container with overlay -->
+                    <div class="aspect-[4/3] w-full overflow-hidden relative">
+                        <!-- Glassmorphism overlay that appears on hover -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 z-10">
+                            <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                <div class="inline-block rounded-full px-3 py-1 bg-[#E638B5]/30 backdrop-blur-sm text-white text-xs font-medium mb-2">Exclusive Content</div>
+                                <p class="text-white text-lg font-semibold">Top-Qualität garantiert</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Image with zoom effect -->
+                        <img src="/assets/img/prev2.jpg" alt="Preview 2" class="w-full h-full object-contain rounded-2xl transition-transform duration-500 group-hover:scale-110" style="border-radius: 16px;">
+                    </div>
+                </div>
+                
+                <!-- Gallery Image 3 -->
+                <div class="group relative overflow-hidden rounded-2xl transition-all duration-500 transform hover:-translate-y-2">
+                    <!-- Image container with overlay -->
+                    <div class="aspect-[4/3] w-full overflow-hidden relative">
+                        <!-- Glassmorphism overlay that appears on hover -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 z-10">
+                            <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                <div class="inline-block rounded-full px-3 py-1 bg-[#ba94ff]/30 backdrop-blur-sm text-white text-xs font-medium mb-2">Supreme Access</div>
+                                <p class="text-white text-lg font-semibold">Tägliche Updates</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Image with zoom effect -->
+                        <img src="/assets/img/prev3.jpg" alt="Preview 3" class="w-full h-full object-contain rounded-2xl transition-transform duration-500 group-hover:scale-110" style="border-radius: 16px;">
+                    </div>
+                </div>
+                
+                <!-- Gallery Image 4 -->
+                <div class="group relative overflow-hidden rounded-2xl transition-all duration-500 transform hover:-translate-y-2">
+                    <!-- Image container with overlay -->
+                    <div class="aspect-[4/3] w-full overflow-hidden relative">
+                        <!-- Glassmorphism overlay that appears on hover -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 z-10">
+                            <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                <div class="inline-block rounded-full px-3 py-1 bg-[#E638B5]/30 backdrop-blur-sm text-white text-xs font-medium mb-2">VIP Content</div>
+                                <p class="text-white text-lg font-semibold">Private Snapchat Inhalte</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Image with zoom effect -->
+                        <img src="/assets/img/prev4.jpg" alt="Preview 4" class="w-full h-full object-contain rounded-2xl transition-transform duration-500 group-hover:scale-110" style="border-radius: 16px;">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- View more button -->
+            <div class="mt-12 text-center">
+                <button onclick="document.getElementById('kaufsection').scrollIntoView({behavior: 'smooth'})" class="relative overflow-hidden group bg-white/10 backdrop-blur-sm border border-white/20 rounded-full py-3 px-8 text-white text-lg font-medium hover:bg-white/15 transition-all duration-300">
+                    <span class="flex items-center justify-center">
+                        <span>Für mehr Inhalte freischalten</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </section>
 
-      <article class="why-card">
-        <div class="why-icon">👥</div>
-        <h3>Über 60.000 Mitglieder in unserer Community</h3>
-        <p>
-          Tritt einer der größten OF-Communitys bei und bereichere
-          dich an kostenlosem Content!
-        </p>
-      </article>
+    <!-- Custom Downloader Promotion Section -->
+    <div class="relative py-20 overflow-hidden">
+        <!-- Hintergrund mit Overlay -->
+        <div class="absolute inset-0 bg-[#0F0509]">
+            <div class="absolute inset-0 bg-gradient-to-b from-purple-900/20 to-pink-900/20"></div>
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAzNGMwIDMuMzE0LTIuNjg2IDYtNiA2cy02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiA2IDIuNjg2IDYgNnptMCAwYzAgMy4zMTQtMi42ODYgNi02IDZzLTYtMi42ODYtNi02IDIuNjg2LTYgNi02IDYgMi42ODYgNiA2eiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMDUiLz48L2c+PC9zdmc+')] opacity-5"></div>
+        </div>
+
+        <div class="container mx-auto px-4 relative">
+            <div class="max-w-7xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-16">
+                    <span class="inline-block px-4 py-1 rounded-full bg-purple-500/10 text-purple-400 text-sm font-semibold tracking-wider uppercase mb-4 animate-fade-in">
+                        <i class="fas fa-star mr-2"></i>NEU: CUSTOM DOWNLOADER
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in">
+                        Lade exklusive Inhalte in Sekundenschnelle herunter
+                    </h2>
+                    <p class="text-gray-300 text-lg max-w-2xl mx-auto animate-fade-in">
+                        Unser einzigartiger Custom Downloader ermöglicht dir den Download von OnlyFans, Instagram, Patreon und mehr – direkt, sicher und anonym.
+                    </p>
+                </div>
+
+                <!-- Video und Features Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                    <!-- Video Section -->
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl animate-fade-in">
+                        <div class="max-w-md mx-auto">
+                            <div class="aspect-[9/16] md:aspect-[9/16] lg:aspect-[9/16]">
+                                <video id="promoVideo" 
+                                       class="w-full h-full object-contain rounded-2xl"
+                                       controls
+                                       preload="metadata">
+                                    <source src="/customdl/videos/test_fixed.mp4?v=1770675447" type="video/mp4">
+                                    Dein Browser unterstützt keine Video-Wiedergabe.
+                                </video>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
+                    </div>
+
+                    <!-- Features Grid -->
+                    <div class="space-y-6">
+                        <!-- Feature 1 -->
+                        <div class="bg-[#1a1d2e]/80 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 animate-fade-in">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-rocket text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white mb-2">Blitzschnell</h3>
+                                    <p class="text-gray-300">Downloads in Sekundenschnelle direkt in deine Private Sammlung. Keine Wartezeiten mehr!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feature 2 -->
+                        <div class="bg-[#1a1d2e]/80 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 animate-fade-in" style="animation-delay: 0.2s">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-user-shield text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white mb-2">100% Sicher</h3>
+                                    <p class="text-gray-300">Sichere und lokale Speicherung aller Bilder und Videos. Deine Privatsphäre steht an erster Stelle.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feature 3 -->
+                        <div class="bg-[#1a1d2e]/80 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 animate-fade-in" style="animation-delay: 0.4s">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-database text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white mb-2">Permanent</h3>
+                                    <p class="text-gray-300">Permanenter Zugriff auf alle heruntergeladenen Inhalte. Nie wieder verlorene Inhalte!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Section -->
+                <div class="text-center animate-fade-in" style="animation-delay: 0.6s">
+                    <div class="inline-flex flex-col items-center space-y-4">
+                        <a href="/customdl.php" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-xl text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25">
+                            <i class="fas fa-download mr-2"></i>
+                            Jetzt Custom Downloader nutzen
+                        </a>
+                        <p class="text-gray-400 text-sm">
+                            <i class="fas fa-lock mr-1"></i>Benötigt einen Rang zum Nutzen
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <a href="#pricing" class="why-cta">
-      Worauf wartest du? <span>›</span>
-    </a>
-  </div>
-</section>
-<section class="featuresSec" id="features">
-  <div class="container">
-    <h2>Unsere <span>Features</span></h2>
-    <p class="featuresSub">
-      Das gibt es NUR bei uns – entdecke die exklusivsten Funktionen und<br>
-      werde Teil der besten 18+ Community Deutschlands!
-    </p>
+        <!-- Footer -->
+        <footer class="gradient-bg py-20 px-4">
+            <div class="max-w-screen-xl mx-auto text-center">
+                <img src="assets/img/logo.png" alt="Logo" class="w-19 h-20 mx-auto mb-6"/>
+                <p class="text-gray-400 mb-8">Get in touch with our support team for assistance.</p>
+                <div class="flex justify-center space-x-8">
+                    <a href="#" class="nav-link" onclick="event.preventDefault();">Discord</a>
+                   <a href="#kaufsection" class="nav-link">Shop</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </div>
+                <p class="mt-8 text-sm text-gray-400">&copy; 2026 OFLeaks.tv. Alle Rechte vorbehalten.</p>
+            </div>
+        </footer>
 
-    <div class="featureGrid">
-  <!-- ROW 1 -->
-  <article class="fCard b-pink">
-    <div class="fIcon">🎥</div>
-    <div class="fTop">
-      <h3>PornTok</h3>
-      <span class="fPill">EXKLUSIV</span>
-    </div>
-    <p>Die 18+ TikTok-Alternative – nur bei uns! Scrolle durch heiße Clips, vote, like & entdecke neue Stars.</p>
-  </article>
+        <!-- Flowbite JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+        <!-- Custom Scripts -->
+        <script>
+            // Typing Animation for Sub-Header
+            function typeWriter(text, elementId, delay) {
+                let i = 0;
+                const element = document.getElementById(elementId);
+                element.innerHTML = '';
+                element.style.opacity = 1;
+                
+                function type() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(type, delay);
+                    } else {
+                        setTimeout(() => {
+                            fadeOut(element);
+                        }, 5000);
+                    }
+                }
+                
+                type();
+            }
 
-  <article class="fCard b-gold">
-    <div class="fIcon">🕒</div>
-    <h3>Täglich 3 neue Posts</h3>
-    <p>Jeden Tag frischer Content – garantiert! Bleib immer up-to-date mit den heißesten Leaks.</p>
-  </article>
+            function fadeOut(element) {
+                let opacity = 1;
+                const timer = setInterval(() => {
+                    if (opacity <= 0.1) {
+                        clearInterval(timer);
+                        element.innerHTML = '';
+                        setTimeout(() => {
+                            startTypingCycle();
+                        }, 500);
+                    }
+                    element.style.opacity = opacity;
+                    opacity -= opacity * 0.1;
+                }, 50);
+            }
 
-  <article class="fCard b-green">
-    <div class="fIcon">💬</div>
-    <h3>Amateur Sektion</h3>
-    <p>Echte Amateure, echte Leidenschaft – entdecke authentische User-Uploads und werde selbst zum Star!</p>
-  </article>
+            const texts = [
+                'Onlyfans ist zu teuer? Nicht mit uns! Bei uns erhältst du bei einmaliger Zahlung Zugriff zu unzähligen OF-Stars!',
+                'Get unlimited access to exclusive content with a one-time payment!'
+				];
+            let currentTextIndex = 0;
 
-  <!-- ROW 2 (die fehlenden mittleren drei) -->
-  <article class="fCard b-blue">
-    <div class="fIcon">➕</div>
-    <h3>User Uploads</h3>
-    <p>Jeder kann Inhalte hochladen! Teile deine eigenen Leaks oder werde Teil der Community.</p>
-  </article>
+            function startTypingCycle() {
+                const element = document.getElementById('sub-header');
+                element.style.opacity = 1;
+                typeWriter(texts[currentTextIndex], 'sub-header', 50);
+                currentTextIndex = (currentTextIndex + 1) % texts.length;
+            }
 
-  <article class="fCard b-purple">
-    <div class="fIcon">🖼️</div>
-    <h3>Download Funktion</h3>
-    <p>Lade dir deine Lieblingsinhalte direkt herunter – einfach, schnell & sicher!</p>
-  </article>
+            // Start the typing animation
+            startTypingCycle();
 
-  <article class="fCard b-red">
-    <div class="fIcon">✅</div>
-    <h3>Smash or Pass</h3>
-    <p>Voten, Spaß haben, mitreden! Entscheide mit der Community, was heiß ist – und was nicht.</p>
-  </article>
+            // Online Users Counter Animation
+            function updateRandomNumber() {
+                const currentTime = new Date().getTime();
+                const lastUpdatedTime = localStorage.getItem('lastUpdatedTime');
+                let randomNumber = localStorage.getItem('randomNumber');
+                
+                if (!randomNumber || !lastUpdatedTime || (currentTime - lastUpdatedTime > 5000)) {
+                    randomNumber = Math.floor(Math.random() * (420 - 380 + 1)) + 380;
+                    localStorage.setItem('randomNumber', randomNumber);
+                    localStorage.setItem('lastUpdatedTime', currentTime);
+                }
+                
+                const element = document.getElementById("randomNumber");
+                element.textContent = randomNumber;
+                element.classList.add('sparkle');
+                
+                setTimeout(() => {
+                    element.classList.remove('sparkle');
+                }, 2000);
+            }
 
-  <!-- ROW 3 -->
-  <article class="fCard b-blue">
-    <div class="fIcon">➕</div>
-    <h3>740+ Models</h3>
-    <p>Zugriff auf über 740 OnlyFans Creator mit täglichen Updates und neuen Inhalten.</p>
-  </article>
+            // Initialize random number
+            updateRandomNumber();
+            setInterval(updateRandomNumber, 5000);
 
-  <article class="fCard b-purple">
-    <div class="fIcon">👥</div>
-    <h3>Riesige Community</h3>
-    <p>Über 60.000 Mitglieder, Support rund um die Uhr und exklusive Discord-Bereiche.</p>
-  </article>
+            // Intersection Observer for Animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
 
-  <article class="fCard b-red">
-    <div class="fIcon">🛟</div>
-    <h3>24/7 Support</h3>
-    <p>Unser Team ist jederzeit für dich da – egal ob Frage, Problem oder Wunsch.</p>
-  </article>
-</div>
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
 
-    <a class="featuresCta" href="#pricing">
-      Jetzt exklusiven Zugang sichern! <span>›</span>
-    </a>
-  </div>
-</section>
+            // Observe all cards and sections
+            document.querySelectorAll('.price-card, .card-hover, .gallery-img').forEach(element => {
+                observer.observe(element);
+            });
 
-<script>
-/* Online count (sanft) */
-const onlineEl = document.getElementById("online");
-let n = Number(onlineEl.textContent) || 416;
-setInterval(() => {
-  n += Math.floor(Math.random() * 3) - 1; // -1..+1
-  n = Math.max(0, n);
-  onlineEl.textContent = n;
-}, 2600);
+            // Parallax Effect for Hero Section
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const parallaxElements = document.querySelectorAll('.floating');
+                
+                parallaxElements.forEach(element => {
+                    const speed = 0.5;
+                    element.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+            });
 
-/* Typewriter + Hold 3s + Fizzle + Loop */
-const fullText = "Moderne Landingpage mit Neon-Look, Glow-Effekten und klaren Call-to-Actions.";
-const subTextEl = document.getElementById("subText");
-const subLineEl = document.getElementById("subLine");
+            // Price Toggle Animation
+            function togglePrice(element, monthly, yearly) {
+                const priceElement = element.querySelector('.price-amount');
+                const currentPrice = priceElement.textContent;
+                const newPrice = currentPrice === monthly ? yearly : monthly;
+                
+                priceElement.style.transform = 'translateY(-20px)';
+                priceElement.style.opacity = '0';
+                
+                setTimeout(() => {
+                    priceElement.textContent = newPrice;
+                    priceElement.style.transform = 'translateY(0)';
+                    priceElement.style.opacity = '1';
+                }, 200);
+            }
 
-const TYPE_SPEED = 60;     // ms pro Zeichen
-const HOLD_MS = 6000;      // 3 Sekunden anzeigen
-const FIZZLE_MS = 3200;    // muss zum CSS passen
-const RESTART_GAP = 250;
+            // Loading State Management
+            function showLoading(button) {
+                const originalText = button.innerHTML;
+                button.disabled = true;
+                button.innerHTML = `
+                    <svg class="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Loading...
+                `;
+                
+                return originalText;
+            }
 
-async function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+            function hideLoading(button, originalText) {
+                button.disabled = false;
+                button.innerHTML = originalText;
+            }
 
-async function runLoop(){
-  while(true){
-    subLineEl.classList.remove("subFizzle");
-    subTextEl.textContent = "";
+            // Handle mobile menu with animation
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
 
-    for(let i=1;i<=fullText.length;i++){
-      subTextEl.textContent = fullText.slice(0,i);
-      await sleep(TYPE_SPEED);
-    }
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    
+                    // Add animation when showing/hiding menu
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        setTimeout(() => {
+                            mobileMenu.classList.remove('opacity-0', 'scale-95');
+                            mobileMenu.classList.add('opacity-100', 'scale-100');
+                        }, 10);
+                    } else {
+                        mobileMenu.classList.add('opacity-0', 'scale-95');
+                        mobileMenu.classList.remove('opacity-100', 'scale-100');
+                    }
+                });
+            }
+            
+            // Add scroll effect to navigation
+            window.addEventListener('scroll', function() {
+                const nav = document.querySelector('.enhanced-nav');
+                if (window.scrollY > 30) {
+                    nav.classList.add('py-2');
+                    nav.classList.remove('py-3');
+                    nav.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.1)';
+                } else {
+                    nav.classList.add('py-3');
+                    nav.classList.remove('py-2');
+                    nav.style.boxShadow = 'none';
+                }
+            });
 
-    await sleep(HOLD_MS);
+            // Performance Optimization
+            document.addEventListener('DOMContentLoaded', function() {
+                // Lazy load images
+                const images = document.querySelectorAll('img[data-src]');
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            observer.unobserve(img);
+                        }
+                    });
+                });
 
-    subLineEl.classList.add("subFizzle");
-    await sleep(FIZZLE_MS);
+                images.forEach(img => imageObserver.observe(img));
 
-    await sleep(RESTART_GAP);  
-  }
-}
-
-
-//hallo
-runLoop();
-</script>
+                // Initialize tooltips if needed
+                // const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-tooltip="tooltip"]'));
+                // tooltipTriggerList.forEach(tooltipTriggerEl => {
+                //     new Tooltip(tooltipTriggerEl);
+                // });
+            });
+        </script>
 </body>
-</html> 
+</html>

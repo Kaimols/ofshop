@@ -1,0 +1,3446 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <title>OFLeaks.tv &mdash; Home</title>
+
+    <!-- Pagination Scroll-Fix - MUSS ganz am Anfang sein -->
+    <script>
+    if (sessionStorage.getItem('scrollTop') === '1') {
+        sessionStorage.removeItem('scrollTop');
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        // Mehrfach versuchen um Browser-Restore zu überschreiben
+        window.scrollTo(0, 0);
+        document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
+        window.addEventListener('load', function() { window.scrollTo(0, 0); });
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/vendor/toastify/toastify.min.css" />
+    <script src="./assets/vendor/jquery/jquery.min.js"></script>
+    <script src="./assets/vendor/fontawesome/3dc1b48f3d.js"></script>
+    <link rel="stylesheet" href="./assets/vendor/sweetalert/borderless.min.css" />
+    <script src="./assets/vendor/sweetalert/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="./assets/vendor/fancybox/fancybox.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.0.8/lozad.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            height: 100dvh; /* Dynamic viewport height für iOS */
+            width: 280px;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch; /* Smooth scroll auf iOS */
+            overscroll-behavior: contain; /* Verhindert Scroll-Bleeding zur Hauptseite */
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-220px);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            left: 280px;
+            top: 20px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, rgba(230, 56, 181, 0.9), rgba(147, 51, 234, 0.9));
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0 12px 12px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(230, 56, 181, 0.4), 0 0 20px rgba(230, 56, 181, 0.2);
+        }
+
+        .sidebar.collapsed + .sidebar-toggle {
+            left: 60px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(230, 56, 181, 0.5), 0 0 25px rgba(230, 56, 181, 0.3);
+        }
+
+        .sidebar-toggle:hover {
+            background: linear-gradient(135deg, rgba(230, 56, 181, 1), rgba(147, 51, 234, 1));
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(230, 56, 181, 0.6), 0 0 30px rgba(230, 56, 181, 0.4);
+        }
+        
+        .sidebar-toggle i {
+            font-size: 16px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: 60px;
+        }
+
+        /* Logo */
+        .sidebar-logo {
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .logo-circle {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff007f, #a145ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(255, 0, 127, 0.4);
+        }
+
+        .premium-indicator {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #ff007f, #a145ff);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulse-shadow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 127, 0.5); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 127, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 127, 0); }
+        }
+
+        .logo-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text {
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.collapsed .logo-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        /* Nav Items */
+        .nav-section {
+            padding: 16px 12px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 0 12px 8px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.collapsed .nav-section-title {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            margin: 4px 0;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(230, 56, 181, 0.15);
+            color: #E638B5;
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 24px;
+            background: #E638B5;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Kostenlos Zugang Link - Minimaler Glow Effekt */
+        .nav-item-free-access {
+            background: rgba(230, 56, 181, 0.08);
+            border: 1px solid rgba(230, 56, 181, 0.2);
+            box-shadow: 0 0 12px rgba(230, 56, 181, 0.15), 0 0 6px rgba(147, 51, 234, 0.1);
+        }
+
+        .nav-item-free-access:hover {
+            background: rgba(230, 56, 181, 0.12);
+            box-shadow: 0 0 16px rgba(230, 56, 181, 0.25), 0 0 8px rgba(147, 51, 234, 0.15);
+            border-color: rgba(230, 56, 181, 0.3);
+        }
+
+        .nav-item-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .nav-item-text {
+            white-space: nowrap;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.collapsed .nav-item-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .sidebar.collapsed .nav-item {
+            justify-content: center;
+            padding: 12px;
+        }
+
+        /* Submenu */
+        .nav-item-submenu {
+            display: none;
+            padding-left: 28px;
+            margin-top: 4px;
+        }
+
+        .nav-item-submenu.active {
+            display: block !important;
+        }
+
+        .sidebar.collapsed .nav-item-submenu {
+            display: none !important;
+        }
+
+        .nav-item-chevron {
+            margin-left: auto;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .nav-item.expanded .nav-item-chevron {
+            transform: rotate(90deg);
+        }
+
+        .nav-item.expanded .nav-item-chevron i {
+            transform: rotate(90deg);
+        }
+
+        .sidebar.collapsed .nav-item-chevron {
+            display: none;
+        }
+
+        /* Online Counter */
+        .online-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            margin: 12px;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                opacity: 1;
+                box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+            }
+            50% {
+                opacity: 0.8;
+                box-shadow: 0 0 20px rgba(236, 72, 153, 0.8);
+            }
+        }
+
+        .sidebar.collapsed .online-counter {
+            flex-direction: column;
+            gap: 4px;
+            padding: 8px;
+        }
+
+        .sidebar.collapsed .online-counter span {
+            display: none;
+        }
+
+        /* Mobile - Complete Rework */
+        @media (max-width: 768px) {
+            /* Sidebar Base */
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                height: 100dvh; /* Dynamic viewport height für iOS Safari */
+                height: -webkit-fill-available; /* Fallback für ältere iOS */
+                width: 280px;
+                transform: translateX(-280px);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch; /* Smooth scroll auf iOS */
+                overscroll-behavior: contain; /* Verhindert Scroll-Bleeding zur Hauptseite */
+                background: rgba(18, 18, 18, 0.98);
+                backdrop-filter: blur(10px);
+                padding-bottom: env(safe-area-inset-bottom, 20px); /* Safe area für iPhone mit Home-Indicator */
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0) !important;
+            }
+
+            .sidebar:not(.mobile-open) {
+                transform: translateX(-280px) !important;
+            }
+
+            /* Force show all content - override collapsed state */
+            .sidebar.mobile-open,
+            .sidebar.mobile-open.collapsed {
+                width: 280px !important;
+                transform: translateX(0) !important;
+            }
+
+            .sidebar.mobile-open .logo-text,
+            .sidebar.mobile-open.collapsed .logo-text {
+                opacity: 1 !important;
+                width: auto !important;
+                display: flex !important;
+            }
+
+            .sidebar.mobile-open .logo-icon,
+            .sidebar.mobile-open.collapsed .logo-icon {
+                display: flex !important;
+            }
+
+            .sidebar.mobile-open .nav-item-text,
+            .sidebar.mobile-open.collapsed .nav-item-text {
+                opacity: 1 !important;
+                width: auto !important;
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-section-title,
+            .sidebar.mobile-open.collapsed .nav-section-title {
+                opacity: 1 !important;
+                height: auto !important;
+                padding: 0 12px 8px !important;
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-item,
+            .sidebar.mobile-open.collapsed .nav-item {
+                justify-content: flex-start !important;
+                padding: 12px 16px !important;
+                gap: 12px !important;
+            }
+
+            .sidebar.mobile-open .nav-item-chevron,
+            .sidebar.mobile-open.collapsed .nav-item-chevron {
+                display: flex !important;
+                margin-left: auto !important;
+                opacity: 1 !important;
+            }
+
+            .sidebar.mobile-open .nav-item-submenu,
+            .sidebar.mobile-open.collapsed .nav-item-submenu {
+                display: none;
+                padding-left: 0 !important;
+            }
+
+            .sidebar.mobile-open .nav-item-submenu.active,
+            .sidebar.mobile-open.collapsed .nav-item-submenu.active {
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-item-submenu .nav-item,
+            .sidebar.mobile-open.collapsed .nav-item-submenu .nav-item {
+                padding: 10px 16px 10px 40px !important;
+                font-size: 14px !important;
+            }
+
+            .sidebar.mobile-open .online-counter,
+            .sidebar.mobile-open.collapsed .online-counter {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 8px !important;
+                padding: 12px 16px !important;
+            }
+
+            .sidebar.mobile-open .online-counter span,
+            .sidebar.mobile-open.collapsed .online-counter span {
+                display: inline !important;
+            }
+
+            /* Hide desktop toggle button */
+            .sidebar-toggle {
+                display: none !important;
+            }
+
+            /* Main content no margin on mobile */
+            .main-content {
+                margin-left: 0 !important;
+            }
+
+            /* Mobile overlay */
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.75);
+                z-index: 999;
+                backdrop-filter: blur(3px);
+            }
+
+            .mobile-overlay.active {
+                display: block;
+            }
+
+            /* Clean spacing */
+            .sidebar-logo {
+                padding: 24px 20px;
+                gap: 12px;
+            }
+
+            .search-container {
+                padding: 16px 20px;
+            }
+
+            .nav-section {
+                padding: 16px 12px;
+            }
+
+            .nav-item {
+                margin: 2px 0;
+            }
+
+            .nav-section-title {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        /* Top Bar Mobile */
+        .top-bar-mobile {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 998;
+            padding: 0 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+            .top-bar-mobile {
+                display: flex;
+            }
+
+            .main-content {
+                padding-top: 80px;
+            }
+        }
+
+        /* Category Pills */
+        .category-pills {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 16px 0;
+            scrollbar-width: none;
+        }
+
+        .category-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-pill {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .category-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .category-pill.active {
+            background: rgba(230, 56, 181, 0.15);
+            border-color: rgba(230, 56, 181, 0.3);
+            color: #E638B5;
+        }
+
+        /* Search */
+        .search-container {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 16px 12px 40px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(230, 56, 181, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 32px;
+            top: 28px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Notification Bell Styles */
+        .notification-bell-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .notification-bell:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+            line-height: 1.2;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.5);
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 100%;
+            margin-top: 8px;
+            width: 380px;
+            max-width: calc(100vw - 40px);
+            background: rgba(18, 18, 18, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 10000;
+            display: none;
+            overflow: hidden;
+        }
+
+        /* Desktop: Öffne nach rechts (außerhalb der Sidebar) */
+        .sidebar .notification-bell-container .notification-dropdown.show {
+            position: fixed !important;
+            z-index: 10001 !important;
+            display: block !important;
+        }
+
+        /* Mobile: Öffne nach links (oben rechts im Viewport) */
+        .mobile-notification-bell .notification-dropdown {
+            right: 0;
+            left: auto;
+        }
+
+        .notification-dropdown.show {
+            display: block !important;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-header {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+        }
+
+        .notification-mark-all {
+            background: none;
+            border: none;
+            color: rgba(230, 56, 181, 0.8);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .notification-mark-all:hover {
+            background: rgba(230, 56, 181, 0.1);
+            color: #E638B5;
+        }
+
+        .notification-header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .notification-delete-all {
+            background: none;
+            border: none;
+            color: rgba(239, 68, 68, 0.8);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .notification-delete-all:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notification-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .notification-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .notification-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            gap: 12px;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .notification-item.unread {
+            background: rgba(230, 56, 181, 0.05);
+        }
+
+        .notification-item.unread:hover {
+            background: rgba(230, 56, 181, 0.1);
+        }
+
+        .notification-item-actions {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .notification-item:hover .notification-item-actions {
+            opacity: 1;
+        }
+
+        .notification-action-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 12px;
+        }
+
+        .notification-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .notification-action-btn.mark-read {
+            color: rgba(34, 197, 94, 0.8);
+        }
+
+        .notification-action-btn.mark-read:hover {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .notification-action-btn.delete {
+            color: rgba(239, 68, 68, 0.8);
+        }
+
+        .notification-action-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(230, 56, 181, 0.2), rgba(147, 51, 234, 0.2));
+        }
+
+        .notification-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 4px;
+        }
+
+        .notification-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .notification-empty i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        /* Mobile Notification Bell */
+        .mobile-notification-bell {
+            position: relative;
+            margin-right: 12px;
+        }
+
+        .mobile-notification-bell .notification-bell {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- Mobile Top Bar -->
+    <div class="top-bar-mobile">
+        <div class="flex items-center gap-3">
+            <button id="mobileSidebarToggle" class="text-white">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <div class="logo-circle">
+                <span style="color: white; font-weight: 900; font-size: 16px;">OF</span>
+            </div>
+            <span style="font-size: 1.2rem; font-weight: 800; background: linear-gradient(90deg, #E638B5, #9333EA); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">OFLeaks.tv</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="mobile-notification-bell notification-bell-container">
+                <div class="notification-bell" onclick="toggleNotificationDropdown(event)">
+                    <i class="fas fa-bell text-xl"></i>
+                    <span class="notification-badge" id="mobileNotificationBadge" style="display: none;">0</span>
+                </div>
+                <div class="notification-dropdown" id="mobileNotificationDropdown">
+                    <div class="notification-header">
+                        <h3>Benachrichtigungen</h3>
+                        <div class="notification-header-actions">
+                            <button class="notification-mark-all" onclick="markAllNotificationsAsRead()">Alle als gelesen</button>
+                            <button class="notification-delete-all" onclick="deleteAllNotifications()">Alle löschen</button>
+                        </div>
+                    </div>
+                    <div class="notification-list" id="mobileNotificationList">
+                        <div class="notification-empty">
+                            <i class="fas fa-bell-slash"></i>
+                            <p>Keine Benachrichtigungen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <a href="/home" class="sidebar-logo" style="text-decoration: none;">
+            <div class="logo-icon">
+                <div class="logo-circle" style="animation: pulse-shadow 2s infinite;">
+                    <span style="color: white; font-weight: 900; font-size: 18px; letter-spacing: -1px;">OF</span>
+                    <span class="premium-indicator">VIP</span>
+                </div>
+            </div>
+            <div class="logo-text">
+                <span style="font-size: 1.7rem; font-weight: 900; line-height: 1; background: linear-gradient(90deg, #ff007f, #a145ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; filter: drop-shadow(0 2px 3px rgba(255, 0, 127, 0.3));">
+                    OFLeaks<span style="color: white; -webkit-text-fill-color: white;">.tv</span>
+                </span>
+                <span style="font-size: 0.7rem; color: rgba(255,255,255,0.6); margin-left: auto;">Premium Content</span>
+            </div>
+        </a>
+
+        <!-- Search -->
+        <div class="search-container" style="position: relative;">
+            <i class="fas fa-search search-icon"></i>
+                        <input type="search" id="search" name="search" class="search-input" placeholder="Suche..." autocomplete="off" disabled style="cursor: not-allowed; opacity: 0.5;">
+            <p style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); margin-top: 4px; text-align: center;">Du benötigst einen Rang zum Suchen</p>
+                    </div>
+
+        <!-- Online Counter -->
+        <div class="online-counter">
+            <div class="online-dot"></div>
+            <span>
+                133 online            </span>
+        </div>
+
+        <!-- Main Navigation -->
+        <div class="nav-section">
+            <div class="nav-section-title" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>Hauptmenü</span>
+                <div class="notification-bell-container" style="margin-left: auto;">
+                    <div class="notification-bell" onclick="toggleNotificationDropdown(event)">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="desktopNotificationBadge" style="display: none;">0</span>
+                    </div>
+                    <div class="notification-dropdown" id="desktopNotificationDropdown">
+                        <div class="notification-header">
+                            <h3>Benachrichtigungen</h3>
+                            <div class="notification-header-actions">
+                                <button class="notification-mark-all" onclick="markAllNotificationsAsRead()">Alle als gelesen</button>
+                                <button class="notification-delete-all" onclick="deleteAllNotifications()">Alle löschen</button>
+                            </div>
+                        </div>
+                        <div class="notification-list" id="desktopNotificationList">
+                            <div class="notification-empty">
+                                <i class="fas fa-bell-slash"></i>
+                                <p>Keine Benachrichtigungen</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="/home" class="nav-item active">
+                <div class="nav-item-icon">🏠</div>
+                <div class="nav-item-text">Startseite</div>
+            </a>
+                        <a href="/referral_program" class="nav-item nav-item-free-access " onclick="trackReferralSidebarClick(event)">
+                <div class="nav-item-icon">🎁</div>
+                <div class="nav-item-text">Kostenlos Zugang</div>
+            </a>
+                        <a href="/customdl.php" class="nav-item ">
+                <div class="nav-item-icon">📥</div>
+                <div class="nav-item-text">Downloader</div>
+            </a>
+            <a href="/undress" class="nav-item " style="position: relative; overflow: hidden;">
+                <div class="nav-item-icon">✨</div>
+                <div class="nav-item-text" style="background: linear-gradient(90deg, #8b5cf6, #ec4899, #8b5cf6); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradient-shift 3s ease infinite; font-weight: 600;">AI Undress</div>
+                <span style="position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: bold; animation: pulse-glow 2s ease-in-out infinite;">NEU</span>
+            </a>
+            <a href="/teenleaks" class="nav-item ">
+                <div class="nav-item-icon">🔞</div>
+                <div class="nav-item-text">Leaks</div>
+            </a>
+            <a href="/enhance.php" class="nav-item ">
+                <div class="nav-item-icon">✨</div>
+                <div class="nav-item-text">AI Enhancer</div>
+            </a>
+            <a href="/porntok" class="nav-item ">
+                <div class="nav-item-icon">🎥</div>
+                <div class="nav-item-text">PornTok</div>
+            </a>
+            <a href="/bbc" class="nav-item ">
+                <div class="nav-item-icon">🍆</div>
+                <div class="nav-item-text">Porn Videos</div>
+            </a>
+                    </div>
+
+        <!-- Categories Dropdown -->
+        <div class="nav-section">
+            <div class="nav-section-title">Kategorien</div>
+            <div class="nav-item" id="categoriesToggle" style="cursor: pointer;">
+                <div class="nav-item-icon">📂</div>
+                <div class="nav-item-text">Alle Kategorien</div>
+                <div class="nav-item-chevron">
+                    <i class="fas fa-chevron-right" style="font-size: 12px;"></i>
+                </div>
+            </div>
+            <div class="nav-item-submenu" id="categoriesSubmenu">
+                <a href="/home?c=0" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">🌐</div><div class="nav-item-text">Main</div></a><a href="/home?c=1" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">✨</div><div class="nav-item-text">Beliebt</div></a><a href="/home?c=2" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">❤️</div><div class="nav-item-text">Favoriten</div></a><a href="/home?c=27" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">💙</div><div class="nav-item-text">OnlyFans</div></a><a href="/home?c=29" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">🇩🇪</div><div class="nav-item-text">Deutsche</div></a><a href="/home?c=31" class="nav-item " style="padding-left: 24px; text-decoration: none;"><div class="nav-item-icon" style="font-size: 16px;">📁</div><div class="nav-item-text">Mega Post</div></a>            </div>
+        </div>
+
+        <!-- Shop Navigation -->
+        <div class="nav-section">
+            <div class="nav-section-title">Shop</div>
+            <a href="/shop" class="nav-item">
+                <div class="nav-item-icon">🛒</div>
+                <div class="nav-item-text">Extra-Shop</div>
+            </a>
+            <a href="/rank_upgrade" class="nav-item">
+                <div class="nav-item-icon">💎</div>
+                <div class="nav-item-text">Rang Shop</div>
+            </a>
+            <a href="/upgrade" class="nav-item">
+                <div class="nav-item-icon">⬆️</div>
+                <div class="nav-item-text">Rang Upgraden</div>
+            </a>
+        </div>
+
+        <!-- Extras -->
+        <div class="nav-section">
+            <div class="nav-section-title">Extras</div>
+            <a href="/smash_or_pass" class="nav-item">
+                <div class="nav-item-icon">❤️</div>
+                <div class="nav-item-text">Smash/Pass</div>
+            </a>
+            <a href="/amateur" class="nav-item">
+                <div class="nav-item-icon">📸</div>
+                <div class="nav-item-text">Amateur Content</div>
+            </a>
+        </div>
+
+        <!-- Account -->
+        <div class="nav-section">
+            <div class="nav-section-title">Account</div>
+            <a href="/profile" class="nav-item ">
+                <div class="nav-item-icon">👤</div>
+                <div class="nav-item-text">Profil</div>
+            </a>
+            <a href="javascript:SignOut()" class="nav-item">
+                <div class="nav-item-icon">🚪</div>
+                <div class="nav-item-text">Logout</div>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Sidebar Toggle -->
+    <div class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-chevron-left text-white"></i>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+
+    <script>
+        // Tracking für Referral Sidebar-Klicks
+        function trackReferralSidebarClick(event) {
+            // Tracking asynchron senden (blockiert Navigation nicht)
+            fetch('/api/track_referral_event.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'event_type=sidebar_click',
+                keepalive: true
+            }).catch(err => console.error('Tracking error:', err));
+            
+            // Navigation normal weiterleiten
+            // event.preventDefault() wird NICHT aufgerufen, damit der Link normal funktioniert
+        }
+        
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const toggleIcon = sidebarToggle.querySelector('i');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+
+        // Desktop Toggle
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            if (sidebar.classList.contains('collapsed')) {
+                toggleIcon.classList.remove('fa-chevron-left');
+                toggleIcon.classList.add('fa-chevron-right');
+            } else {
+                toggleIcon.classList.remove('fa-chevron-right');
+                toggleIcon.classList.add('fa-chevron-left');
+            }
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+
+        // Mobile Toggle - mit Body Scroll Lock für iOS
+        mobileSidebarToggle?.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+            mobileOverlay.classList.toggle('active');
+            // Verhindere Body-Scroll wenn Sidebar offen
+            if (sidebar.classList.contains('mobile-open')) {
+                document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+                document.body.style.top = `-${window.scrollY}px`;
+            } else {
+                const scrollY = document.body.style.top;
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+                document.body.style.top = '';
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
+        });
+
+        mobileOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('active');
+            // Body-Scroll wieder aktivieren
+            const scrollY = document.body.style.top;
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.top = '';
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        });
+
+        // Remember sidebar state
+        const sidebarCollapsed = localStorage.getItem('sidebarCollapsed');
+        if (sidebarCollapsed === 'true') {
+            sidebar.classList.add('collapsed');
+            toggleIcon.classList.remove('fa-chevron-left');
+            toggleIcon.classList.add('fa-chevron-right');
+        }
+
+        // iOS Safari: Verhindere Scroll-Bleeding von Sidebar zur Hauptseite
+        sidebar.addEventListener('touchmove', function(e) {
+            // Erlaube Scrollen nur wenn Sidebar scrollbar ist
+            const isScrollable = sidebar.scrollHeight > sidebar.clientHeight;
+            const isAtTop = sidebar.scrollTop === 0;
+            const isAtBottom = sidebar.scrollTop + sidebar.clientHeight >= sidebar.scrollHeight;
+            
+            // Bestimme Scroll-Richtung
+            const touch = e.touches[0];
+            const lastTouchY = sidebar._lastTouchY || touch.clientY;
+            const deltaY = lastTouchY - touch.clientY;
+            sidebar._lastTouchY = touch.clientY;
+            
+            // Verhindere Scroll wenn am Ende/Anfang und in diese Richtung gescrollt wird
+            if (!isScrollable || (isAtTop && deltaY < 0) || (isAtBottom && deltaY > 0)) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        sidebar.addEventListener('touchstart', function(e) {
+            sidebar._lastTouchY = e.touches[0].clientY;
+        }, { passive: true });
+
+        // Categories Dropdown Toggle
+        const categoriesToggle = document.getElementById('categoriesToggle');
+        const categoriesSubmenu = document.getElementById('categoriesSubmenu');
+
+        if (categoriesToggle && categoriesSubmenu) {
+            // Check if any category is active and expand automatically
+            const hasActiveCategory = categoriesSubmenu.querySelector('.nav-item.active');
+            if (hasActiveCategory) {
+                categoriesSubmenu.classList.add('active');
+                categoriesToggle.classList.add('expanded');
+                console.log('Auto-expanded categories because active category found');
+            }
+
+            categoriesToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const isActive = categoriesSubmenu.classList.toggle('active');
+                categoriesToggle.classList.toggle('expanded');
+
+                console.log('Categories dropdown toggled:', isActive ? 'open' : 'closed');
+            });
+
+            // Log to verify element exists
+            console.log('Categories toggle initialized');
+        } else {
+            console.error('Categories elements not found!', {
+                toggle: !!categoriesToggle,
+                submenu: !!categoriesSubmenu
+            });
+        }
+
+        // Search Autocomplete
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search');
+            const searchResults = document.getElementById('search-results');
+            const searchResultsContainer = searchResults?.querySelector('.search-results-container');
+            let searchTimeout;
+
+            if (searchInput && searchResults && searchResultsContainer) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.trim();
+
+                    clearTimeout(searchTimeout);
+
+                    if (query.length < 2) {
+                        searchResults.classList.add('hidden');
+                        return;
+                    }
+
+                    searchTimeout = setTimeout(() => {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'search_suggestions.php', true);
+                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                try {
+                                    const results = JSON.parse(xhr.responseText);
+
+                                    if (results.error) {
+                                        searchResults.classList.add('hidden');
+                                        return;
+                                    }
+
+                                    if (results && results.length > 0) {
+                                        searchResultsContainer.innerHTML = results.map(result => `
+                                            <a href="/gallery?post_id=${result.id}"
+                                               class="block px-4 py-3 text-white hover:bg-[#373747] transition-colors" style="text-decoration: none;">
+                                                <div class="flex items-center gap-3">
+                                                    ${result.thumbnail ?
+                                                        `<img src="./uploads/${result.thumbnail}" alt="${result.title}" class="w-10 h-10 rounded object-cover flex-shrink-0">` :
+                                                        `<i class="fas fa-image text-gray-400 w-10 h-10 flex items-center justify-center"></i>`
+                                                    }
+                                                    <span class="flex-1 truncate">${result.title}</span>
+                                                </div>
+                                            </a>
+                                        `).join('');
+                                        searchResults.classList.remove('hidden');
+                                    } else {
+                                        searchResults.classList.add('hidden');
+                                    }
+                                } catch (e) {
+                                    searchResults.classList.add('hidden');
+                                }
+                            }
+                        };
+
+                        xhr.onerror = function() {
+                            searchResults.classList.add('hidden');
+                        };
+
+                        xhr.send('query=' + encodeURIComponent(query));
+                    }, 300);
+                });
+
+                // Hide results when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                        searchResults.classList.add('hidden');
+                    }
+                });
+            }
+        });
+
+        // Notification System
+        let notificationUpdateInterval = null;
+        
+        function toggleNotificationDropdown(event) {
+            event.stopPropagation();
+            const isMobile = window.innerWidth < 768;
+            const dropdown = isMobile ? document.getElementById('mobileNotificationDropdown') : document.getElementById('desktopNotificationDropdown');
+            const bellButton = event.currentTarget;
+            const isOpen = dropdown.classList.contains('show');
+            
+            // Schließe alle Dropdowns
+            document.querySelectorAll('.notification-dropdown').forEach(d => {
+                d.classList.remove('show');
+                d.style.left = '';
+                d.style.top = '';
+                d.style.right = '';
+                d.style.display = '';
+            });
+            
+            if (!isOpen) {
+                // Desktop: Verschiebe Dropdown außerhalb der Sidebar ins Body
+                if (!isMobile) {
+                    const bellRect = bellButton.getBoundingClientRect();
+                    const sidebar = document.getElementById('sidebar');
+                    
+                    // Verschiebe Dropdown ins Body, falls es noch in der Sidebar ist
+                    if (dropdown.parentElement && dropdown.parentElement.closest('.sidebar')) {
+                        document.body.appendChild(dropdown);
+                    }
+                    
+                    if (sidebar) {
+                        const sidebarRect = sidebar.getBoundingClientRect();
+                        dropdown.style.position = 'fixed';
+                        dropdown.style.left = (sidebarRect.right + 8) + 'px';
+                        dropdown.style.top = bellRect.top + 'px';
+                        dropdown.style.right = 'auto';
+                        dropdown.style.zIndex = '10001';
+                        dropdown.style.display = 'block';
+                    }
+                }
+                
+                // Zeige Dropdown
+                dropdown.classList.add('show');
+                
+                // Prüfe Position nach Rendering (nur Desktop)
+                if (!isMobile) {
+                    setTimeout(() => {
+                        const dropdownRect = dropdown.getBoundingClientRect();
+                        const sidebar = document.getElementById('sidebar');
+                        if (sidebar) {
+                            const sidebarRect = sidebar.getBoundingClientRect();
+                            
+                            // Prüfe ob Dropdown über den rechten Bildschirmrand hinausgeht
+                            if (dropdownRect.right > window.innerWidth - 20) {
+                                dropdown.style.left = 'auto';
+                                dropdown.style.right = (window.innerWidth - sidebarRect.left + 8) + 'px';
+                            }
+                            
+                            // Prüfe ob Dropdown über den unteren Bildschirmrand hinausgeht
+                            if (dropdownRect.bottom > window.innerHeight - 20) {
+                                dropdown.style.top = (window.innerHeight - dropdownRect.height - 20) + 'px';
+                            }
+                            
+                            // Prüfe ob Dropdown über den oberen Bildschirmrand hinausgeht
+                            if (dropdownRect.top < 20) {
+                                dropdown.style.top = '20px';
+                            }
+                        }
+                    }, 50);
+                }
+                
+                loadNotifications();
+            }
+        }
+        
+        function loadNotifications() {
+            fetch('/api/get_notifications.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateNotificationBadge(data.unread_count);
+                        renderNotifications(data.notifications);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading notifications:', error);
+                });
+        }
+        
+        function updateNotificationBadge(count) {
+            const mobileBadge = document.getElementById('mobileNotificationBadge');
+            const desktopBadge = document.getElementById('desktopNotificationBadge');
+            
+            if (count > 0) {
+                // Zeige "9+" wenn mehr als 9 ungelesene Notifications
+                const badgeText = count > 9 ? '9+' : count.toString();
+                mobileBadge.textContent = badgeText;
+                mobileBadge.style.display = 'block';
+                desktopBadge.textContent = badgeText;
+                desktopBadge.style.display = 'block';
+            } else {
+                mobileBadge.style.display = 'none';
+                desktopBadge.style.display = 'none';
+            }
+        }
+        
+        function renderNotifications(notifications) {
+            const isMobile = window.innerWidth < 768;
+            const list = isMobile ? document.getElementById('mobileNotificationList') : document.getElementById('desktopNotificationList');
+            
+            if (notifications.length === 0) {
+                list.innerHTML = `
+                    <div class="notification-empty">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>Keine Benachrichtigungen</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = notifications.map(notif => {
+                const icon = getNotificationIcon(notif.type);
+                const unreadClass = notif.is_read ? '' : 'unread';
+                return `
+                    <div class="notification-item ${unreadClass}" onclick="handleNotificationClick(${notif.id}, '${notif.link || ''}')">
+                        <div class="notification-icon">
+                            <i class="${icon}"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">${escapeHtml(notif.title)}</div>
+                            <div class="notification-message">${escapeHtml(notif.message || '')}</div>
+                            <div class="notification-time">${notif.time_ago}</div>
+                        </div>
+                        <div class="notification-item-actions" onclick="event.stopPropagation()">
+                            ${!notif.is_read ? `
+                                <button class="notification-action-btn mark-read" onclick="markNotificationAsRead(${notif.id}, event)" title="Als gelesen markieren">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            <button class="notification-action-btn delete" onclick="deleteNotification(${notif.id}, event)" title="Löschen">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getNotificationIcon(type) {
+            const icons = {
+                'customdl_complete': 'fas fa-download',
+                'customdl_update': 'fas fa-sync-alt',
+                'default': 'fas fa-bell'
+            };
+            return icons[type] || icons['default'];
+        }
+        
+        function handleNotificationClick(notificationId, link) {
+            // Markiere als gelesen
+            fetch('/api/mark_notification_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `notification_id=${notificationId}`
+            });
+            
+            // Schließe Dropdown
+            document.querySelectorAll('.notification-dropdown').forEach(d => d.classList.remove('show'));
+            
+            // Navigiere zur Link-Zielseite
+            if (link) {
+                window.location.href = link;
+            } else {
+                // Fallback: Gehe zu CustomDL
+                window.location.href = '/customdl.php';
+            }
+            
+            // Aktualisiere Badge
+            setTimeout(() => {
+                loadNotifications();
+            }, 500);
+        }
+        
+        function markAllNotificationsAsRead() {
+            fetch('/api/mark_all_notifications_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error marking all as read:', error);
+            });
+        }
+
+        function deleteAllNotifications() {
+            if (!confirm('Möchtest du wirklich alle Benachrichtigungen löschen?')) {
+                return;
+            }
+            
+            fetch('/api/delete_all_notifications.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting all notifications:', error);
+            });
+        }
+
+        function markNotificationAsRead(notificationId, event) {
+            event.stopPropagation();
+            
+            fetch('/api/mark_notification_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `notification_id=${notificationId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error marking notification as read:', error);
+            });
+        }
+
+        function deleteNotification(notificationId, event) {
+            event.stopPropagation();
+            
+            fetch('/api/delete_notification.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `notification_id=${notificationId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting notification:', error);
+            });
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Schließe Dropdown beim Klick außerhalb
+        document.addEventListener('click', function(e) {
+            const bellContainer = e.target.closest('.notification-bell-container');
+            const dropdown = e.target.closest('.notification-dropdown');
+            const actionBtn = e.target.closest('.notification-action-btn');
+            const headerBtn = e.target.closest('.notification-mark-all, .notification-delete-all');
+            
+            // Schließe nicht, wenn auf Bell, Dropdown, Action-Button oder Header-Button geklickt wird
+            if (bellContainer || dropdown || actionBtn || headerBtn) {
+                return;
+            }
+            
+            // Schließe alle Dropdowns
+            document.querySelectorAll('.notification-dropdown').forEach(d => {
+                d.classList.remove('show');
+                d.style.display = '';
+            });
+        });
+        
+        // Lade Notifications beim Seitenaufruf
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNotifications();
+            
+            // Aktualisiere alle 30 Sekunden
+            notificationUpdateInterval = setInterval(() => {
+                loadNotifications();
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* Modern Home Page Styles */
+.home-page {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Modern Post Card */
+.post-card {
+    background: linear-gradient(145deg, rgba(39, 39, 49, 0.95) 0%, rgba(30, 30, 40, 0.98) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.post-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent 0%, rgba(230, 56, 181, 0) 50%, transparent 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.post-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 40px rgba(230, 56, 181, 0.1);
+    border-color: rgba(230, 56, 181, 0.2);
+}
+
+.post-card:hover::before {
+    opacity: 1;
+    background: linear-gradient(135deg, rgba(230, 56, 181, 0.3) 0%, rgba(147, 51, 234, 0.2) 50%, rgba(230, 56, 181, 0.3) 100%);
+}
+
+/* Card Photo Zoom Effect */
+.card-photo {
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.post-card:hover .card-photo {
+    transform: scale(1.08);
+}
+
+/* Modern NEU Badge */
+.new-badge {
+    background: linear-gradient(135deg, #ff3366 0%, #E638B5 100%);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.35rem 0.75rem;
+    border-radius: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 15px rgba(230, 56, 181, 0.4);
+    animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+    0%, 100% { box-shadow: 0 4px 15px rgba(230, 56, 181, 0.4); }
+    50% { box-shadow: 0 4px 25px rgba(230, 56, 181, 0.6); }
+}
+
+@keyframes pulse-subtle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+.animate-pulse-subtle {
+    animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+/* Modern Category Pill */
+.category-pill {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2rem;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.category-pill:hover {
+    background: rgba(230, 56, 181, 0.7);
+    border-color: rgba(230, 56, 181, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Modern Time Badge */
+.time-badge {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2rem;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Post Info Section */
+.post-info {
+    padding: 0.875rem 1rem;
+    background: linear-gradient(to top, rgba(20, 20, 28, 0.95) 0%, rgba(39, 39, 49, 0.9) 100%);
+}
+
+/* Post Title */
+.post-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: white;
+    transition: color 0.2s ease;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.post-title:hover {
+    color: #E638B5;
+}
+
+/* Stats Pills */
+.stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.2s ease;
+}
+
+.stat-pill:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.stat-pill i {
+    font-size: 0.6rem;
+    opacity: 0.7;
+}
+
+/* Like Button */
+.like-btn-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.like-count {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.like-heart {
+    padding: 0.4rem;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    cursor: pointer;
+}
+
+.like-heart:hover {
+    background: rgba(230, 56, 181, 0.15);
+    transform: scale(1.2);
+}
+
+.like-heart:active {
+    transform: scale(0.9);
+}
+
+/* Modern Pagination */
+.pagination-modern {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+    padding-bottom: 1rem;
+}
+
+.page-btn {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.page-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.page-btn.active {
+    background: linear-gradient(135deg, #E638B5 0%, #9333EA 100%);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(230, 56, 181, 0.35);
+}
+
+.page-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Modern Hero Section */
+.hero-countdown {
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 30, 45, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-countdown::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #E638B5 50%, transparent 100%);
+}
+
+.countdown-item {
+    background: linear-gradient(135deg, #E638B5 0%, #9333EA 100%);
+    border-radius: 0.75rem;
+    padding: 1rem 0.5rem;
+    min-width: 4rem;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(230, 56, 181, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.countdown-item:hover {
+    transform: translateY(-3px);
+}
+
+.countdown-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+}
+
+.countdown-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.25rem;
+}
+
+/* Lock Overlay for No Rank */
+.lock-overlay {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+.lock-icon-wrapper {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(230, 56, 181, 0.25) 0%, rgba(147, 51, 234, 0.25) 100%);
+    border: 2px solid rgba(230, 56, 181, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(230, 56, 181, 0.3);
+}
+
+.unlock-btn {
+    background: linear-gradient(135deg, #E638B5 0%, #9333EA 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(230, 56, 181, 0.4);
+}
+
+.unlock-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(230, 56, 181, 0.5);
+}
+
+/* Fade In Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Grid Animation Stagger */
+.posts > .post-card:nth-child(1) { animation-delay: 0.05s; }
+.posts > .post-card:nth-child(2) { animation-delay: 0.1s; }
+.posts > .post-card:nth-child(3) { animation-delay: 0.15s; }
+.posts > .post-card:nth-child(4) { animation-delay: 0.2s; }
+.posts > .post-card:nth-child(5) { animation-delay: 0.25s; }
+.posts > .post-card:nth-child(6) { animation-delay: 0.3s; }
+.posts > .post-card:nth-child(7) { animation-delay: 0.35s; }
+.posts > .post-card:nth-child(8) { animation-delay: 0.4s; }
+
+.posts > .post-card {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+}
+</style>
+
+    <!-- Schlankes Conversion-Banner -->
+    <style>
+        #promo-banner {
+            margin: -20px -20px 20px -20px;
+            width: calc(100% + 40px);
+        }
+        @media (max-width: 768px) {
+            #promo-banner {
+                /* Mobile: -20px um das extra padding (80px - 60px Header) auszugleichen */
+                margin: -20px -20px 16px -20px;
+                width: calc(100% + 40px);
+                position: sticky;
+                top: 60px; /* Klebt direkt unter dem 60px Mobile-Header */
+                z-index: 100;
+            }
+        }
+    </style>
+    <div id="promo-banner" class="w-full bg-gradient-to-r from-[#1a0a1f] via-[#2d1039] to-[#1a0a1f] border-b border-[#E638B5]/30">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                    <span class="hidden sm:inline-flex items-center justify-center w-8 h-8 bg-yellow-500/20 rounded-full flex-shrink-0">
+                        <i class="fas fa-gift text-yellow-400 text-sm"></i>
+                    </span>
+                    <div class="flex items-center gap-2 flex-wrap text-sm">
+                        <span class="text-yellow-400 font-semibold">Neukunden-Rabatt:</span>
+                        <span class="text-white">Premium für <span class="font-bold text-green-400">7,99€</span> <span class="text-gray-400 line-through text-xs">9,99€</span></span>
+                        <span class="text-gray-500 hidden md:inline">• Nur heute</span>
+                    </div>
+                            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <a href="/rank_upgrade" class="bg-[#E638B5] hover:bg-[#d42ca5] text-white px-4 py-1.5 rounded-lg font-semibold text-sm transition-all whitespace-nowrap">
+                    Sparen                </a>
+                <button onclick="document.getElementById('promo-banner').style.display='none'" class="text-gray-500 hover:text-white p-1">
+                    <i class="fas fa-times text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+<div class="home-page">
+<input name='token' id='token' value='129e38fe47517979be3ec46ac7509cbcf4c678a1b6ff30930097d6bf14c1e6f4' type='hidden'>
+        <div class="hero-countdown mb-6 mx-6 md:mx-12 lg:mx-20 xl:mx-24 rounded-xl shadow-2xl">
+            <div class="relative px-6 py-8 text-center">
+                <div class="text-5xl md:text-6xl mb-3">
+                    ✨                </div>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white">
+                    Beliebt                </h2>
+            </div>
+        </div>
+                <div id="socialProofBanner" class="mb-6 mx-6 md:mx-12 lg:mx-20 xl:mx-24 relative overflow-hidden rounded-xl bg-gradient-to-r from-[#E638B5]/10 via-[#9333EA]/10 to-[#E638B5]/10 border border-[#E638B5]/30 shadow-lg">
+            <div class="absolute inset-0 bg-gradient-to-r from-[#E638B5]/5 via-transparent to-[#E638B5]/5 animate-pulse"></div>
+            
+            <div class="relative px-4 py-3 md:px-6 md:py-4">
+                <div class="flex items-center justify-center gap-3 md:gap-4">
+                    <!-- Live Indicator -->
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
+                        <span class="text-xs md:text-sm font-semibold text-green-400 uppercase tracking-wider">Live</span>
+                    </div>
+                    
+                    <!-- Divider -->
+                    <div class="h-6 w-px bg-[#E638B5]/30"></div>
+                    
+                    <!-- Social Proof Messages -->
+                    <div class="flex-1 overflow-hidden">
+                        <div id="socialProofMessages" class="flex flex-col gap-2">
+                            <!-- Messages werden per JavaScript rotiert -->
+                        </div>
+                    </div>
+                    
+                    <!-- Close Button (optional) -->
+                    <button onclick="document.getElementById('socialProofBanner').style.display='none'" class="text-gray-400 hover:text-white transition-colors p-1">
+                        <i class="fas fa-times text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        (function() {
+            const messages = [
+                { name: 'Mikadersigma', action: 'hat gerade Supreme freigeschaltet', time: 'vor 30 Sekunden', icon: 'fa-unlock-alt' },
+                { name: 'Foll4cabras', action: 'hat vor 1 Minute Exklusiv-Zugang erhalten', time: 'vor 1 Minute', icon: 'fa-check-circle' },
+                { name: 'kekekekek', action: 'ist jetzt Supreme-Mitglied', time: 'vor 2 Minuten', icon: 'fa-star' },
+                { name: 'mahmoudalfayad14', action: 'hat Exklusiv aktiviert', time: 'vor 3 Minuten', icon: 'fa-gem' },
+                { name: 'dragoras', action: 'hat gerade Premium freigeschaltet', time: 'vor 4 Minuten', icon: 'fa-unlock-alt' },
+                { name: 'Ckwright', action: 'ist jetzt Supreme-Mitglied', time: 'vor 5 Minuten', icon: 'fa-star' },
+                { name: 'Emilio', action: 'hat vor 6 Minuten Exklusiv-Zugang erhalten', time: 'vor 6 Minuten', icon: 'fa-check-circle' },
+                { name: 'envymvxxxv', action: 'hat Supreme aktiviert', time: 'vor 7 Minuten', icon: 'fa-gem' },
+                { name: 'Dibujantedepotos', action: 'hat gerade Exklusiv freigeschaltet', time: 'vor 8 Minuten', icon: 'fa-unlock-alt' },
+                { name: 'KanyeWestis4ever', action: 'ist jetzt Supreme-Mitglied', time: 'vor 9 Minuten', icon: 'fa-star' },
+                { name: 'Pero234', action: 'hat vor 10 Minuten Premium-Zugang erhalten', time: 'vor 10 Minuten', icon: 'fa-check-circle' },
+                { name: 'Peter8571', action: 'hat Supreme aktiviert', time: 'vor 11 Minuten', icon: 'fa-gem' },
+                { name: 'Jannik2k1', action: 'hat gerade Exklusiv freigeschaltet', time: 'vor 12 Minuten', icon: 'fa-unlock-alt' },
+                { name: 'Robler25', action: 'ist jetzt Supreme-Mitglied', time: 'vor 13 Minuten', icon: 'fa-star' },
+                { name: 'Osk', action: 'hat vor 14 Minuten Exklusiv-Zugang erhalten', time: 'vor 14 Minuten', icon: 'fa-check-circle' },
+                { name: 'Leonfi', action: 'hat Supreme aktiviert', time: 'vor 15 Minuten', icon: 'fa-gem' },
+                { name: 'Liku5875', action: 'hat gerade Premium freigeschaltet', time: 'vor 16 Minuten', icon: 'fa-unlock-alt' },
+                { name: 'MightyFox4', action: 'ist jetzt Exklusiv-Mitglied', time: 'vor 17 Minuten', icon: 'fa-star' },
+                { name: 'TheLotter', action: 'hat vor 18 Minuten Supreme-Zugang erhalten', time: 'vor 18 Minuten', icon: 'fa-check-circle' },
+                { name: 'Shadi', action: 'hat Exklusiv aktiviert', time: 'vor 19 Minuten', icon: 'fa-gem' },
+                { name: 'Lnz77', action: 'hat gerade Supreme freigeschaltet', time: 'vor 20 Minuten', icon: 'fa-unlock-alt' },
+                { name: 'Nels', action: 'ist jetzt Exklusiv-Mitglied', time: 'vor 21 Minuten', icon: 'fa-star' },
+                { name: 'Lolimann', action: 'hat vor 22 Minuten Supreme-Zugang erhalten', time: 'vor 22 Minuten', icon: 'fa-check-circle' },
+                { name: 'John66', action: 'hat Exklusiv aktiviert', time: 'vor 23 Minuten', icon: 'fa-gem' },
+                { name: 'Bdbdususgg', action: 'hat gerade Premium freigeschaltet', time: 'vor 24 Minuten', icon: 'fa-unlock-alt' },
+                { name: 'Yxbjzfcv', action: 'ist jetzt Supreme-Mitglied', time: 'vor 25 Minuten', icon: 'fa-star' },
+                { name: 'Lukasnnn384', action: 'hat vor 26 Minuten Exklusiv-Zugang erhalten', time: 'vor 26 Minuten', icon: 'fa-check-circle' },
+                { name: 'Ikwils3x', action: 'hat Supreme aktiviert', time: 'vor 27 Minuten', icon: 'fa-gem' },
+                { name: 'berlin', action: 'hat gerade Exklusiv freigeschaltet', time: 'vor 28 Minuten', icon: 'fa-unlock-alt' },
+                { name: 'babo123', action: 'ist jetzt Supreme-Mitglied', time: 'vor 29 Minuten', icon: 'fa-star' },
+                { name: 'spc', action: 'hat vor 30 Minuten Premium-Zugang erhalten', time: 'vor 30 Minuten', icon: 'fa-check-circle' },
+                { name: 'Jobas', action: 'hat Exklusiv aktiviert', time: 'vor 31 Minuten', icon: 'fa-gem' },
+                { name: 'Kukes', action: 'hat gerade Supreme freigeschaltet', time: 'vor 32 Minuten', icon: 'fa-unlock-alt' },
+                { name: 'Acc', action: 'ist jetzt Exklusiv-Mitglied', time: 'vor 33 Minuten', icon: 'fa-star' },
+                { name: 'Skkjdjdjdj', action: 'hat vor 34 Minuten Supreme-Zugang erhalten', time: 'vor 34 Minuten', icon: 'fa-check-circle' },
+                { name: 'pp123', action: 'hat Premium aktiviert', time: 'vor 35 Minuten', icon: 'fa-gem' },
+                { name: 'Jjdgj', action: 'hat gerade Exklusiv freigeschaltet', time: 'vor 36 Minuten', icon: 'fa-unlock-alt' },
+                { name: 'flavi222333444', action: 'ist jetzt Supreme-Mitglied', time: 'vor 37 Minuten', icon: 'fa-star' },
+                { name: 'teteteteetette', action: 'hat vor 38 Minuten Exklusiv-Zugang erhalten', time: 'vor 38 Minuten', icon: 'fa-check-circle' },
+                { name: 'Lol726633', action: 'hat Supreme aktiviert', time: 'vor 39 Minuten', icon: 'fa-gem' },
+                { name: 'Fgv', action: 'hat gerade Premium freigeschaltet', time: 'vor 40 Minuten', icon: 'fa-unlock-alt' }
+            ];
+            
+            const stats = [
+                { text: 'Heute bereits 127 neue Premium-Mitglieder', icon: 'fa-users', color: 'text-[#E638B5]' },
+                { text: 'Über 2.500 aktive Premium-Mitglieder', icon: 'fa-fire', color: 'text-orange-400' },
+                { text: '4.8/5 ⭐ Bewertung von Premium-Mitgliedern', icon: 'fa-star', color: 'text-yellow-400' },
+                { text: 'Sofortiger Zugang nach Kauf', icon: 'fa-bolt', color: 'text-blue-400' }
+            ];
+            
+            let currentMessageIndex = 0;
+            let currentStatIndex = 0;
+            let showStat = false;
+            
+            function updateSocialProof() {
+                const container = document.getElementById('socialProofMessages');
+                if (!container) return;
+                
+                if (showStat) {
+                    // Zeige Statistik
+                    const stat = stats[currentStatIndex];
+                    container.innerHTML = `
+                        <div class="flex items-center gap-2 text-white animate-fade-in">
+                            <i class="fas ${stat.icon} ${stat.color}"></i>
+                            <span class="text-sm md:text-base font-medium">${stat.text}</span>
+                        </div>
+                    `;
+                    currentStatIndex = (currentStatIndex + 1) % stats.length;
+                    showStat = false;
+                } else {
+                    // Zeige Nachricht
+                    const msg = messages[currentMessageIndex];
+                    container.innerHTML = `
+                        <div class="flex items-center gap-2 text-white animate-fade-in">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#E638B5] to-[#9333EA] flex items-center justify-center text-xs font-bold text-white shadow-lg">
+                                ${msg.name.charAt(0)}
+                            </div>
+                            <div class="flex-1">
+                                <span class="font-semibold text-sm md:text-base">${msg.name}</span>
+                                <span class="text-gray-300 text-sm md:text-base"> ${msg.action}</span>
+                                <span class="text-gray-400 text-xs ml-2">${msg.time}</span>
+                            </div>
+                            <i class="fas ${msg.icon} text-[#E638B5]"></i>
+                        </div>
+                    `;
+                    currentMessageIndex = (currentMessageIndex + 1) % messages.length;
+                    showStat = true;
+                }
+            }
+            
+            // Starte sofort
+            updateSocialProof();
+            
+            // Wechsle alle 3-5 Sekunden
+            setInterval(updateSocialProof, Math.random() * 2000 + 3000);
+        })();
+        </script>
+
+        <style>
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out;
+        }
+        </style>
+        <div class="posts grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-4 px-6 md:px-12 lg:px-20 xl:px-24">        <div class="post-card">
+                            <!-- Für User ohne Rang: Geblurrtes Thumbnail mit Upgrade-Overlay -->
+                <div class="relative h-[22rem] w-full overflow-hidden group">
+                                        
+                    <!-- Blurred Thumbnail -->
+                    <img src="./uploads/thumb_6727fb016f5b0.jpg" 
+                         alt="chalina.l" 
+                         class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110">
+                    
+                    <!-- Modern Upgrade Overlay -->
+                    <div class="absolute inset-0 lock-overlay flex flex-col justify-center items-center z-10 p-4">
+                        <div class="lock-icon-wrapper mb-3">
+                            <i class="fas fa-fire-flame-curved text-[#E638B5] text-xl"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1.5 text-center">Exklusiver Content</h3>
+                        <p class="text-gray-300 text-xs mb-4 text-center max-w-[200px] leading-relaxed">
+                            <span class="text-[#E638B5] font-semibold">6.500+</span> Premium-Leaks<br><span class="text-white font-medium">Sofortige Freischaltung</span>
+                        </p>
+                        <a href="/rank_upgrade" class="unlock-btn inline-flex items-center px-6 py-3 text-base font-bold animate-pulse-subtle">
+                            <i class="fas fa-unlock-alt mr-2"></i>
+                            Jetzt für nur 9,99€ freischalten
+                        </a>
+                    </div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span class="category-pill truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </div>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <h3 class="post-title cursor-default">chalina.l</h3>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                3.672                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                524                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                50                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-384" class="like-count">
+                            671                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Regular Content - Standard Post Display für User mit Rang ODER Free Posts für non-rank User -->
+                <a href="gallery.php?post_id=414" target="_blank" class="block relative h-[22rem] w-full overflow-hidden group">
+                                            <!-- FREE Badge für non-rank User -->
+                        <div class="absolute top-3 right-3 z-30">
+                            <span class="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
+                                <i class="fas fa-gift mr-1"></i>GRATIS
+                            </span>
+                        </div>
+                                                            
+                    <!-- Post Thumbnail with Hover Effect -->
+                    <div class="card-photo h-full w-full lozad" 
+                         data-background-image="./uploads/thumb_672c0ea1e9642.jpg" 
+                         style="background-position:center;background-size:cover;">
+                    </div>
+                    
+                    <!-- Gradient Overlay on Hover -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span onclick="event.preventDefault(); event.stopPropagation(); RedirectToCategory(29)" 
+                              class="category-pill cursor-pointer truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </a>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <a href="gallery.php?post_id=414" target="_blank">
+                            <h3 class="post-title">Fabienne</h3>
+                        </a>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                5.243                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                111                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                61                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-414" class="like-count">
+                            654                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Für User ohne Rang: Geblurrtes Thumbnail mit Upgrade-Overlay -->
+                <div class="relative h-[22rem] w-full overflow-hidden group">
+                                        
+                    <!-- Blurred Thumbnail -->
+                    <img src="./uploads/thumb_67294ada9a856.jpg" 
+                         alt="Elena Kamperi" 
+                         class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110">
+                    
+                    <!-- Modern Upgrade Overlay -->
+                    <div class="absolute inset-0 lock-overlay flex flex-col justify-center items-center z-10 p-4">
+                        <div class="lock-icon-wrapper mb-3">
+                            <i class="fas fa-fire-flame-curved text-[#E638B5] text-xl"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1.5 text-center">Exklusiver Content</h3>
+                        <p class="text-gray-300 text-xs mb-4 text-center max-w-[200px] leading-relaxed">
+                            <span class="text-[#E638B5] font-semibold">6.500+</span> Premium-Leaks<br><span class="text-white font-medium">Sofortige Freischaltung</span>
+                        </p>
+                        <a href="/rank_upgrade" class="unlock-btn inline-flex items-center px-6 py-3 text-base font-bold animate-pulse-subtle">
+                            <i class="fas fa-unlock-alt mr-2"></i>
+                            Jetzt für nur 9,99€ freischalten
+                        </a>
+                    </div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span class="category-pill truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </div>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <h3 class="post-title cursor-default">Elena Kamperi</h3>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                2.546                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                157                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                68                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-407" class="like-count">
+                            650                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Für User ohne Rang: Geblurrtes Thumbnail mit Upgrade-Overlay -->
+                <div class="relative h-[22rem] w-full overflow-hidden group">
+                                        
+                    <!-- Blurred Thumbnail -->
+                    <img src="./uploads/thumb_672ab19ad3ea7.jpg" 
+                         alt="Corinna Kopf" 
+                         class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110">
+                    
+                    <!-- Modern Upgrade Overlay -->
+                    <div class="absolute inset-0 lock-overlay flex flex-col justify-center items-center z-10 p-4">
+                        <div class="lock-icon-wrapper mb-3">
+                            <i class="fas fa-fire-flame-curved text-[#E638B5] text-xl"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1.5 text-center">Exklusiver Content</h3>
+                        <p class="text-gray-300 text-xs mb-4 text-center max-w-[200px] leading-relaxed">
+                            <span class="text-[#E638B5] font-semibold">6.500+</span> Premium-Leaks<br><span class="text-white font-medium">Sofortige Freischaltung</span>
+                        </p>
+                        <a href="/rank_upgrade" class="unlock-btn inline-flex items-center px-6 py-3 text-base font-bold animate-pulse-subtle">
+                            <i class="fas fa-unlock-alt mr-2"></i>
+                            Jetzt für nur 9,99€ freischalten
+                        </a>
+                    </div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span class="category-pill truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </div>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <h3 class="post-title cursor-default">Corinna Kopf</h3>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                4.163                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                161                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                52                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-409" class="like-count">
+                            642                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Für User ohne Rang: Geblurrtes Thumbnail mit Upgrade-Overlay -->
+                <div class="relative h-[22rem] w-full overflow-hidden group">
+                                        
+                    <!-- Blurred Thumbnail -->
+                    <img src="./uploads/thumb_67294cae0c1f5.png" 
+                         alt="Gina Laitschek" 
+                         class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110">
+                    
+                    <!-- Modern Upgrade Overlay -->
+                    <div class="absolute inset-0 lock-overlay flex flex-col justify-center items-center z-10 p-4">
+                        <div class="lock-icon-wrapper mb-3">
+                            <i class="fas fa-fire-flame-curved text-[#E638B5] text-xl"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1.5 text-center">Exklusiver Content</h3>
+                        <p class="text-gray-300 text-xs mb-4 text-center max-w-[200px] leading-relaxed">
+                            <span class="text-[#E638B5] font-semibold">6.500+</span> Premium-Leaks<br><span class="text-white font-medium">Sofortige Freischaltung</span>
+                        </p>
+                        <a href="/rank_upgrade" class="unlock-btn inline-flex items-center px-6 py-3 text-base font-bold animate-pulse-subtle">
+                            <i class="fas fa-unlock-alt mr-2"></i>
+                            Jetzt für nur 9,99€ freischalten
+                        </a>
+                    </div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span class="category-pill truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </div>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <h3 class="post-title cursor-default">Gina Laitschek</h3>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                3.246                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                188                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                62                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-408" class="like-count">
+                            639                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Regular Content - Standard Post Display für User mit Rang ODER Free Posts für non-rank User -->
+                <a href="gallery.php?post_id=479" target="_blank" class="block relative h-[22rem] w-full overflow-hidden group">
+                                            <!-- FREE Badge für non-rank User -->
+                        <div class="absolute top-3 right-3 z-30">
+                            <span class="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
+                                <i class="fas fa-gift mr-1"></i>GRATIS
+                            </span>
+                        </div>
+                                                            
+                    <!-- Post Thumbnail with Hover Effect -->
+                    <div class="card-photo h-full w-full lozad" 
+                         data-background-image="./uploads/thumb_675ee2885aab1.png" 
+                         style="background-position:center;background-size:cover;">
+                    </div>
+                    
+                    <!-- Gradient Overlay on Hover -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span onclick="event.preventDefault(); event.stopPropagation(); RedirectToCategory(29)" 
+                              class="category-pill cursor-pointer truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </a>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <a href="gallery.php?post_id=479" target="_blank">
+                            <h3 class="post-title">Shaiden Rogue</h3>
+                        </a>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                5.580                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                199                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                51                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-479" class="like-count">
+                            625                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Für User ohne Rang: Geblurrtes Thumbnail mit Upgrade-Overlay -->
+                <div class="relative h-[22rem] w-full overflow-hidden group">
+                                        
+                    <!-- Blurred Thumbnail -->
+                    <img src="./uploads/thumb_6760a556a1bbb.png" 
+                         alt="aleynabaddie" 
+                         class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110">
+                    
+                    <!-- Modern Upgrade Overlay -->
+                    <div class="absolute inset-0 lock-overlay flex flex-col justify-center items-center z-10 p-4">
+                        <div class="lock-icon-wrapper mb-3">
+                            <i class="fas fa-fire-flame-curved text-[#E638B5] text-xl"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1.5 text-center">Exklusiver Content</h3>
+                        <p class="text-gray-300 text-xs mb-4 text-center max-w-[200px] leading-relaxed">
+                            <span class="text-[#E638B5] font-semibold">6.500+</span> Premium-Leaks<br><span class="text-white font-medium">Sofortige Freischaltung</span>
+                        </p>
+                        <a href="/rank_upgrade" class="unlock-btn inline-flex items-center px-6 py-3 text-base font-bold animate-pulse-subtle">
+                            <i class="fas fa-unlock-alt mr-2"></i>
+                            Jetzt für nur 9,99€ freischalten
+                        </a>
+                    </div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span class="category-pill truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </div>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <h3 class="post-title cursor-default">aleynabaddie</h3>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                4.634                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                122                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                64                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-484" class="like-count">
+                            618                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Für User ohne Rang: Geblurrtes Thumbnail mit Upgrade-Overlay -->
+                <div class="relative h-[22rem] w-full overflow-hidden group">
+                                        
+                    <!-- Blurred Thumbnail -->
+                    <img src="./uploads/thumb_6749dd5f898c5.png" 
+                         alt="Xeniahelenaa" 
+                         class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110">
+                    
+                    <!-- Modern Upgrade Overlay -->
+                    <div class="absolute inset-0 lock-overlay flex flex-col justify-center items-center z-10 p-4">
+                        <div class="lock-icon-wrapper mb-3">
+                            <i class="fas fa-fire-flame-curved text-[#E638B5] text-xl"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1.5 text-center">Exklusiver Content</h3>
+                        <p class="text-gray-300 text-xs mb-4 text-center max-w-[200px] leading-relaxed">
+                            <span class="text-[#E638B5] font-semibold">6.500+</span> Premium-Leaks<br><span class="text-white font-medium">Sofortige Freischaltung</span>
+                        </p>
+                        <a href="/rank_upgrade" class="unlock-btn inline-flex items-center px-6 py-3 text-base font-bold animate-pulse-subtle">
+                            <i class="fas fa-unlock-alt mr-2"></i>
+                            Jetzt für nur 9,99€ freischalten
+                        </a>
+                    </div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span class="category-pill truncate">
+                            💙 OnlyFans                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </div>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <h3 class="post-title cursor-default">Xeniahelenaa</h3>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                3.266                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                124                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                60                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-453" class="like-count">
+                            618                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Für User ohne Rang: Geblurrtes Thumbnail mit Upgrade-Overlay -->
+                <div class="relative h-[22rem] w-full overflow-hidden group">
+                                        
+                    <!-- Blurred Thumbnail -->
+                    <img src="./uploads/thumb_672c0d0988e6b.jpg" 
+                         alt="mellooow" 
+                         class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110">
+                    
+                    <!-- Modern Upgrade Overlay -->
+                    <div class="absolute inset-0 lock-overlay flex flex-col justify-center items-center z-10 p-4">
+                        <div class="lock-icon-wrapper mb-3">
+                            <i class="fas fa-fire-flame-curved text-[#E638B5] text-xl"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1.5 text-center">Exklusiver Content</h3>
+                        <p class="text-gray-300 text-xs mb-4 text-center max-w-[200px] leading-relaxed">
+                            <span class="text-[#E638B5] font-semibold">6.500+</span> Premium-Leaks<br><span class="text-white font-medium">Sofortige Freischaltung</span>
+                        </p>
+                        <a href="/rank_upgrade" class="unlock-btn inline-flex items-center px-6 py-3 text-base font-bold animate-pulse-subtle">
+                            <i class="fas fa-unlock-alt mr-2"></i>
+                            Jetzt für nur 9,99€ freischalten
+                        </a>
+                    </div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span class="category-pill truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </div>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <h3 class="post-title cursor-default">mellooow</h3>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                3.688                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                200                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                50                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-413" class="like-count">
+                            616                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Für User ohne Rang: Geblurrtes Thumbnail mit Upgrade-Overlay -->
+                <div class="relative h-[22rem] w-full overflow-hidden group">
+                                        
+                    <!-- Blurred Thumbnail -->
+                    <img src="./uploads/thumb_68fbd73ab864a.png" 
+                         alt="Kati Karenina" 
+                         class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110">
+                    
+                    <!-- Modern Upgrade Overlay -->
+                    <div class="absolute inset-0 lock-overlay flex flex-col justify-center items-center z-10 p-4">
+                        <div class="lock-icon-wrapper mb-3">
+                            <i class="fas fa-fire-flame-curved text-[#E638B5] text-xl"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1.5 text-center">Exklusiver Content</h3>
+                        <p class="text-gray-300 text-xs mb-4 text-center max-w-[200px] leading-relaxed">
+                            <span class="text-[#E638B5] font-semibold">6.500+</span> Premium-Leaks<br><span class="text-white font-medium">Sofortige Freischaltung</span>
+                        </p>
+                        <a href="/rank_upgrade" class="unlock-btn inline-flex items-center px-6 py-3 text-base font-bold animate-pulse-subtle">
+                            <i class="fas fa-unlock-alt mr-2"></i>
+                            Jetzt für nur 9,99€ freischalten
+                        </a>
+                    </div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span class="category-pill truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </div>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <h3 class="post-title cursor-default">Kati Karenina</h3>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                3.614                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                252                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                69                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-858" class="like-count">
+                            615                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Für User ohne Rang: Geblurrtes Thumbnail mit Upgrade-Overlay -->
+                <div class="relative h-[22rem] w-full overflow-hidden group">
+                                        
+                    <!-- Blurred Thumbnail -->
+                    <img src="./uploads/thumb_689202ec0e504.png" 
+                         alt="Katharina Amalia" 
+                         class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110">
+                    
+                    <!-- Modern Upgrade Overlay -->
+                    <div class="absolute inset-0 lock-overlay flex flex-col justify-center items-center z-10 p-4">
+                        <div class="lock-icon-wrapper mb-3">
+                            <i class="fas fa-fire-flame-curved text-[#E638B5] text-xl"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1.5 text-center">Exklusiver Content</h3>
+                        <p class="text-gray-300 text-xs mb-4 text-center max-w-[200px] leading-relaxed">
+                            <span class="text-[#E638B5] font-semibold">6.500+</span> Premium-Leaks<br><span class="text-white font-medium">Sofortige Freischaltung</span>
+                        </p>
+                        <a href="/rank_upgrade" class="unlock-btn inline-flex items-center px-6 py-3 text-base font-bold animate-pulse-subtle">
+                            <i class="fas fa-unlock-alt mr-2"></i>
+                            Jetzt für nur 9,99€ freischalten
+                        </a>
+                    </div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span class="category-pill truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </div>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <h3 class="post-title cursor-default">Katharina Amalia</h3>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                3.830                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                266                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                134                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-800" class="like-count">
+                            613                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+                <div class="post-card">
+                            <!-- Regular Content - Standard Post Display für User mit Rang ODER Free Posts für non-rank User -->
+                <a href="gallery.php?post_id=412" target="_blank" class="block relative h-[22rem] w-full overflow-hidden group">
+                                            <!-- FREE Badge für non-rank User -->
+                        <div class="absolute top-3 right-3 z-30">
+                            <span class="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
+                                <i class="fas fa-gift mr-1"></i>GRATIS
+                            </span>
+                        </div>
+                                                            
+                    <!-- Post Thumbnail with Hover Effect -->
+                    <div class="card-photo h-full w-full lozad" 
+                         data-background-image="./uploads/thumb_672c061930a4c.jpg" 
+                         style="background-position:center;background-size:cover;">
+                    </div>
+                    
+                    <!-- Gradient Overlay on Hover -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
+                    
+                    <!-- Category Badge and Timestamp -->
+                    <div class="absolute bottom-3 inset-x-3 z-20 flex justify-between items-center gap-2">
+                        <span onclick="event.preventDefault(); event.stopPropagation(); RedirectToCategory(29)" 
+                              class="category-pill cursor-pointer truncate">
+                            🇩🇪 Deutsche                        </span>
+                        <div class="time-badge whitespace-nowrap">
+                            <i class="far fa-clock mr-1 opacity-70"></i>Vor kurzem aktualisiert                        </div>
+                    </div>
+                </a>
+                        
+            <!-- Post Info Section -->
+            <div class="post-info flex justify-between items-center">
+                <!-- Title and Stats -->
+                <div class="flex-1 pr-3 min-w-0">
+                                            <a href="gallery.php?post_id=412" target="_blank">
+                            <h3 class="post-title">Nicole Dobrikov</h3>
+                        </a>
+                                        
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-1.5">
+                                                    <span class="stat-pill" title="Aufrufe">
+                                <i class="far fa-eye"></i>
+                                5.355                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="far fa-image"></i>
+                                195                            </span>
+                                                                            <span class="stat-pill">
+                                <i class="fas fa-play"></i>
+                                50                            </span>
+                                            </div>
+                </div>
+                
+                <!-- Like & Moderation -->
+                <div class="flex items-center gap-1">
+                                        
+                    <div class="like-btn-wrapper">
+                        <span id="likes-412" class="like-count">
+                            606                        </span>
+
+                                                    <span class="like-heart opacity-40 cursor-not-allowed">
+                                <i class="fa-regular fa-heart text-gray-500"></i>
+                            </span>
+                                            </div>
+                </div>
+            </div>
+            
+            <!-- Moderation Dropdown for Admins/Moderators -->
+                    </div>
+        </div><div class="pagination-modern"><a href="?page=1" class="page-btn active" onclick="sessionStorage.setItem('scrollTop','1')">1</a><a href="?page=2" class="page-btn " onclick="sessionStorage.setItem('scrollTop','1')">2</a><a href="?page=3" class="page-btn " onclick="sessionStorage.setItem('scrollTop','1')">3</a><span class="text-gray-600 px-1">...</span><span class="page-btn disabled" title="Upgrade für mehr Seiten">39</span><a href="?page=2" class="page-btn " onclick="sessionStorage.setItem('scrollTop','1')"><span class="hidden sm:inline">Weiter</span><i class="fas fa-chevron-right ml-1"></i></a></div></div>    <!-- Exit-Intent Popup -->
+    <div id="exit-intent-popup" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="bg-gradient-to-br from-[#1A1A25] to-[#0c0413] rounded-2xl p-6 md:p-8 max-w-md mx-4 border-2 border-[#E638B5]/50 shadow-2xl transform scale-95 transition-all duration-300">
+            <button onclick="document.getElementById('exit-intent-popup').classList.add('hidden')" 
+                    class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="text-center">
+                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-[#E638B5] to-[#9333EA] rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-gift text-white text-2xl"></i>
+                </div>
+                
+                                    <h3 class="text-2xl font-bold text-white mb-2">🎉 Warte! Neukunden-Rabatt!</h3>
+                    <p class="text-gray-300 mb-4">
+                        Du hast heute registriert - erhalte <span class="text-yellow-300 font-bold">20% Rabatt</span> auf Premium!
+                    </p>
+                    <p class="text-3xl font-bold bg-gradient-to-r from-[#E638B5] to-[#9333EA] bg-clip-text text-transparent mb-2">
+                        Nur 7,99€ statt 9,99€
+                    </p>
+                                
+                <div class="flex flex-col gap-3 mt-6">
+                    <a href="/rank_upgrade#premium" 
+                       class="bg-gradient-to-r from-[#E638B5] to-[#9333EA] text-white font-bold py-3 px-6 rounded-lg hover:scale-105 transition-all shadow-lg">
+                        <i class="fas fa-unlock-alt mr-2"></i>
+                        Jetzt 7,99€ sparen                    </a>
+                    <button onclick="document.getElementById('exit-intent-popup').classList.add('hidden')" 
+                            class="text-gray-400 hover:text-white text-sm">
+                        Vielleicht später
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Exit-Intent Detection - nur einmal pro Tag zeigen
+        (function() {
+            const POPUP_KEY = 'exitPopupShown';
+            const today = new Date().toDateString();
+            
+            // Prüfe ob Popup heute schon gezeigt wurde
+            function wasShownToday() {
+                const lastShown = localStorage.getItem(POPUP_KEY);
+                return lastShown === today;
+            }
+            
+            function markAsShown() {
+                localStorage.setItem(POPUP_KEY, today);
+            }
+            
+            function showPopup() {
+                if (wasShownToday()) return;
+                
+                const popup = document.getElementById('exit-intent-popup');
+                if (!popup) return;
+                
+                markAsShown();
+                popup.classList.remove('hidden');
+                popup.classList.add('flex');
+                setTimeout(() => {
+                    const transformEl = popup.querySelector('.transform');
+                    if (transformEl) {
+                        transformEl.classList.remove('scale-95');
+                        transformEl.classList.add('scale-100');
+                    }
+                }, 10);
+            }
+            
+            // Nur Desktop: Exit-Intent bei Maus nach oben
+            if (window.innerWidth > 768) {
+                document.addEventListener('mouseout', function(e) {
+                    if (!e.toElement && !e.relatedTarget && e.clientY < 10) {
+                        showPopup();
+                    }
+                });
+            }
+            
+            // KEIN Mobile-Popup mehr - war zu nervig
+        })();
+    </script>
+    <div class="mb-4"></div>    </div> <!-- End main-content -->
+
+    <footer class="footer flex justify-center items-center p-4 text-neutral-content mt-8 w-full">
+        <div class="flex items-center space-x-4">
+            <a class="text-lg font-bold text-white" href="/">🎀 • OFLeaks.tv</a>
+            <span class="border-l border-gray-400 h-6 mx-2"></span>
+            <a href="https://discord.celebroom.de" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Discord">
+                <i class="fab fa-discord fa-lg"></i>
+                <span class="sr-only">Discord</span>
+            </a>
+            <a href="https://ofleaks.tv/shop" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Shop">
+                <i class="fa fa-shopping-cart fa-lg"></i>
+                <span class="sr-only">Shop</span>
+            </a>
+        </div>
+    </footer>
+
+    <!-- Popup Include -->
+    
+<!-- Modern Popup Overlay -->
+<div class="ofleaks-popup-overlay" id="ofleaks-popup-2">
+    <div class="ofleaks-popup-content">
+        <button class="ofleaks-popup-close" onclick="closeOFLeaksPopup(2)">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div class="ofleaks-popup-header">
+            <div class="ofleaks-popup-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h2 class="ofleaks-popup-title">🎊 Neuer Discord Server &amp; Premium Wünsche!</h2>
+        </div>
+
+        <div class="ofleaks-popup-body">
+            🔥 Unser brandneuer Discord Server ist jetzt live!<br />
+<br />
+💬 Chatte mit der Community, erhalte sofortige Updates über neue Leaks und exklusive Inhalte!<br />
+<br />
+✨ NEU: Premium-User können jetzt Wünsche einreichen und abstimmen welcher Content als nächstes kommt!<br />
+<br />
+Join jetzt und sei Teil der Community! 🚀        </div>
+
+        <div class="ofleaks-popup-footer">
+                            <a href="https://discord.gg/celebroom"
+                   class="ofleaks-popup-button primary"
+                   onclick="closeOFLeaksPopup(2)">
+                    💬 Zum Discord Server                </a>
+                    </div>
+    </div>
+</div>
+
+<style>
+/* Modern Popup Styles */
+.ofleaks-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ofleaks-popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ofleaks-popup-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    position: relative;
+    animation: popupSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border: 1px solid rgba(230, 56, 181, 0.2);
+}
+
+@keyframes popupSlideIn {
+    from {
+        transform: scale(0.8) translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.ofleaks-popup-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.ofleaks-popup-close:hover {
+    background: rgba(230, 56, 181, 0.3);
+    transform: rotate(90deg);
+}
+
+.ofleaks-popup-header {
+    text-align: center;
+    padding: 40px 30px 20px;
+}
+
+.ofleaks-popup-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #E638B5 0%, #ff6b9d 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(230, 56, 181, 0.4);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 10px 30px rgba(230, 56, 181, 0.4);
+    }
+    50% {
+        box-shadow: 0 10px 40px rgba(230, 56, 181, 0.6);
+    }
+}
+
+.ofleaks-popup-title {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.ofleaks-popup-body {
+    padding: 20px 30px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.ofleaks-popup-body p {
+    margin: 10px 0;
+}
+
+.ofleaks-popup-footer {
+    padding: 20px 30px 40px;
+    text-align: center;
+}
+
+.ofleaks-popup-button {
+    display: inline-block;
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border: none;
+    font-family: inherit;
+}
+
+.ofleaks-popup-button.primary {
+    background: linear-gradient(135deg, #E638B5 0%, #ff6b9d 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(230, 56, 181, 0.4);
+}
+
+.ofleaks-popup-button.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(230, 56, 181, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .ofleaks-popup-content {
+        width: 95%;
+        border-radius: 15px;
+    }
+
+    .ofleaks-popup-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+    }
+
+    .ofleaks-popup-title {
+        font-size: 20px;
+    }
+
+    .ofleaks-popup-body {
+        font-size: 14px;
+        padding: 15px 20px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const popup = document.querySelector('.ofleaks-popup-overlay');
+    if (popup) {
+        // Show popup with delay
+        setTimeout(() => {
+            popup.classList.add('active');
+        }, 500);
+
+        // Close on background click
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                const popupId = popup.id.replace('ofleaks-popup-', '');
+                closeOFLeaksPopup(parseInt(popupId));
+            }
+        });
+    }
+});
+
+function closeOFLeaksPopup(popupId) {
+    const popup = document.getElementById('ofleaks-popup-' + popupId);
+    if (!popup) return;
+
+    // Mark as viewed
+    fetch('/rest/popup/mark_viewed.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ popup_id: popupId })
+    });
+
+    // Animate close
+    popup.classList.remove('active');
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, 300);
+}
+</script>
+
+    <script type="text/javascript" src="./assets/vendor/toastify/toastify.min.js"></script>
+    <script src="./assets/vendor/flowbite/flowbite.min.js"></script>
+    <script src="./assets/vendor/fancybox/fancybox.umd.js"></script>
+
+<!-- Fancybox CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+
+<!-- lozad.js -->
+<script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+<!-- Fancybox JS -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+<script>
+    // Initialize lozad
+    const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+    observer.observe();
+
+    // Initialize Fancybox
+    Fancybox.bind("[data-fancybox]", {
+        // Globale Einstellungen
+        Toolbar: {
+            display: [
+                "close",
+                "prev",
+                "next",
+                "download",
+                "fullscreen",
+                "zoom",
+                "slideshow",
+                "thumbs"
+            ],
+        },
+        // Spezifische Einstellungen für Videos
+        Video: {
+            autoStart: false, // Stelle sicher, dass Videos nicht automatisch starten
+            preventCaptionOverlap: false,
+            idleTime: false,
+            clickToPlay: true,
+            loop: false,
+            // Weitere Video-spezifische Optionen
+        },
+    });
+</script>                     
+    <script src="./assets/js/main.js?v=1770681266"></script>
+
+    <!-- Debug Flowbite Dropdowns -->
+    <script>
+        console.log('Checking Flowbite...');
+        
+        // Warte bis alles geladen ist
+        window.addEventListener('load', function() {
+            console.log('Page loaded, checking dropdowns...');
+            
+            // Finde alle dropdown toggles
+            const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
+            console.log('Found dropdown toggles:', dropdownToggles.length);
+            
+            dropdownToggles.forEach((toggle, index) => {
+                const targetId = toggle.getAttribute('data-dropdown-toggle');
+                const target = document.getElementById(targetId);
+                console.log(`Dropdown ${index + 1}: Toggle found, Target ID: ${targetId}, Target exists:`, !!target);
+            });
+            
+            // Prüfe ob Flowbite geladen ist
+            console.log('Flowbite available:', typeof Flowbite !== 'undefined');
+            console.log('initFlowbite available:', typeof initFlowbite !== 'undefined');
+            
+            // Force Flowbite init wenn verfügbar
+            if (typeof initFlowbite !== 'undefined') {
+                setTimeout(() => {
+                    initFlowbite();
+                    console.log('Flowbite manually initialized');
+                }, 500);
+            }
+            
+            // Z-Index Fix für geöffnete Dropdowns
+            setTimeout(() => {
+                const allDropdowns = document.querySelectorAll('[id^="mod-dropdown-"]');
+                
+                allDropdowns.forEach(dropdown => {
+                    // MutationObserver um auf Klassen-Änderungen zu reagieren
+                    const observer = new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
+                            if (mutation.attributeName === 'class') {
+                                const postCard = dropdown.closest('.post-card');
+                                if (postCard) {
+                                    if (dropdown.classList.contains('hidden')) {
+                                        // Dropdown geschlossen - normaler z-index
+                                        postCard.style.zIndex = '1';
+                                    } else {
+                                        // Dropdown geöffnet - hoher z-index
+                                        postCard.style.zIndex = '9998';
+                                    }
+                                }
+                            }
+                        });
+                    });
+                    
+                    observer.observe(dropdown, { attributes: true });
+                });
+                
+                console.log('Z-Index observers attached to', allDropdowns.length, 'dropdowns');
+            }, 600);
+        });
+    </script>
+
+</body>
+</html>
