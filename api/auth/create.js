@@ -50,4 +50,45 @@ export default async function handler(req, res) {
   }
 
   return res.json({ status: "success", message: "Account erstellt." });
-}
+}const bcrypt = require("bcryptjs");
+
+module.exports = async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ status: "error", message: "Only POST allowed" });
+  }
+
+  const { username, password, cpassword, invite_token, reflink } = req.body || {};
+
+  if (!username || !password || !cpassword) {
+    return res.json({ status: "error", message: "Bitte alle Felder ausfüllen." });
+  }
+  if (password !== cpassword) {
+    return res.json({ status: "error", message: "Passwörter stimmen nicht überein." });
+  }
+
+  const password_hash = await bcrypt.hash(password, 12);
+
+  const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify({
+      username,
+      password_hash,
+      invite_token: invite_token || null,
+      reflink: reflink || null,
+    }),
+  });
+
+  if (!r.ok) {
+    const txt = await r.text();
+    console.error("Create failed:", r.status, txt);
+    return res.json({ status: "error", message: "Serverfehler." });
+  }
+
+  return res.json({ status: "success", message: "Account erstellt." });
+};

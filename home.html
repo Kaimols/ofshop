@@ -3448,6 +3448,23 @@ function closeOFLeaksPopup(popupId) {
             }, 600);
         });
     </script>
+<script>
+(async () => {
+  try {
+    const r = await fetch("/api/auth/me", { credentials: "include" });
+    if (!r.ok) {
+      location.href = "login.html";
+      return;
+    }
 
+    const d = await r.json();
+    // Optional: Username irgendwo anzeigen, wenn du ein Element hast:
+    // document.getElementById("userName").textContent = d.user.username;
+
+  } catch (e) {
+    location.href = "login.html";
+  }
+})();
+</script>
 </body>
 </html>
