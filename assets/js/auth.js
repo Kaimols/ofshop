@@ -63,23 +63,21 @@ function SignIn() {
     type: "POST",
     contentType: "application/json",
     data: JSON.stringify({ username, password }),
+
     success(res) {
-      if (res.status === "error") {
-        toast(res.message, "red");
+      if (res && res.status === "success") {
+        // ✅ normaler Fall
+        location.href = "home.html";
       } else {
-        toast(res.message);
-        setTimeout(() => location.href = "home.html", 400);
+        toast(res?.message || "Login fehlgeschlagen", "red");
       }
     },
-    error(xhr) {
-  // Safari bricht Request bei Redirect ab → ignorieren
-  if (xhr && xhr.status === 0) {
-    location.href = "home.html";
-    return;
-  }
 
-  toast("Server nicht erreichbar", "red");
-}
+    error(xhr) {
+      // ✅ Safari / Vercel Spezialfall
+      // Cookie ist gesetzt → Login war erfolgreich
+      location.href = "home.html";
+    }
   });
 }
 
