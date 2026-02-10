@@ -72,7 +72,12 @@ function SignIn() {
       }
     },
     error(xhr) {
-  if (xhr && xhr.status === 0) return; // Safari / Redirect Abort
+  // Safari bricht Request bei Redirect ab → ignorieren
+  if (xhr && xhr.status === 0) {
+    location.href = "home.html";
+    return;
+  }
+
   toast("Server nicht erreichbar", "red");
 }
   });
