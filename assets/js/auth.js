@@ -48,8 +48,6 @@ function SignUp() {
 }
 
 function SignIn() {
-  console.log("SignIn clicked");
-
   const username = $('#lusername').val();
   const password = $('#lpassoword').val();
 
@@ -66,17 +64,20 @@ function SignIn() {
 
     success(res) {
       if (res && res.status === "success") {
-        // ✅ normaler Fall
         location.href = "home.html";
       } else {
         toast(res?.message || "Login fehlgeschlagen", "red");
       }
     },
 
-    error(xhr) {
-      // ✅ Safari / Vercel Spezialfall
-      // Cookie ist gesetzt → Login war erfolgreich
-      location.href = "home.html";
+    async error() {
+      // Safari/Abort-Fall: prüfen ob Session-Cookie gesetzt wurde
+      try {
+        const r = await fetch("/api/auth/me", { credentials: "include" });
+        const d = await r.json();
+        if (d.auth) return (location.href = "home.html");
+      } catch {}
+      toast("Login fehlgeschlagen", "red");
     }
   });
 }
