@@ -1,0 +1,23 @@
+{
+  "name": "ofshop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kaimols/ofshop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kaimols/ofshop/issues"
+  },
+  "homepage": "https://github.com/Kaimols/ofshop#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3"
+  }
+}
