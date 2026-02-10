@@ -3298,13 +3298,6 @@ Join jetzt und sei Teil der Community! 🚀        </div>
 </style>
 
 <script>
-fetch("/api/auth/me", { credentials: "include" })
-  .then(r => r.json())
-  .then(d => { if (!d.auth) location.href = "login.html"; })
-  .catch(() => location.href = "login.html");
-</script>
-
-<script>
 document.addEventListener('DOMContentLoaded', function() {
     const popup = document.querySelector('.ofleaks-popup-overlay');
     if (popup) {
