@@ -71,9 +71,10 @@ function SignIn() {
         setTimeout(() => location.href = "home.html", 400);
       }
     },
-    error() {
-      toast("Server nicht erreichbar", "red");
-    }
+    error(xhr) {
+  if (xhr && xhr.status === 0) return; // Safari / Redirect Abort
+  toast("Server nicht erreichbar", "red");
+}
   });
 }
 
