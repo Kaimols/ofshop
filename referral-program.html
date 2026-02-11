@@ -965,7 +965,7 @@
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <!-- Logo -->
-        <a href="home.html" class="sidebar-logo" style="text-decoration: none;">
+        <a href="/home" class="sidebar-logo" style="text-decoration: none;">
             <div class="logo-icon">
                 <div class="logo-circle" style="animation: pulse-shadow 2s infinite;">
                     <span style="color: white; font-weight: 900; font-size: 18px; letter-spacing: -1px;">OF</span>
@@ -991,7 +991,7 @@
         <div class="online-counter">
             <div class="online-dot"></div>
             <span>
-                55 online            </span>
+                77 online            </span>
         </div>
 
         <!-- Main Navigation -->
@@ -1020,11 +1020,11 @@
                     </div>
                 </div>
             </div>
-            <a href="home" class="nav-item ">
+            <a href="/home" class="nav-item ">
                 <div class="nav-item-icon">🏠</div>
                 <div class="nav-item-text">Startseite</div>
             </a>
-                        <a href="/referral_program" class="nav-item nav-item-free-access " onclick="trackReferralSidebarClick(event)">
+                        <a href="/referral_program" class="nav-item nav-item-free-access active" onclick="trackReferralSidebarClick(event)">
                 <div class="nav-item-icon">🎁</div>
                 <div class="nav-item-text">Kostenlos Zugang</div>
             </a>
@@ -1037,7 +1037,7 @@
                 <div class="nav-item-text" style="background: linear-gradient(90deg, #8b5cf6, #ec4899, #8b5cf6); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradient-shift 3s ease infinite; font-weight: 600;">AI Undress</div>
                 <span style="position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: bold; animation: pulse-glow 2s ease-in-out infinite;">NEU</span>
             </a>
-            <a href="teenleaks.html" class="nav-item ">
+            <a href="/teenleaks" class="nav-item ">
                 <div class="nav-item-icon">🔞</div>
                 <div class="nav-item-text">Leaks</div>
             </a>
@@ -1045,11 +1045,11 @@
                 <div class="nav-item-icon">✨</div>
                 <div class="nav-item-text">AI Enhancer</div>
             </a>
-            <a href="porntok.html" class="nav-item ">
+            <a href="/porntok" class="nav-item ">
                 <div class="nav-item-icon">🎥</div>
                 <div class="nav-item-text">PornTok</div>
             </a>
-            <a href="bbc.html" class="nav-item ">
+            <a href="/bbc" class="nav-item ">
                 <div class="nav-item-icon">🍆</div>
                 <div class="nav-item-text">Porn Videos</div>
             </a>
@@ -1072,6 +1072,11 @@
         <!-- Shop Navigation -->
         <div class="nav-section">
             <div class="nav-section-title">Shop</div>
+            <a href="/balance_accounts" class="nav-item " style="position: relative; overflow: hidden;">
+                <div class="nav-item-icon">💰</div>
+                <div class="nav-item-text" style="background: linear-gradient(90deg, #f59e0b, #ef4444, #f59e0b); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradient-shift 3s ease infinite; font-weight: 600;">OnlyFans Accounts</div>
+                <span style="position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: bold; animation: pulse-glow 2s ease-in-out infinite;">NEU</span>
+            </a>
             <a href="/shop" class="nav-item">
                 <div class="nav-item-icon">🛒</div>
                 <div class="nav-item-text">Extra-Shop</div>
@@ -1627,347 +1632,314 @@
     </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rang Upgrade - OFLeaks.tv</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(-45deg, #0c0413, #09061d, #3a0f63, #330028); background-size: 400% 400%; animation: gradientBG 15s ease infinite; min-height: 100vh; }
-        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .rank-card { transition: all 0.3s ease; }
-        .rank-card:hover { transform: translateY(-5px); }
-        .rank-card.selected { border-color: #E638B5; box-shadow: 0 0 30px rgba(230, 56, 181, 0.4); }
-    </style>
-</head>
-<body class="text-white">
-    <div class="max-w-7xl mx-auto px-4 py-6 md:py-8">
-        <!-- Compact Header -->
-        <div class="text-center mb-6 md:mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-[#E638B5] to-[#9333EA] bg-clip-text text-transparent">
-                Rang Upgrade
+
+<style>
+    .progress-bar {
+        height: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 9999px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #E638B5, #9333EA);
+        border-radius: 9999px;
+        transition: width 0.5s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .progress-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    
+    .rank-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .rank-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    
+    .rank-card.active {
+        border-color: #E638B5;
+        box-shadow: 0 0 30px rgba(230, 56, 181, 0.3);
+    }
+    
+    .rank-card.earned {
+        background: linear-gradient(135deg, rgba(230, 56, 181, 0.1), rgba(147, 51, 234, 0.1));
+        border-color: #E638B5;
+    }
+</style>
+
+<div class="min-h-screen bg-gradient-to-br from-[#0F0509] via-[#030B13] to-[#140105] py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12 relative">
+                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                Kostenlose <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#E638B5] to-[#9333EA]">Rang-Upgrades</span>
             </h1>
-                        
-            <!-- Compact Social Proof -->
-            <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3 mt-3 text-xs md:text-sm">
-                <div class="bg-green-500/20 border border-green-500/30 rounded-lg px-3 py-1 text-green-300">
-                    <i class="fas fa-bolt mr-1"></i> Sofort aktiv
-                            </div>
-                                <div class="bg-blue-500/20 border border-blue-500/30 rounded-lg px-3 py-1 text-blue-300">
-                    <i class="fas fa-users mr-1"></i> 13 heute
-                            </div>
-                                        <div class="bg-purple-500/20 border border-purple-500/30 rounded-lg px-3 py-1 text-purple-300">
-                    <i class="fas fa-star mr-1"></i> 22.211+ Mitglieder
+            <p class="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto">
+                                    Teile deinen persönlichen Link und erhalte Premium-Zugang, sobald 5 Freunde sich registrieren!
+                            </p>
+        </div>
+
+        <!-- Success Message -->
+        
+        <!-- Pending Request Info -->
+        
+        <!-- Reflink Card -->
+        <div class="bg-[#1A1A25] rounded-2xl p-6 md:p-8 mb-8 border border-gray-700/30 shadow-xl">
+            <h2 class="text-2xl font-bold text-white mb-4 flex items-center">
+                <i class="fas fa-link text-[#E638B5] mr-3"></i>
+                Dein persönlicher Link
+            </h2>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <input 
+                    type="text" 
+                    readonly 
+                    value="https://ofleaks.tv/ref/UJV7S9E5" 
+                    class="flex-1 bg-gray-900 text-green-400 font-mono px-4 py-3 rounded-lg border border-gray-700 focus:outline-none focus:border-[#E638B5]"
+                    id="reflinkInput"
+                >
+                <button 
+                    onclick="copyReflink()" 
+                    class="px-6 py-3 bg-gradient-to-r from-[#E638B5] to-[#9333EA] rounded-lg text-white font-semibold hover:from-[#d033a3] hover:to-[#7928ca] transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                    <i class="fas fa-copy"></i>
+                    Kopieren
+                </button>
+            </div>
+            <p class="text-sm text-gray-400 mt-3">
+                <i class="fas fa-info-circle mr-2"></i>
+                Teile diesen Link überall: Social Media, Messenger, Foren - jeder Klick zählt!
+            </p>
+            
+            <!-- Warnung über Fake-Registrierungen -->
+            <div class="mt-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-exclamation-triangle text-yellow-400 text-lg mt-0.5"></i>
+                    <div class="flex-1">
+                        <p class="text-yellow-300 font-semibold text-sm mb-1">
+                            ⚠️ Wichtig: Fake-Registrierungen
+                        </p>
+                        <p class="text-yellow-200/80 text-xs leading-relaxed">
+                            Fake-Registrierungen (z.B. mit derselben IP-Adresse) werden automatisch erkannt, nicht gezählt und können mit Account-Sperrung bestraft werden. Nutze nur ehrliche Werbung!
+                        </p>
                     </div>
-                <div class="bg-purple-500/20 border border-purple-500/30 rounded-lg px-3 py-1 text-purple-300">
-                    <i class="fas fa-infinity mr-1"></i> Dauerhaft
-                                    </div>
-                                    </div>
-                                    
-            <!-- Warum Jetzt? Botschaft -->
-            <div class="mt-4 md:mt-6 max-w-2xl mx-auto">
-                <div class="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border border-yellow-500/30 rounded-xl p-3 md:p-4 text-center">
-                    <p class="text-yellow-300 text-xs md:text-sm font-semibold">
-                        <i class="fas fa-fire mr-2 animate-pulse"></i>
-                        <strong>Warum jetzt?</strong> Dauerhafter Zugang ohne Abos - Einmal zahlen, für immer Premium genießen!
-                    </p>
                 </div>
             </div>
         </div>
+
+        <!-- Stats & Progress -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Current Registrierungen -->
+            <div class="bg-[#1A1A25] rounded-xl p-6 border border-gray-700/30">
+                <div class="text-gray-400 text-sm mb-2">Aktuelle Registrierungen</div>
+                <div class="text-4xl font-bold text-white mb-2">0</div>
+                <div class="text-xs text-gray-500">durch deinen Link</div>
+            </div>
+
+            <!-- Nächster Rang -->
+            <div class="bg-[#1A1A25] rounded-xl p-6 border border-gray-700/30">
+                <div class="text-gray-400 text-sm mb-2">Nächster Rang</div>
+                <div class="text-2xl font-bold text-[#E638B5] mb-2">
+                    Premium                </div>
+                                <div class="text-xs text-gray-500">Noch 5 Registrierungen</div>
+                            </div>
+
+            <!-- Aktueller Rang -->
+            <div class="bg-[#1A1A25] rounded-xl p-6 border border-gray-700/30">
+                <div class="text-gray-400 text-sm mb-2">Dein Rang</div>
+                <div class="text-2xl font-bold text-white mb-2">
+                    Noch kein Rang                </div>
+                <div class="text-xs text-gray-500">
+                    Beginne jetzt!                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+                <div class="bg-[#1A1A25] rounded-xl p-6 border border-gray-700/30 mb-8">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-white font-semibold">Fortschritt zu Premium</span>
+                <span class="text-gray-400 text-sm">0 / 5</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
         
-                    <!-- Compact Rank Cards - Mobile Optimized -->
-            <div class="grid grid-cols-1  md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
-                                                        <div class="rank-card bg-[#1A1A25]/90 backdrop-blur-md rounded-xl overflow-hidden" style="border: 1px solid rgba(245, 158, 11, 0.3); box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5);">
-                    <!-- Compact Header -->
-                    <div class="p-4 md:p-5 relative" style="background: linear-gradient(to bottom right, rgba(120, 53, 15, 0.5), rgba(146, 64, 14, 0.3));">
-                        
-                        <div class="flex items-center gap-3 md:gap-4">
-                            <div class="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(to bottom right, #fbbf24, #d97706);">
-                                <i class="fas fa-star text-white text-xl md:text-2xl"></i>
-                                    </div>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="text-lg md:text-xl font-bold truncate" style="color: #fbbf24;">Premium</h3>
-                                                                    <div class="bg-green-500/20 border border-green-500/40 rounded-lg px-2 py-1 mb-2 inline-block">
-                                        <span class="text-green-300 text-xs font-bold">
-                                            <i class="fas fa-gift mr-1"></i>Neukunden-Rabatt: 20% gespart!
-                                        </span>
-                                    </div>
-                                                                <div class="flex items-baseline gap-1 mt-1">
-                                                                            <span class="text-sm text-gray-500 line-through">9,99€</span>
-                                                                        <span class="text-2xl md:text-3xl font-extrabold text-white">7,99</span>
-                                    <span class="text-gray-300 text-sm">€</span>
-                                </div>
-                                        </div>
-                                    </div>
-                                
-                                                        
-                        <!-- Rabatt Timer für Exklusiv und Supreme - Zählt bis Mitternacht -->
-                                                    </div>
-                            
-                    <!-- Compact Features - Always Visible but Compact -->
-                    <div class="p-4 md:p-5">
-                        <ul class="space-y-2 text-sm md:text-sm text-gray-300 mb-4">
-                                                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Premium-Bereich</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Discord (eingeschränkt)</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Zugang (3-6h)</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-robot text-cyan-400 text-sm w-4"></i><span><strong>2 Undress AI Tokens</strong></span></li>
-                                                                    </ul>
-                                
-                        <!-- Compact Payment Buttons -->
-                        <div class="space-y-2 mt-4">
-                                                                    <form method="post" action="" class="w-full">
-                                        <input type="hidden" name="selected_rank" value="premium">
-                                <button type="submit" name="purchase_rank" class="w-full py-4 md:py-3 px-4 text-white font-bold rounded-lg transition-all text-base md:text-sm shadow-lg hover:shadow-xl min-h-[44px] flex items-center justify-center" style="background: linear-gradient(to right, #f59e0b, #d97706); box-shadow: 0 10px 15px -3px #d9770630;" onmouseover="this.style.background='linear-gradient(to right, #fbbf24, #f59e0b)'; this.style.boxShadow='0 10px 15px -3px #d9770650';" onmouseout="this.style.background='linear-gradient(to right, #f59e0b, #d97706)'; this.style.boxShadow='0 10px 15px -3px #d9770630';">
-                                            <i class="fas fa-credit-card mr-2"></i>
-                                    Jetzt kaufen                                        </button>
-                                    </form>
-                                    <form method="post" action="" class="w-full">
-                                        <input type="hidden" name="selected_rank" value="premium">
-                                <button type="submit" name="purchase_rank_paypal" class="w-full py-3.5 md:py-2.5 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm md:text-sm min-h-[44px] flex items-center justify-center">
-                                            <i class="fab fa-paypal mr-2"></i>
-                                    PayPal
-                                        </button>
-                                    </form>
-                                                        </div>
+        <!-- Rang-Karten -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <!-- Premium -->
+            <div class="rank-card bg-[#1A1A25] rounded-xl p-6 border-2 border-gray-700">
+                <div class="text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
+                        <i class="fas fa-star text-white text-2xl"></i>
                     </div>
-                </div>
-                                                        <div class="rank-card bg-[#1A1A25]/90 backdrop-blur-md rounded-xl overflow-hidden" style="border: 1px solid rgba(59, 130, 246, 0.3); ">
-                    <!-- Compact Header -->
-                    <div class="p-4 md:p-5 relative" style="background: linear-gradient(to bottom right, rgba(30, 58, 138, 0.5), rgba(30, 64, 175, 0.3));">
-                                                <div class="absolute top-2 right-2">
-                            <span class="text-white text-xs font-bold py-1 px-3 rounded-full" style="background: linear-gradient(to right, #2563eb, #3b82f6);">
-                                <i class="fas fa-star mr-1"></i> Bestseller
-                            </span>
-                        </div>
-                        
-                        <div class="flex items-center gap-3 md:gap-4">
-                            <div class="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(to bottom right, #60a5fa, #2563eb);">
-                                <i class="fas fa-gem text-white text-xl md:text-2xl"></i>
-                                    </div>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="text-lg md:text-xl font-bold truncate" style="color: #60a5fa;">Exklusiv</h3>
-                                                                <div class="flex items-baseline gap-1 mt-1">
-                                                                            <span class="text-sm text-gray-500 line-through">29,99€</span>
-                                                                        <span class="text-2xl md:text-3xl font-extrabold text-white">24,99</span>
-                                    <span class="text-gray-300 text-sm">€</span>
-                                </div>
-                                        </div>
-                                    </div>
-                                
-                                                        
-                        <!-- Rabatt Timer für Exklusiv und Supreme - Zählt bis Mitternacht -->
-                                                <div class="mt-3 bg-red-500/20 border border-red-500/40 rounded-lg px-3 py-2 text-center" id="discount-timer-exklusiv">
-                            <div class="flex items-center justify-center gap-2 text-red-300 text-xs font-semibold">
-                                <i class="fas fa-clock animate-pulse"></i>
-                                <span>Rabatt nur noch für <span class="font-bold text-red-200" id="timer-exklusiv">--:--:--</span></span>
-                            </div>
-                        </div>
-                                                    </div>
-                            
-                    <!-- Compact Features - Always Visible but Compact -->
-                    <div class="p-4 md:p-5">
-                        <ul class="space-y-2 text-sm md:text-sm text-gray-300 mb-4">
-                                                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Alle Premium-Vorteile</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Direkter Zugang zu allen Inhalten</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Voller Discord-Zugang</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Zugang zum Privat Discord</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Zugang zum Privat Telegram</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>150GB Dropbox Links</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-robot text-cyan-400 text-sm w-4"></i><span><strong>10 Undress AI Tokens</strong></span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-gift text-purple-400 text-sm w-4"></i><span><strong>1 Zufälliges Paket</strong> aus dem Shop</span></li>
-                                                                    </ul>
-                                
-                        <!-- Compact Payment Buttons -->
-                        <div class="space-y-2 mt-4">
-                                                                    <form method="post" action="" class="w-full">
-                                        <input type="hidden" name="selected_rank" value="exklusiv">
-                                <button type="submit" name="purchase_rank" class="w-full py-4 md:py-3 px-4 text-white font-bold rounded-lg transition-all text-base md:text-sm shadow-lg hover:shadow-xl min-h-[44px] flex items-center justify-center" style="background: linear-gradient(to right, #3b82f6, #2563eb); box-shadow: 0 10px 15px -3px #2563eb30;" onmouseover="this.style.background='linear-gradient(to right, #60a5fa, #3b82f6)'; this.style.boxShadow='0 10px 15px -3px #2563eb50';" onmouseout="this.style.background='linear-gradient(to right, #3b82f6, #2563eb)'; this.style.boxShadow='0 10px 15px -3px #2563eb30';">
-                                            <i class="fas fa-credit-card mr-2"></i>
-                                    Jetzt kaufen                                        </button>
-                                    </form>
-                                    <form method="post" action="" class="w-full">
-                                        <input type="hidden" name="selected_rank" value="exklusiv">
-                                <button type="submit" name="purchase_rank_paypal" class="w-full py-3.5 md:py-2.5 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm md:text-sm min-h-[44px] flex items-center justify-center">
-                                            <i class="fab fa-paypal mr-2"></i>
-                                    PayPal
-                                        </button>
-                                    </form>
-                                                        </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Premium</h3>
+                    <div class="text-sm text-gray-400 mb-4">5 Registrierungen</div>
+                                        <div class="text-gray-500 text-sm">
+                        Noch 5 Registrierungen
                     </div>
-                </div>
-                                                        <div class="rank-card bg-[#1A1A25]/90 backdrop-blur-md rounded-xl overflow-hidden" style="border: 1px solid rgba(139, 92, 246, 0.3); ">
-                    <!-- Compact Header -->
-                    <div class="p-4 md:p-5 relative" style="background: linear-gradient(to bottom right, rgba(88, 28, 135, 0.5), rgba(107, 33, 168, 0.3));">
-                                                <div class="absolute top-2 right-2">
-                            <span class="text-white text-xs font-bold py-1 px-3 rounded-full" style="background: linear-gradient(to right, #7c3aed, #8b5cf6);">
-                                <i class="fas fa-crown mr-1"></i> Bester Rang
-                            </span>
                                     </div>
-                                
-                        <div class="flex items-center gap-3 md:gap-4">
-                            <div class="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(to bottom right, #a78bfa, #7c3aed);">
-                                <i class="fas fa-crown text-white text-xl md:text-2xl"></i>
-                                    </div>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="text-lg md:text-xl font-bold truncate" style="color: #a78bfa;">Supreme</h3>
-                                                                <div class="flex items-baseline gap-1 mt-1">
-                                                                            <span class="text-sm text-gray-500 line-through">99,99€</span>
-                                                                        <span class="text-2xl md:text-3xl font-extrabold text-white">49,99</span>
-                                    <span class="text-gray-300 text-sm">€</span>
-                                </div>
-                                        </div>
-                                    </div>
-                                
-                                                        
-                        <!-- Rabatt Timer für Exklusiv und Supreme - Zählt bis Mitternacht -->
-                                                <div class="mt-3 bg-red-500/20 border border-red-500/40 rounded-lg px-3 py-2 text-center" id="discount-timer-supreme">
-                            <div class="flex items-center justify-center gap-2 text-red-300 text-xs font-semibold">
-                                <i class="fas fa-clock animate-pulse"></i>
-                                <span>Rabatt nur noch für <span class="font-bold text-red-200" id="timer-supreme">--:--:--</span></span>
-                            </div>
-                        </div>
-                                                    </div>
-                            
-                    <!-- Compact Features - Always Visible but Compact -->
-                    <div class="p-4 md:p-5">
-                        <ul class="space-y-2 text-sm md:text-sm text-gray-300 mb-4">
-                                                                    <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Alle Vorteile von Exklusiv & Premium</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Exklusive Supreme-Inhalte</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Dauerhafter Zugang zum Amateur Bereich</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Voller Zugang zum BBC Bereich</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Voller Zugang zum PornTok Bereich</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Privat Supreme-Bereich</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Einzigartiger Rang im Discord</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-bolt text-purple-400 text-sm w-4"></i><span>Wünsche werden sofort angenommen</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Unbegrenzte Anzahl an Wünschen</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Zugang zu Supreme Posts</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Download Funktion der Posts</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>CustomDL Download-Funktion</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>1TB Dropbox Links</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Zugang zu TeenLeaks Bereich</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Zugang zu Undress KI-Tool</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-green-400 text-sm w-4"></i><span>Prioritäts-Support im Discord</span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-robot text-cyan-400 text-sm w-4"></i><span><strong>25 Undress AI Tokens</strong></span></li>
-                                <li class="flex items-center gap-2"><i class="fas fa-coins text-yellow-400 text-sm w-4"></i><span><strong>1 Zufälliges Shop-Paket gratis</strong></span></li>
-                                                                    </ul>
-                                
-                        <!-- Compact Payment Buttons -->
-                        <div class="space-y-2 mt-4">
-                                                                    <form method="post" action="" class="w-full">
-                                        <input type="hidden" name="selected_rank" value="supreme">
-                                <button type="submit" name="purchase_rank" class="w-full py-4 md:py-3 px-4 text-white font-bold rounded-lg transition-all text-base md:text-sm shadow-lg hover:shadow-xl min-h-[44px] flex items-center justify-center" style="background: linear-gradient(to right, #8b5cf6, #7c3aed); box-shadow: 0 10px 15px -3px #7c3aed30;" onmouseover="this.style.background='linear-gradient(to right, #a78bfa, #8b5cf6)'; this.style.boxShadow='0 10px 15px -3px #7c3aed50';" onmouseout="this.style.background='linear-gradient(to right, #8b5cf6, #7c3aed)'; this.style.boxShadow='0 10px 15px -3px #7c3aed30';">
-                                            <i class="fas fa-credit-card mr-2"></i>
-                                    Jetzt kaufen                                        </button>
-                                    </form>
-                                    <form method="post" action="" class="w-full">
-                                        <input type="hidden" name="selected_rank" value="supreme">
-                                <button type="submit" name="purchase_rank_paypal" class="w-full py-3.5 md:py-2.5 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm md:text-sm min-h-[44px] flex items-center justify-center">
-                                            <i class="fab fa-paypal mr-2"></i>
-                                    PayPal
-                                        </button>
-                                    </form>
-                                                        </div>
+            </div>
+
+            <!-- Exklusiv -->
+            <div class="rank-card bg-[#1A1A25] rounded-xl p-6 border-2 border-gray-700">
+                <div class="text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                        <i class="fas fa-gem text-white text-2xl"></i>
                     </div>
-                </div>
-                            </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Exklusiv</h3>
+                    <div class="text-sm text-gray-400 mb-4">25 Registrierungen</div>
+                                        <div class="text-gray-500 text-sm">
+                        Noch 25 Registrierungen
+                    </div>
+                                    </div>
+            </div>
+
+            <!-- Supreme -->
+            <div class="rank-card bg-[#1A1A25] rounded-xl p-6 border-2 border-gray-700">
+                <div class="text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                        <i class="fas fa-crown text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Supreme</h3>
+                    <div class="text-sm text-gray-400 mb-4">50 Registrierungen</div>
+                                        <div class="text-gray-500 text-sm">
+                        Noch 50 Registrierungen
+                    </div>
+                                    </div>
+            </div>
+        </div>
+
+        <!-- Hinweis zu Supreme-Vorteilen (nur für User ohne Supreme) -->
+                <div class="bg-[#1A1A25]/50 rounded-lg p-4 mb-8 border border-gray-700/20 text-center">
+            <p class="text-xs text-gray-400">
+                ✨ Plus: Ab Supreme verdienst du 1€ pro Registrierung + 20% aller Käufe deiner geworbenen User!
+            </p>
+        </div>
         
-            <!-- Compact Trust Indicators -->
-            <div class="max-w-4xl mx-auto mt-6 md:mt-8">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 text-center">
-                    <div class="bg-[#1A1A25]/50 rounded-lg p-3 border border-gray-700/30">
-                        <i class="fas fa-shield-alt text-green-400 text-xl mb-1"></i>
-                        <p class="text-xs text-gray-300">100% sicher</p>
+        <!-- Extra Earnings (über 50) -->
+        
+        <!-- CTA: Direkter Kauf -->
+        <div class="bg-gradient-to-r from-[#E638B5]/20 to-[#9333EA]/20 border-2 border-[#E638B5]/50 rounded-2xl p-8 mb-8 text-center">
+            <h2 class="text-3xl font-bold text-white mb-4">
+                <i class="fas fa-bolt text-yellow-400 mr-2"></i>
+                Keine Lust zu warten?
+            </h2>
+            <p class="text-gray-300 text-lg mb-6 max-w-2xl mx-auto">
+                Du kannst dir auch jetzt sofort den Premium-Zugang sichern – ohne auf Registrierungen zu warten!
+                <br>
+                <span class="text-white font-semibold">Sofortige Aktivierung • Dauerhafter Zugang • Keine Abos</span>
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a 
+                    href="/rank_upgrade" 
+                    class="px-8 py-4 bg-gradient-to-r from-[#E638B5] to-[#9333EA] rounded-full text-white font-bold text-lg hover:from-[#d033a3] hover:to-[#7928ca] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 transform flex items-center justify-center gap-2"
+                >
+                    <i class="fas fa-shopping-cart"></i>
+                    Jetzt Premium kaufen
+                </a>
+                <a 
+                    href="/noaccess" 
+                    class="px-8 py-4 bg-white/10 backdrop-blur-sm rounded-full text-white font-semibold hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                    Pakete vergleichen
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <p class="text-sm text-gray-400 mt-4">
+                <i class="fas fa-info-circle mr-1"></i>
+                Oder sammle weiter Registrierungen – beide Wege führen zum Ziel!
+            </p>
+        </div>
+
+        <!-- How it works -->
+        <div class="bg-[#1A1A25] rounded-2xl p-8 border border-gray-700/30">
+            <h2 class="text-2xl font-bold text-white mb-6 text-center">
+                <i class="fas fa-question-circle text-[#E638B5] mr-2"></i>
+                So funktioniert's
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#E638B5] to-[#9333EA] flex items-center justify-center text-white font-bold text-xl">
+                        1
                     </div>
-                    <div class="bg-[#1A1A25]/50 rounded-lg p-3 border border-gray-700/30">
-                        <i class="fas fa-bolt text-yellow-400 text-xl mb-1"></i>
-                        <p class="text-xs text-gray-300">Sofort aktiv</p>
+                    <h3 class="text-lg font-semibold text-white mb-2">Link teilen</h3>
+                    <p class="text-gray-400 text-sm">Kopiere deinen persönlichen Link und teile ihn überall</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#E638B5] to-[#9333EA] flex items-center justify-center text-white font-bold text-xl">
+                        2
                     </div>
-                    <div class="bg-[#1A1A25]/50 rounded-lg p-3 border border-gray-700/30">
-                        <i class="fas fa-infinity text-purple-400 text-xl mb-1"></i>
-                        <p class="text-xs text-gray-300">Dauerhaft</p>
+                    <h3 class="text-lg font-semibold text-white mb-2">Freunde registrieren</h3>
+                    <p class="text-gray-400 text-sm">Jede Registrierung über deinen Link wird automatisch gezählt</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#E638B5] to-[#9333EA] flex items-center justify-center text-white font-bold text-xl">
+                        3
                     </div>
-                    <div class="bg-[#1A1A25]/50 rounded-lg p-3 border border-gray-700/30">
-                        <i class="fas fa-headset text-blue-400 text-xl mb-1"></i>
-                        <p class="text-xs text-gray-300">Support</p>
+                    <h3 class="text-lg font-semibold text-white mb-2">Rang freischalten</h3>
+                    <p class="text-gray-400 text-sm">Bei 5/25/50 Registrierungen wird dein Rang freigeschaltet</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#E638B5] to-[#9333EA] flex items-center justify-center text-white font-bold text-xl">
+                        4
                     </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Genießen</h3>
+                    <p class="text-gray-400 text-sm">Sofortiger Zugriff auf alle Premium-Inhalte – für immer!</p>
                 </div>
             </div>
-            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyReflink() {
+    var input = document.getElementById('reflinkInput');
+    input.select();
+    input.setSelectionRange(0, 99999);
+    document.execCommand('copy');
     
-    <script>
-                
-        // Rabatt Timer - Zählt bis Mitternacht runter
-        function initDiscountTimers() {
-            const timers = {};
-            
-            // Berechne Zeit bis Mitternacht
-            function getTimeUntilMidnight() {
-                const now = new Date();
-                const midnight = new Date();
-                midnight.setHours(24, 0, 0, 0); // Nächste Mitternacht
-                
-                const diff = midnight - now;
-                const totalSeconds = Math.floor(diff / 1000);
-                const hours = Math.floor(totalSeconds / 3600);
-                const minutes = Math.floor((totalSeconds % 3600) / 60);
-                const seconds = totalSeconds % 60;
-                
-                return { hours, minutes, seconds, totalSeconds };
-            }
-            
-            function updateTimer(rankKey) {
-                const timer = timers[rankKey];
-                if (!timer || !timer.element) return;
-                
-                const timeLeft = getTimeUntilMidnight();
-                
-                // Wenn Mitternacht erreicht, starte wieder bei 24h
-                if (timeLeft.totalSeconds <= 0) {
-                    timer.element.textContent = '24:00:00';
-                    return;
-                }
-                
-                // Formatiere als HH:MM:SS
-                const hoursStr = String(timeLeft.hours).padStart(2, '0');
-                const minutesStr = String(timeLeft.minutes).padStart(2, '0');
-                const secondsStr = String(timeLeft.seconds).padStart(2, '0');
-                timer.element.textContent = hoursStr + ':' + minutesStr + ':' + secondsStr;
-            }
-            
-                        const exklusivTimer = document.getElementById('timer-exklusiv');
-            if (exklusivTimer) {
-                timers['exklusiv'] = { element: exklusivTimer };
-                updateTimer('exklusiv'); // Initiale Anzeige
-            }
-                        
-                        const supremeTimer = document.getElementById('timer-supreme');
-            if (supremeTimer) {
-                timers['supreme'] = { element: supremeTimer };
-                updateTimer('supreme'); // Initiale Anzeige
-            }
-                        
-            // Update alle Timer jede Sekunde
-            setInterval(function() {
-                Object.keys(timers).forEach(function(rankKey) {
-                    updateTimer(rankKey);
-                });
-            }, 1000);
-        }
-        
-        // Starte Timer wenn Seite geladen ist
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initDiscountTimers);
-        } else {
-            initDiscountTimers();
-        }
-    </script>
-</body>
+    // Tracking: Kopieren-Button Klick
+    fetch('/api/track_referral_event.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'event_type=copy_button_click'
+    }).catch(err => console.error('Tracking error:', err));
+    
+    // Feedback
+    var btn = event.target.closest('button');
+    var originalHTML = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> Kopiert!';
+    btn.classList.add('bg-green-500');
+    btn.classList.remove('bg-gradient-to-r');
+    
+    setTimeout(function() {
+        btn.innerHTML = originalHTML;
+        btn.classList.remove('bg-green-500');
+        btn.classList.add('bg-gradient-to-r');
+    }, 2000);
+}
+</script>
+
     </div> <!-- End main-content -->
 
     <footer class="footer flex justify-center items-center p-4 text-neutral-content mt-8 w-full">
@@ -2029,7 +2001,7 @@
         },
     });
 </script>                     
-    <script src="./assets/js/main.js?v=1770682905"></script>
+    <script src="./assets/js/main.js?v=1770765208"></script>
 
     <!-- Debug Flowbite Dropdowns -->
     <script>
@@ -2094,4 +2066,4 @@
 
 </body>
 </html>
-</html> 
+
