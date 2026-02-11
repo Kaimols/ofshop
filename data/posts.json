@@ -19,10 +19,19 @@
       "/uploads/414/file_672c0ea41317c.jpg",
       "/uploads/414/file_672c0ea43166c.jpg",
       "/uploads/414/file_672c0ea417121.jpg",
-      "/uploads/414/thumb_672c0ea1e9642.jpg"
+      "/uploads/414/thumb_672c0ea1e9642.jpg",
+      "/uploads/414/default_video_thumbnail.jpg"
     ],
     "videos": [
-        "./uploads/414/default_video_thumbnail.jpg"
+        "/uploads/414/file_672c0ea43e2b3.mp4",
+        "/uploads/414/file_672c0ea43aac1.mp4",
+        "/uploads/414/file_672c0ea43826e.mp4",
+        "/uploads/414/file_672c0ea43467e.mp4",
+        "/uploads/414/file_672c0ea3d8630.mp4",
+        "/uploads/414/file_672c0ea2b1c1c.mp4",
+        "/uploads/414/file_672c0ea213386.mp4",
+        "/uploads/414/file_672c0ea216e97.mp4",
+        "/uploads/414/file_672c0ea1f148a.mp4"
     ]
   }
 ]

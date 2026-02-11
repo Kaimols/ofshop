@@ -27,11 +27,6 @@
     }
   </script>
 
-    <link rel="stylesheet" href="./assets/vendor/toastify/toastify.min.css" />
-    <script src="./assets/vendor/fontawesome/3dc1b48f3d.js"></script>
-    <link rel="stylesheet" href="./assets/vendor/sweetalert/borderless.min.css" />
-    <script src="./assets/vendor/sweetalert/sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="./assets/vendor/fancybox/fancybox.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1158,19 +1153,6 @@
     <div class="main-content" id="mainContent">
 
     <script>
-        // Tracking für Referral Sidebar-Klicks
-        function trackReferralSidebarClick(event) {
-            // Tracking asynchron senden (blockiert Navigation nicht)
-            fetch('/api/track_referral_event.php', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: 'event_type=sidebar_click',
-                keepalive: true
-            }).catch(err => console.error('Tracking error:', err));
-            
-            // Navigation normal weiterleiten
-            // event.preventDefault() wird NICHT aufgerufen, damit der Link normal funktioniert
-        }
         
         // Sidebar Toggle
         const sidebar = document.getElementById('sidebar');
@@ -1307,7 +1289,6 @@
 
                     searchTimeout = setTimeout(() => {
                         const xhr = new XMLHttpRequest();
-                        xhr.open('POST', 'search_suggestions.php', true);
                         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
                         xhr.onload = function() {
@@ -1435,19 +1416,6 @@
             }
         }
         
-        function loadNotifications() {
-            fetch('/api/get_notifications.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        updateNotificationBadge(data.unread_count);
-                        renderNotifications(data.notifications);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading notifications:', error);
-                });
-        }
         
         function updateNotificationBadge(count) {
             const mobileBadge = document.getElementById('mobileNotificationBadge');
@@ -1515,115 +1483,6 @@
                 'default': 'fas fa-bell'
             };
             return icons[type] || icons['default'];
-        }
-        
-        function handleNotificationClick(notificationId, link) {
-            // Markiere als gelesen
-            fetch('/api/mark_notification_read.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `notification_id=${notificationId}`
-            });
-            
-            // Schließe Dropdown
-            document.querySelectorAll('.notification-dropdown').forEach(d => d.classList.remove('show'));
-            
-            // Navigiere zur Link-Zielseite
-            if (link) {
-                window.location.href = link;
-            } else {
-                // Fallback: Gehe zu CustomDL
-                window.location.href = '/customdl.php';
-            }
-            
-            // Aktualisiere Badge
-            setTimeout(() => {
-                loadNotifications();
-            }, 500);
-        }
-        
-        function markAllNotificationsAsRead() {
-            fetch('/api/mark_all_notifications_read.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    loadNotifications();
-                }
-            })
-            .catch(error => {
-                console.error('Error marking all as read:', error);
-            });
-        }
-
-        function deleteAllNotifications() {
-            if (!confirm('Möchtest du wirklich alle Benachrichtigungen löschen?')) {
-                return;
-            }
-            
-            fetch('/api/delete_all_notifications.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    loadNotifications();
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting all notifications:', error);
-            });
-        }
-
-        function markNotificationAsRead(notificationId, event) {
-            event.stopPropagation();
-            
-            fetch('/api/mark_notification_read.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `notification_id=${notificationId}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    loadNotifications();
-                }
-            })
-            .catch(error => {
-                console.error('Error marking notification as read:', error);
-            });
-        }
-
-        function deleteNotification(notificationId, event) {
-            event.stopPropagation();
-            
-            fetch('/api/delete_notification.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `notification_id=${notificationId}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    loadNotifications();
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting notification:', error);
-            });
         }
         
         function escapeHtml(text) {
@@ -2018,7 +1877,6 @@
     }
 }
 </style>
-</style>
 
 <div id="top"></div>
 
@@ -2137,11 +1995,11 @@
     <div class="max-w-7xl mx-auto px-4 pb-8">
                     <div class="media-grid">
                                                         <div class="media-card" style="animation-delay: 0s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea43e2b3.mp4" 
+                        <a href="./uploads/414/file_672c0ea43e2b3.mp4" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/default_video_thumbnail.jpg" 
+                                                            <img data-src="./uploads/414/default_video_thumbnail.jpg" 
                                      alt="Video" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2168,7 +2026,7 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.05s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea43aac1.mp4" 
+                        <a href="./uploads/414/file_672c0ea43aac1.mp4" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
@@ -2199,7 +2057,7 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.1s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea43826e.mp4" 
+                        <a href="./uploads/414/file_672c0ea43826e.mp4" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
@@ -2230,7 +2088,7 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.15s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea43467e.mp4" 
+                        <a href="./uploads/414/file_672c0ea43467e.mp4" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
@@ -2261,11 +2119,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.2s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea43166c.jpg" 
+                        <a href="./uploads/414/file_672c0ea43166c.jpg" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea43166c.jpg" 
+                                                            <img data-src="./uploads/414/file_672c0ea43166c.jpg" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2277,11 +2135,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.25s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea42dbfd.jpg" 
+                        <a href="./uploads/414/file_672c0ea42dbfd.jpg" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea42dbfd.jpg" 
+                                                            <img data-src="./uploads/414/file_672c0ea42dbfd.jpg" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2293,11 +2151,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.3s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea42aec3.jpg" 
+                        <a href="./uploads/414/file_672c0ea42aec3.jpg" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea42aec3.jpg" 
+                                                            <img data-src="./uploads/414/file_672c0ea42aec3.jpg" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2309,11 +2167,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.35s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea426a84.jpg" 
+                        <a href="./uploads/414/file_672c0ea426a84.jpg" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea426a84.jpg" 
+                                                            <img data-src="./uploads/414/file_672c0ea426a84.jpg" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2325,11 +2183,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.4s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea421e77.jpg" 
+                        <a href="./uploads/414/file_672c0ea421e77.jpg" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea421e77.jpg" 
+                                                            <img data-src="./uploads/414/file_672c0ea421e77.jpg" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2341,11 +2199,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.45s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea41e595.jpg" 
+                        <a href="./uploads/414/file_672c0ea41e595.jpg" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea41e595.jpg" 
+                                                            <img data-src="./uploads/414/file_672c0ea41e595.jpg" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2357,11 +2215,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea41b3c8.jpg" 
+                        <a href="./uploads/414/file_672c0ea41b3c8.jpg" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea41b3c8.jpg" 
+                                                            <img data-src="./uploads/414/file_672c0ea41b3c8.jpg" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2373,11 +2231,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.05s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea417121.jpg" 
+                        <a href="./uploads/414/file_672c0ea417121.jpg" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea417121.jpg" 
+                                                            <img data-src="./uploads/414/file_672c0ea417121.jpg" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2389,11 +2247,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.1s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea41317c.jpg" 
+                        <a href="./uploads/414/file_672c0ea41317c.jpg" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea41317c.jpg" 
+                                                            <img data-src="./uploads/414/file_672c0ea41317c.jpg" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2405,11 +2263,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.15s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea40f076.jpg" 
+                        <a href="./uploads/414/file_672c0ea40f076.jpg" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea40f076.jpg" 
+                                                            <img data-src="./uploads/414/file_672c0ea40f076.jpg" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2421,11 +2279,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.2s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea40b509.png" 
+                        <a href="./uploads/414/file_672c0ea40b509.png" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/posts/post_414/file_672c0ea40b509.png" 
+                                                            <img data-src="./uploads/414/file_672c0ea40b509.png" 
                                      alt="Bild" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2437,11 +2295,11 @@
                         </a>
                     </div>
                                                         <div class="media-card" style="animation-delay: 0.25s;">
-                        <a href="./uploads/posts/post_414/file_672c0ea3db687.mp4" 
+                        <a href="./uploads/414/file_672c0ea3db687.mp4" 
                            data-fancybox="gallery-414" 
                            data-caption="Fabienne">
                             
-                                                            <img data-src="./uploads/default_video_thumbnail.jpg" 
+                                                            <img data-src="./uploads/414/default_video_thumbnail.jpg" 
                                      alt="Video" 
                                      class="lazy-img"
                                      loading="lazy"
@@ -2470,18 +2328,23 @@
                             </div>
         
         <!-- Pagination -->
-                    <div class="pagination-modern mt-10 mb-6">
-                
-                <a href="gallery.php?post_id=414&page=1&sort=uploaded_at_desc#top" class="page-btn active">1</a><a href="gallery.php?post_id=414&page=2&sort=uploaded_at_desc#top" class="page-btn ">2</a>
-                                    <a href="gallery.php?post_id=414&page=2&sort=uploaded_at_desc#top" 
-                       class="page-btn nav">
-                        <span class="hidden sm:inline">Weiter</span>
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </a>
-                            </div>
-            </div>
+<div class="pagination-modern mt-10 mb-6">
+
+  <a href="gallery.html?post_id=414&page=1&sort=uploaded_at_desc#top"
+     class="page-btn active">1</a>
+
+  <a href="gallery.html?post_id=414&page=2&sort=uploaded_at_desc#top"
+     class="page-btn">2</a>
+
+  <a href="gallery.html?post_id=414&page=2&sort=uploaded_at_desc#top"
+     class="page-btn nav">
+    <span class="hidden sm:inline">Weiter</span>
+    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </a>
+
+</div>
 
     <!-- Progress Modal -->
     <div id="progressModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
@@ -2556,95 +2419,28 @@
     </div>
 </div>
 
-    </div> <!-- End main-content -->
+    </div> <!-- Untere Leiste -->
 
     <footer class="footer flex justify-center items-center p-4 text-neutral-content mt-8 w-full">
         <div class="flex items-center space-x-4">
             <a class="text-lg font-bold text-white" href="/">🎀 • OFLeaks.tv</a>
             <span class="border-l border-gray-400 h-6 mx-2"></span>
-            <a href="https://discord.celebroom.de" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Discord">
-                <i class="fab fa-discord fa-lg"></i>
-                <span class="sr-only">Discord</span>
-            </a>
-            <a href="https://ofleaks.tv/shop" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Shop">
+            <a 
+    href="#"
+    onclick="return false;"
+    class="text-white hover:text-[#E638B5] transition-colors duration-300"
+    aria-label="Discord"
+>
+    <i class="fab fa-discord fa-lg"></i>
+    <span class="sr-only">Discord</span>
+</a>
+            <a href="rankupgrade.html" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Shop">
                 <i class="fa fa-shopping-cart fa-lg"></i>
                 <span class="sr-only">Shop</span>
             </a>
         </div>
     </footer>
-
-    <!-- Popup Include -->
-    
-    <script type="text/javascript" src="./assets/vendor/toastify/toastify.min.js"></script>
-    <script src="./assets/vendor/flowbite/flowbite.min.js"></script>
-    <script src="./assets/vendor/fancybox/fancybox.umd.js"></script>
-
-<!-- Fancybox CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
-
-<!-- lozad.js -->
-<script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
-<!-- Fancybox JS -->
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
-<script>
-    // Initialize lozad
-    const observer = lozad(); // lazy loads elements with default selector as '.lozad'
-    observer.observe();
-
-    // Initialize Fancybox
-    Fancybox.bind("[data-fancybox]", {
-        // Globale Einstellungen
-        Toolbar: {
-            display: [
-                "close",
-                "prev",
-                "next",
-                "download",
-                "fullscreen",
-                "zoom",
-                "slideshow",
-                "thumbs"
-            ],
-        },
-        // Spezifische Einstellungen für Videos
-        Video: {
-            autoStart: false, // Stelle sicher, dass Videos nicht automatisch starten
-            preventCaptionOverlap: false,
-            idleTime: false,
-            clickToPlay: true,
-            loop: false,
-            // Weitere Video-spezifische Optionen
-        },
-    });
-
-    </div> <!-- End main-content -->
-
-    <footer class="footer flex justify-center items-center p-4 text-neutral-content mt-8 w-full">
-        <div class="flex items-center space-x-4">
-            <a class="text-lg font-bold text-white" href="/">🎀 • OFLeaks.tv</a>
-            <span class="border-l border-gray-400 h-6 mx-2"></span>
-            <a href="https://discord.celebroom.de" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Discord">
-                <i class="fab fa-discord fa-lg"></i>
-                <span class="sr-only">Discord</span>
-            </a>
-            <a href="https://ofleaks.tv/shop" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Shop">
-                <i class="fa fa-shopping-cart fa-lg"></i>
-                <span class="sr-only">Shop</span>
-            </a>
-        </div>
-    </footer>
-
-    <!-- Popup Include -->
-    
-    <script type="text/javascript" src="./assets/vendor/toastify/toastify.min.js"></script>
-    <script src="./assets/vendor/flowbite/flowbite.min.js"></script>
-
-<script>
-    // Initialize lozad
-    const observer = lozad(); // lazy loads elements with default selector as '.lozad'
-    observer.observe();
-    
-</script>                     
+                   
     <!-- <script src="./assets/js/main.js?v=1770682271"></script> -->
 
     <!-- Debug Flowbite Dropdowns -->
@@ -2747,115 +2543,186 @@
 	// ]]>
 </script>
 
-<!-- ✅ GALLERY SCRIPT -->
 <script>
-  const byId = (id) => document.getElementById(id);
-  const params = new URLSearchParams(location.search);
-  const postId = Number(params.get("post_id"));
-
-  let post = null;
-  let sortMode = "newest";
-  let page = 1;
-  const perPage = 25;
-
-  function setActive(btnId) {
-    ["sortNewest","sortImages","sortVideos"].forEach(id => byId(id)?.classList.remove("active"));
-    byId(btnId)?.classList.add("active");
+  function loadNotifications() {
+    updateNotificationBadge(0);
+    renderNotifications([]);
   }
-
-  function buildMediaList() {
-    const imgs = (post?.images || []).map(src => ({ type:"image", src }));
-    const vids = (post?.videos || []).map(src => ({ type:"video", src }));
-    if (sortMode === "images") return [...imgs, ...vids];
-    if (sortMode === "videos") return [...vids, ...imgs];
-    return [...imgs, ...vids];
-  }
-
-  function render() {
-    const all = buildMediaList();
-    const totalPages = Math.max(1, Math.ceil(all.length / perPage));
-    page = Math.min(page, totalPages);
-
-    const slice = all.slice((page-1)*perPage, (page-1)*perPage + perPage);
-    const grid = byId("grid");
-    if (!grid) return;
-
-    grid.innerHTML = "";
-    const group = `post-${postId}`;
-
-    slice.forEach(item => {
-      if (item.type === "image") {
-        grid.insertAdjacentHTML("beforeend", `
-  <a class="media-card block" href="${item.src}" data-fancybox="${group}">
-    <img src="${item.src}" alt=""
-         onload="this.closest('.media-card').classList.add('loaded')">
-    <div class="skeleton"></div>
-  </a>
-`);
-      } else {
-        grid.insertAdjacentHTML("beforeend", `
-          <a class="media-card block" href="${item.src}" data-fancybox="${group}" data-type="video">
-            <div class="video-badge"><i class="fas fa-play"></i> VIDEO</div>
-            <div class="play-button">▶</div>
-          </a>
-        `);
-      }
-    });
-
-    byId("pageInfo").textContent = `Seite ${page} von ${totalPages}`;
-
-    byId("prevBtn")?.toggleAttribute("disabled", page <= 1);
-    byId("nextBtn")?.toggleAttribute("disabled", page >= totalPages);
-
-    Fancybox.bind("[data-fancybox]", {
-      Toolbar: { display: ["close","prev","next","zoom","fullscreen","thumbs"] },
-      Thumbs: { autoStart: true },
-      Video: { autoStart: false }
-    });
-  }
-
-  async function load() {
-    console.log("✅ GALLERY SCRIPT LOADED");
-    console.log("URL:", location.href);
-    console.log("postId:", postId);
-
-    if (!postId) return console.warn("❌ Keine post_id in der URL!");
-
-    const res = await fetch("./data/posts.json", { cache:"no-store" });
-    console.log("posts.json status:", res.status);
-
-    const posts = await res.json();
-    post = posts.find(p => Number(p.id) === postId);
-
-    console.log("found post:", post);
-    if (!post) return console.warn("❌ Post nicht gefunden:", postId);
-
-    document.title = `Gallery – ${post.title || "Post"}`;
-    byId("title").textContent = post.title || "Post";
-    byId("catEmoji").textContent = post.category_emoji || "📁";
-    byId("catLabel").textContent = post.category_label || post.category || "Kategorie";
-
-    const imgs = post.images || [];
-    const vids = post.videos || [];
-
-    byId("imgCount").textContent = imgs.length;
-    byId("vidCount").textContent = vids.length;
-    byId("likes").textContent = post.likes ?? 0;
-
-    if (imgs[0]) byId("cover").innerHTML = `<img src="${imgs[0]}" class="w-full h-full object-cover" alt="">`;
-
-    render();
-  }
-
-  byId("sortNewest")?.addEventListener("click", () => { sortMode="newest"; page=1; setActive("sortNewest"); render(); });
-  byId("sortImages")?.addEventListener("click", () => { sortMode="images"; page=1; setActive("sortImages"); render(); });
-  byId("sortVideos")?.addEventListener("click", () => { sortMode="videos"; page=1; setActive("sortVideos"); render(); });
-
-  byId("prevBtn")?.addEventListener("click", () => { if (page>1) { page--; render(); }});
-  byId("nextBtn")?.addEventListener("click", () => { page++; render(); });
-
-  document.addEventListener("DOMContentLoaded", () => load().catch(console.error));
+  function markAllNotificationsAsRead() { loadNotifications(); }
+  function deleteAllNotifications() { loadNotifications(); }
+  function handleNotificationClick(id, link) { if (link) window.location.href = link; }
+  function markNotificationAsRead(id, e) { e?.stopPropagation(); loadNotifications(); }
+  function deleteNotification(id, e) { e?.stopPropagation(); loadNotifications(); }
 </script>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const observer = lozad('.lazy-img', {
+      loaded: (el) => {
+        el.closest('.media-card')?.classList.add('loaded');
+        el.classList.add('loaded');
+      }
+    });
+    observer.observe();
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".lazy-img").forEach((img) => {
+      const markLoaded = () => {
+        img.classList.add("loaded");
+        img.closest(".media-card")?.classList.add("loaded");
+      };
+
+      img.addEventListener("load", markLoaded);
+      img.addEventListener("error", () => {
+        markLoaded();
+      });
+
+      if (img.complete && img.naturalWidth > 0) markLoaded();
+    });
+  });
+</script>
+<script>
+(() => {
+  // Querystring helper
+  function qs(name, fallback = null) {
+    const value = new URLSearchParams(window.location.search).get(name);
+    return value ?? fallback;
+  }
+
+  // Falls JSON mal nur "file.jpg" liefert -> in uploads/postId/ legen
+  function normalizeUrl(raw, postId) {
+    if (!raw) return "";
+    const s = String(raw);
+
+    // schon absolut/relativ korrekt?
+    if (
+      s.startsWith("http://") ||
+      s.startsWith("https://") ||
+      s.startsWith("./") ||
+      s.startsWith("/")
+    ) {
+      return s;
+    }
+
+    // nur Dateiname => in uploads/postId/ legen
+    return `./uploads/${postId}/${s}`;
+  }
+
+  const PER_PAGE = 15;
+
+  async function initGalleryFromJson() {
+    try {
+      const postId = qs("post_id", "414");
+      const page = parseInt(qs("page", "1"), 10) || 1;
+
+      console.log("postId =", postId, "page =", page);
+
+      const res = await fetch("./data/posts.json", { cache: "no-store" });
+      console.log("json status =", res.status);
+
+      if (!res.ok) {
+        console.error("❌ posts.json nicht ladbar:", res.status, res.statusText);
+        return;
+      }
+
+      const data = await res.json();
+      const postsArr = Array.isArray(data) ? data : (data.posts || []);
+      console.log("postsArr length =", postsArr.length);
+
+      const post = postsArr.find(p => String(p.id) === String(postId));
+      if (!post) {
+        console.warn("❌ Post nicht gefunden:", postId);
+        return;
+      }
+
+      // ✅ Kombinieren (aus deinem JSON: images + videos)
+      const images = post.images || [];
+      const videos = post.videos || [];
+
+      const media = [
+        ...videos.map(v => ({ type: "video", url: v })),
+        ...images.map(i => ({ type: "image", url: i })),
+      ];
+
+      console.log("media length =", media.length);
+
+      const totalPages = Math.max(1, Math.ceil(media.length / PER_PAGE));
+      const safePage = Math.min(Math.max(page, 1), totalPages);
+      const start = (safePage - 1) * PER_PAGE;
+      const slice = media.slice(start, start + PER_PAGE);
+
+      const galleryGrid = document.querySelector(".media-grid");
+      if (!galleryGrid) {
+        console.warn("❌ Grid .media-grid nicht gefunden");
+        return;
+      }
+
+      // Optional: Titel setzen
+      const titleEl = document.querySelector(".hero-title");
+      if (titleEl && post.title) titleEl.textContent = post.title;
+
+      // ✅ Render
+      galleryGrid.innerHTML = slice.map((m) => {
+        const url = normalizeUrl(m.url, postId);
+        const isVideo = m.type === "video";
+
+        // ✅ Thumbnail: nimm DEIN existierendes Thumbnail
+        const thumb = isVideo ? "./uploads/414/default_video_thumbnail.jpg" : url;
+
+        return `
+          <div class="media-card">
+            <a href="${url}"
+               data-fancybox="gallery-${postId}"
+               data-caption="${(post.title || "").replaceAll('"', "&quot;")}">
+
+              <img data-src="${thumb}" class="lazy-img" loading="lazy" decoding="async" alt="">
+              <div class="skeleton"></div>
+
+              ${isVideo ? `
+                <div class="video-badge">VIDEO</div>
+                <div class="play-button">▶</div>
+              ` : ""}
+
+              <div class="media-overlay"></div>
+            </a>
+          </div>
+        `;
+      }).join("");
+
+      // ✅ Lozad
+      console.log("typeof lozad =", typeof lozad);
+      if (typeof lozad === "function") {
+        lozad(".lazy-img", {
+          loaded: (el) => {
+            el.closest(".media-card")?.classList.add("loaded");
+            el.classList.add("loaded");
+          }
+        }).observe();
+      } else {
+        console.warn("⚠️ lozad nicht geladen – fallback set src");
+        document.querySelectorAll(".lazy-img").forEach(img => {
+          if (img.dataset.src) img.src = img.dataset.src;
+        });
+      }
+
+      // ✅ Pagination Active (optional)
+      document.querySelectorAll(".pagination-modern a.page-btn").forEach(a => {
+        const p = new URL(a.href).searchParams.get("page") || "1";
+        a.classList.toggle("active", String(p) === String(safePage));
+      });
+
+      console.log("✅ initGalleryFromJson fertig:", { safePage, totalPages, slice: slice.length });
+
+    } catch (err) {
+      console.error("❌ initGalleryFromJson crashed:", err);
+    }
+  }
+
+  // Wichtig: genau EIN Startpunkt
+  document.addEventListener("DOMContentLoaded", initGalleryFromJson);
+})();
+</script>
 </body>
 </html>
