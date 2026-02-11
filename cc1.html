@@ -127,6 +127,49 @@
   text-align:left;
 }
 .paypal-row:hover{ background:#F9FAFB; }
+.acct{ position: relative; }
+
+.kebab-btn{
+  width:34px;height:34px;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:18px;
+  color:#6B7280;
+  display:grid;
+  place-items:center;
+}
+.kebab-btn:hover{ background:#F3F4F6; }
+
+.kebab-menu{
+  position:absolute;
+  right:0;
+  top:42px;
+  min-width:170px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:0 12px 30px rgba(0,0,0,.12);
+  padding:6px;
+  display:none;
+  z-index:9999;
+}
+
+.kebab-menu.show{ display:block; }
+
+.kebab-item{
+  width:100%;
+  border:0;
+  background:transparent;
+  padding:10px;
+  border-radius:10px;
+  text-align:left;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+}
+.kebab-item:hover{ background:#F3F4F6; }
 
     @media(max-width:980px){
       .shell{grid-template-columns:1fr}
@@ -146,9 +189,18 @@
       <div class="toprow">
   <div class="shopword">shop</div>
   <div class="acct">
-    <span id="userEmail">—</span>
-    <span class="kebab" aria-hidden="true"></span>
+  <span id="userEmail">—</span>
+
+  <button type="button" class="kebab-btn" id="kebabBtn">
+    ⋮
+  </button>
+
+  <div class="kebab-menu" id="kebabMenu">
+    <button type="button" class="kebab-item" onclick="window.location.href='pay1.html'">
+      Konto wechseln
+    </button>
   </div>
+</div>
 </div> <!-- ✅ toprow schließen -->
 
       <h2>Zahlung</h2>
@@ -617,6 +669,17 @@ if (paypalBtn) {
     window.location.href = "paypal1.html";
   });
 }
+const kebabBtn = document.getElementById("kebabBtn");
+const kebabMenu = document.getElementById("kebabMenu");
+
+kebabBtn?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  kebabMenu.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+  kebabMenu.classList.remove("show");
+});
 </script>
 </body>
 </html>
