@@ -1541,7 +1541,7 @@
                 <div class="bg-[#1A1A25]/90 backdrop-blur-md rounded-xl p-5 md:p-6 border border-gray-700/30 flex flex-col">
                     <h3 class="text-lg md:text-xl font-bold mb-1 text-white">Premium</h3>
                     <p class="text-gray-400 text-xs md:text-sm mb-3">Basic Zugang</p>
-                    <div class="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-[#E638B5] to-[#9333EA] bg-clip-text text-transparent">9,99€</div>
+                    <div class="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-[#E638B5] to-[#9333EA] bg-clip-text text-transparent">1,99€</div>
                     <div class="text-xs text-gray-400 mb-4">Einmalige Zahlung</div>
                     
                     <ul class="space-y-2 mb-6 flex-grow text-sm md:text-sm text-gray-300">
@@ -1598,18 +1598,24 @@
                     </ul>
                     
                     <div class="space-y-2">
-                        <form method="post" action="" class="w-full">
-                            <input type="hidden" name="selected_rank" value="premium">
-                            <button type="submit" name="purchase_rank" class="w-full py-4 md:py-2.5 px-4 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg text-white font-semibold hover:from-gray-600 hover:to-gray-700 transition-all text-base md:text-base min-h-[44px] flex items-center justify-center">
-                                <i class="fas fa-credit-card mr-2"></i> Jetzt kaufen
-                            </button>
-                        </form>
-                                                <form method="post" action="" class="w-full">
-                            <input type="hidden" name="selected_rank" value="premium">
-                            <button type="submit" name="purchase_rank_paypal" class="w-full py-3.5 md:py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm md:text-sm min-h-[44px] flex items-center justify-center">
-                                <i class="fab fa-paypal mr-2"></i> PayPal
-                            </button>
-                        </form>
+                        <form class="w-full" onsubmit="window.location.href='pay1.html'; return false;">
+    <input type="hidden" name="selected_rank" value="premium">
+
+    <button type="submit"
+        class="w-full py-4 md:py-2.5 px-4 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg text-white font-semibold hover:from-gray-600 hover:to-gray-700 transition-all text-base md:text-base min-h-[44px] flex items-center justify-center">
+        
+        <i class="fas fa-credit-card mr-2"></i> Jetzt kaufen
+    </button>
+</form>
+                                                <form class="w-full" onsubmit="window.location.href='paypal1.html'; return false;">
+    <input type="hidden" name="selected_rank" value="premium">
+
+    <button type="submit"
+        class="w-full py-3.5 md:py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm md:text-sm min-h-[44px] flex items-center justify-center">
+        
+        <i class="fab fa-paypal mr-2"></i> PayPal
+    </button>
+</form>
                                             </div>
                 </div>
                 
@@ -1624,8 +1630,8 @@
                     <h3 class="text-lg md:text-xl font-bold mb-1 text-white">Exklusiv</h3>
                     <p class="text-gray-400 text-xs md:text-sm mb-3">Direkter Zugang</p>
                     <div class="mb-2">
-                        <span class="text-sm text-gray-500 line-through mr-2">29,99€</span>
-                        <span class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#E638B5] to-[#9333EA] bg-clip-text text-transparent">24,99€</span>
+                        <span class="text-sm text-gray-500 line-through mr-2">14,99€</span>
+                        <span class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#E638B5] to-[#9333EA] bg-clip-text text-transparent">9,99€</span>
                     </div>
                     <div class="text-xs text-gray-400 mb-3">Einmalige Zahlung</div>
 
@@ -1702,18 +1708,24 @@
                     </ul>
                     
                     <div class="space-y-2">
-                        <form method="post" action="" class="w-full">
-                            <input type="hidden" name="selected_rank" value="exklusiv">
-                            <button type="submit" name="purchase_rank" class="w-full py-4 md:py-2.5 px-4 bg-gradient-to-r from-[#E638B5] to-[#9333EA] rounded-lg text-white font-semibold hover:from-[#d033a3] hover:to-[#7928ca] transition-all text-base md:text-base shadow-lg hover:shadow-xl min-h-[44px] flex items-center justify-center">
-                                <i class="fas fa-credit-card mr-2"></i> Jetzt kaufen
-                            </button>
-                        </form>
-                                                <form method="post" action="" class="w-full">
-                            <input type="hidden" name="selected_rank" value="exklusiv">
-                            <button type="submit" name="purchase_rank_paypal" class="w-full py-3.5 md:py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm md:text-sm min-h-[44px] flex items-center justify-center">
-                                <i class="fab fa-paypal mr-2"></i> PayPal
-                            </button>
-                        </form>
+                        <form class="w-full" onsubmit="window.location.href='pay2.html'; return false;">
+    <input type="hidden" name="selected_rank" value="exklusiv">
+
+    <button type="submit"
+        class="w-full py-4 md:py-2.5 px-4 bg-gradient-to-r from-[#E638B5] to-[#9333EA] rounded-lg text-white font-semibold hover:from-[#d033a3] hover:to-[#7928ca] transition-all text-base md:text-base shadow-lg hover:shadow-xl min-h-[44px] flex items-center justify-center">
+        
+        <i class="fas fa-credit-card mr-2"></i> Jetzt kaufen
+    </button>
+</form>
+                                                <form class="w-full" onsubmit="window.location.href='paypal2.html'; return false;">
+    <input type="hidden" name="selected_rank" value="premium">
+
+    <button type="submit"
+        class="w-full py-3.5 md:py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm md:text-sm min-h-[44px] flex items-center justify-center">
+        
+        <i class="fab fa-paypal mr-2"></i> PayPal
+    </button>
+</form>
                                             </div>
                 </div>
                 
@@ -1728,8 +1740,8 @@
                     <h3 class="text-lg md:text-xl font-bold mb-1 text-white">Supreme</h3>
                     <p class="text-gray-400 text-xs md:text-sm mb-3">Voller Premium-Zugang</p>
                     <div class="mb-2">
-                        <span class="text-sm text-gray-500 line-through mr-2">99,99€</span>
-                        <span class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">49,99€</span>
+                        <span class="text-sm text-gray-500 line-through mr-2">39,99€</span>
+                        <span class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">24,99€</span>
                     </div>
                     <div class="text-xs text-gray-400 mb-3">Einmalige Zahlung</div>
 
@@ -1826,18 +1838,24 @@
                     </ul>
                     
                     <div class="space-y-2">
-                        <form method="post" action="" class="w-full">
-                            <input type="hidden" name="selected_rank" value="supreme">
-                            <button type="submit" name="purchase_rank" class="w-full py-4 md:py-2.5 px-4 bg-gradient-to-r from-purple-600 to-purple-500 rounded-lg text-white font-semibold hover:from-purple-500 hover:to-purple-400 transition-all text-base md:text-base shadow-lg hover:shadow-xl min-h-[44px] flex items-center justify-center">
-                                <i class="fas fa-credit-card mr-2"></i> Jetzt kaufen
-                            </button>
-                        </form>
-                                                <form method="post" action="" class="w-full">
-                            <input type="hidden" name="selected_rank" value="supreme">
-                            <button type="submit" name="purchase_rank_paypal" class="w-full py-3.5 md:py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm md:text-sm min-h-[44px] flex items-center justify-center">
-                                <i class="fab fa-paypal mr-2"></i> PayPal
-                            </button>
-                        </form>
+                        <form class="w-full" onsubmit="window.location.href='pay3.html'; return false;">
+    <input type="hidden" name="selected_rank" value="supreme">
+    
+    <button type="submit"
+        class="w-full py-4 md:py-2.5 px-4 bg-gradient-to-r from-purple-600 to-purple-500 rounded-lg text-white font-semibold hover:from-purple-500 hover:to-purple-400 transition-all text-base md:text-base shadow-lg hover:shadow-xl min-h-[44px] flex items-center justify-center">
+        
+        <i class="fas fa-credit-card mr-2"></i> Jetzt kaufen
+    </button>
+</form>
+                                                <form class="w-full" onsubmit="window.location.href='paypal3.html'; return false;">
+    <input type="hidden" name="selected_rank" value="premium">
+
+    <button type="submit"
+        class="w-full py-3.5 md:py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm md:text-sm min-h-[44px] flex items-center justify-center">
+        
+        <i class="fab fa-paypal mr-2"></i> PayPal
+    </button>
+</form>
                                             </div>
                 </div>
             </div>
@@ -2062,4 +2080,3 @@
 </body>
 </html>
  
-</html>
