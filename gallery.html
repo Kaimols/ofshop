@@ -1661,6 +1661,7 @@
             }, 30000);
         });
     </script>
+
 <style>
 /* Custom Gallery Styles */
 .gallery-page {
@@ -1801,10 +1802,11 @@
     z-index: 1;
 }
 
-.media-card img.loaded ~ .skeleton {
-    opacity: 0;
-    pointer-events: none;
-}
+.media-card img { opacity: 0; }
+.media-card.loaded img { opacity: 1; }
+
+.media-card .skeleton { opacity: 1; transition: opacity .2s ease; z-index: 1; }
+.media-card.loaded .skeleton { opacity: 0; pointer-events: none; }
 
 @keyframes skeleton-pulse {
     0% { background-position: 200% 0; }
@@ -2016,6 +2018,7 @@
     }
 }
 </style>
+</style>
 
 <div id="top"></div>
 
@@ -2027,38 +2030,37 @@
                 
                 <!-- Thumbnail -->
                 <div class="hero-thumbnail flex-shrink-0 animate-fade-in-up">
-                    <div id="cover"
-     class="w-28 h-28 md:w-36 md:h-36 rounded-xl overflow-hidden shadow-2xl">
-</div>
+                    <img src="./uploads/thumb_672c0ea1e9642.jpg"
+                         alt="Fabienne"
+                         class="w-28 h-28 md:w-36 md:h-36 rounded-xl object-cover shadow-2xl">
                 </div>
 
                 <!-- Content -->
                 <div class="flex-1 text-center md:text-left space-y-4 animate-fade-in-up animation-delay-100">
                     <!-- Title -->
-                    <h1 id="title"
-    class="hero-title text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight">
-</h1>
+                    <h1 class="hero-title text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight">
+                        Fabienne                    </h1>
 
                     <!-- Category & Stats Row -->
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
                         <div class="category-pill">
-    <span id="catEmoji" class="text-lg"></span>
-    <span id="catLabel"></span>
-</div>
+                            <span class="text-lg">🇩🇪</span>
+                            <span>Deutsche</span>
+                        </div>
                         
                         <div class="flex items-center gap-2">
                             <div class="stat-card flex items-center gap-2 px-3 py-1.5 rounded-lg">
                                 <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                                <span id="imgCount" class="text-sm font-medium text-gray-300"></span>
+                                <span class="text-sm font-medium text-gray-300">11</span>
                             </div>
                             
                             <div class="stat-card flex items-center gap-2 px-3 py-1.5 rounded-lg">
                                 <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                 </svg>
-                                <span id="vidCount" class="text-sm font-medium text-gray-300"></span>
+                                <span class="text-sm font-medium text-gray-300">11</span>
                             </div>
                         </div>
                     </div>
@@ -2073,7 +2075,8 @@
                                     <span data-post="414" class="unlike-btn hidden cursor-pointer like-heart">
                                         <i class="fas fa-heart text-red-500 text-lg"></i>
                                     </span>
-                                                               <span id="likes" class="text-sm font-medium text-gray-300"></span>
+                                                                <span id="likes-414" class="text-sm font-medium text-gray-300">
+                                    154                                </span>
                             </div>
                         
                         <!-- Download Button -->
@@ -2098,36 +2101,387 @@
                 <div class="flex items-center gap-2 min-w-max">
                     <span class="text-sm text-gray-500 mr-2 hidden sm:inline">Sortieren:</span>
                     
-                    <button id="sortNewest"
-        class="filter-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium active">
-  Neueste
-</button>
-
-<button id="sortImages"
-        class="filter-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-gray-400">
-  Bilder zuerst
-</button>
-
-<button id="sortVideos"
-        class="filter-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-gray-400">
-  Videos zuerst
-</button>
-
-<div id="pageInfo" class="ml-auto text-sm text-gray-500"></div>
+                    <a href="gallery.php?post_id=414&sort=uploaded_at_desc#top" 
+                       class="filter-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium active">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Neueste
+                    </a>
                     
+                    <a href="gallery.php?post_id=414&sort=images_first#top" 
+                       class="filter-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Bilder zuerst
+                    </a>
+                    
+                    <a href="gallery.php?post_id=414&sort=videos_first#top" 
+                       class="filter-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        Videos zuerst
+                    </a>
+                    
+                    <!-- Page Info -->
+                    <div class="ml-auto text-sm text-gray-500">
+                        Seite 1 von 2                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Media Grid -->
     <div class="max-w-7xl mx-auto px-4 pb-8">
-  <div id="grid" class="media-grid"></div>
-
-  <div class="pagination-modern mt-10 mb-6">
-    <button id="prevBtn" class="page-btn nav">Zurück</button>
-    <div id="pageBtns" class="flex gap-2 flex-wrap justify-center"></div>
-    <button id="nextBtn" class="page-btn nav">Weiter</button>
-  </div>
-</div>     
+                    <div class="media-grid">
+                                                        <div class="media-card" style="animation-delay: 0s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea43e2b3.mp4" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/default_video_thumbnail.jpg" 
+                                     alt="Video" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                
+                                <!-- Video Badge -->
+                                <div class="video-badge">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                    VIDEO
+                                </div>
+                                
+                                <!-- Play Button -->
+                                <div class="play-button">
+                                    <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.05s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea43aac1.mp4" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/default_video_thumbnail.jpg" 
+                                     alt="Video" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                
+                                <!-- Video Badge -->
+                                <div class="video-badge">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                    VIDEO
+                                </div>
+                                
+                                <!-- Play Button -->
+                                <div class="play-button">
+                                    <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.1s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea43826e.mp4" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/default_video_thumbnail.jpg" 
+                                     alt="Video" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                
+                                <!-- Video Badge -->
+                                <div class="video-badge">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                    VIDEO
+                                </div>
+                                
+                                <!-- Play Button -->
+                                <div class="play-button">
+                                    <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.15s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea43467e.mp4" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/default_video_thumbnail.jpg" 
+                                     alt="Video" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                
+                                <!-- Video Badge -->
+                                <div class="video-badge">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                    VIDEO
+                                </div>
+                                
+                                <!-- Play Button -->
+                                <div class="play-button">
+                                    <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.2s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea43166c.jpg" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea43166c.jpg" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.25s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea42dbfd.jpg" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea42dbfd.jpg" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.3s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea42aec3.jpg" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea42aec3.jpg" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.35s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea426a84.jpg" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea426a84.jpg" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.4s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea421e77.jpg" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea421e77.jpg" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.45s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea41e595.jpg" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea41e595.jpg" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea41b3c8.jpg" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea41b3c8.jpg" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.05s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea417121.jpg" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea417121.jpg" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.1s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea41317c.jpg" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea41317c.jpg" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.15s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea40f076.jpg" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea40f076.jpg" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.2s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea40b509.png" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/posts/post_414/file_672c0ea40b509.png" 
+                                     alt="Bild" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                                                        <div class="media-card" style="animation-delay: 0.25s;">
+                        <a href="./uploads/posts/post_414/file_672c0ea3db687.mp4" 
+                           data-fancybox="gallery-414" 
+                           data-caption="Fabienne">
+                            
+                                                            <img data-src="./uploads/default_video_thumbnail.jpg" 
+                                     alt="Video" 
+                                     class="lazy-img"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="skeleton"></div>
+                                
+                                <!-- Video Badge -->
+                                <div class="video-badge">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                    VIDEO
+                                </div>
+                                
+                                <!-- Play Button -->
+                                <div class="play-button">
+                                    <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                                                        
+                            <!-- Hover Overlay -->
+                            <div class="media-overlay"></div>
+                        </a>
+                    </div>
+                            </div>
+        
+        <!-- Pagination -->
+                    <div class="pagination-modern mt-10 mb-6">
+                
+                <a href="gallery.php?post_id=414&page=1&sort=uploaded_at_desc#top" class="page-btn active">1</a><a href="gallery.php?post_id=414&page=2&sort=uploaded_at_desc#top" class="page-btn ">2</a>
+                                    <a href="gallery.php?post_id=414&page=2&sort=uploaded_at_desc#top" 
+                       class="page-btn nav">
+                        <span class="hidden sm:inline">Weiter</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                            </div>
+            </div>
 
     <!-- Progress Modal -->
     <div id="progressModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
@@ -2201,6 +2555,67 @@
         </div>
     </div>
 </div>
+
+    </div> <!-- End main-content -->
+
+    <footer class="footer flex justify-center items-center p-4 text-neutral-content mt-8 w-full">
+        <div class="flex items-center space-x-4">
+            <a class="text-lg font-bold text-white" href="/">🎀 • OFLeaks.tv</a>
+            <span class="border-l border-gray-400 h-6 mx-2"></span>
+            <a href="https://discord.celebroom.de" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Discord">
+                <i class="fab fa-discord fa-lg"></i>
+                <span class="sr-only">Discord</span>
+            </a>
+            <a href="https://ofleaks.tv/shop" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Shop">
+                <i class="fa fa-shopping-cart fa-lg"></i>
+                <span class="sr-only">Shop</span>
+            </a>
+        </div>
+    </footer>
+
+    <!-- Popup Include -->
+    
+    <script type="text/javascript" src="./assets/vendor/toastify/toastify.min.js"></script>
+    <script src="./assets/vendor/flowbite/flowbite.min.js"></script>
+    <script src="./assets/vendor/fancybox/fancybox.umd.js"></script>
+
+<!-- Fancybox CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+
+<!-- lozad.js -->
+<script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+<!-- Fancybox JS -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+<script>
+    // Initialize lozad
+    const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+    observer.observe();
+
+    // Initialize Fancybox
+    Fancybox.bind("[data-fancybox]", {
+        // Globale Einstellungen
+        Toolbar: {
+            display: [
+                "close",
+                "prev",
+                "next",
+                "download",
+                "fullscreen",
+                "zoom",
+                "slideshow",
+                "thumbs"
+            ],
+        },
+        // Spezifische Einstellungen für Videos
+        Video: {
+            autoStart: false, // Stelle sicher, dass Videos nicht automatisch starten
+            preventCaptionOverlap: false,
+            idleTime: false,
+            clickToPlay: true,
+            loop: false,
+            // Weitere Video-spezifische Optionen
+        },
+    });
 
     </div> <!-- End main-content -->
 
@@ -2371,11 +2786,12 @@
     slice.forEach(item => {
       if (item.type === "image") {
         grid.insertAdjacentHTML("beforeend", `
-          <a class="media-card block" href="${item.src}" data-fancybox="${group}">
-            <div class="skeleton"></div>
-            <img src="${item.src}" alt="" onload="this.classList.add('loaded')">
-          </a>
-        `);
+  <a class="media-card block" href="${item.src}" data-fancybox="${group}">
+    <img src="${item.src}" alt=""
+         onload="this.closest('.media-card').classList.add('loaded')">
+    <div class="skeleton"></div>
+  </a>
+`);
       } else {
         grid.insertAdjacentHTML("beforeend", `
           <a class="media-card block" href="${item.src}" data-fancybox="${group}" data-type="video">
