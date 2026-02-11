@@ -1,0 +1,2445 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gallery</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ✅ jQuery HIER einfügen -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- FontAwesome -->
+  <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/js/all.min.js" defer></script>
+
+  <!-- Fancybox -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css">
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+
+  <script>
+    if (sessionStorage.getItem('scrollTop') === '1') {
+        sessionStorage.removeItem('scrollTop');
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+        document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
+        window.addEventListener('load', function() { window.scrollTo(0, 0); });
+    }
+  </script>
+
+    <link rel="stylesheet" href="./assets/vendor/toastify/toastify.min.css" />
+    <script src="./assets/vendor/fontawesome/3dc1b48f3d.js"></script>
+    <link rel="stylesheet" href="./assets/vendor/sweetalert/borderless.min.css" />
+    <script src="./assets/vendor/sweetalert/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="./assets/vendor/fancybox/fancybox.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.0.8/lozad.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            height: 100dvh; /* Dynamic viewport height für iOS */
+            width: 280px;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch; /* Smooth scroll auf iOS */
+            overscroll-behavior: contain; /* Verhindert Scroll-Bleeding zur Hauptseite */
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-220px);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            left: 280px;
+            top: 20px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, rgba(230, 56, 181, 0.9), rgba(147, 51, 234, 0.9));
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0 12px 12px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(230, 56, 181, 0.4), 0 0 20px rgba(230, 56, 181, 0.2);
+        }
+
+        .sidebar.collapsed + .sidebar-toggle {
+            left: 60px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(230, 56, 181, 0.5), 0 0 25px rgba(230, 56, 181, 0.3);
+        }
+
+        .sidebar-toggle:hover {
+            background: linear-gradient(135deg, rgba(230, 56, 181, 1), rgba(147, 51, 234, 1));
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(230, 56, 181, 0.6), 0 0 30px rgba(230, 56, 181, 0.4);
+        }
+        
+        .sidebar-toggle i {
+            font-size: 16px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: 60px;
+        }
+
+        /* Logo */
+        .sidebar-logo {
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .logo-circle {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff007f, #a145ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(255, 0, 127, 0.4);
+        }
+
+        .premium-indicator {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #ff007f, #a145ff);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulse-shadow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 127, 0.5); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 127, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 127, 0); }
+        }
+
+        .logo-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text {
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.collapsed .logo-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        /* Nav Items */
+        .nav-section {
+            padding: 16px 12px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 0 12px 8px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.collapsed .nav-section-title {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            margin: 4px 0;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(230, 56, 181, 0.15);
+            color: #E638B5;
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 24px;
+            background: #E638B5;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Kostenlos Zugang Link - Minimaler Glow Effekt */
+        .nav-item-free-access {
+            background: rgba(230, 56, 181, 0.08);
+            border: 1px solid rgba(230, 56, 181, 0.2);
+            box-shadow: 0 0 12px rgba(230, 56, 181, 0.15), 0 0 6px rgba(147, 51, 234, 0.1);
+        }
+
+        .nav-item-free-access:hover {
+            background: rgba(230, 56, 181, 0.12);
+            box-shadow: 0 0 16px rgba(230, 56, 181, 0.25), 0 0 8px rgba(147, 51, 234, 0.15);
+            border-color: rgba(230, 56, 181, 0.3);
+        }
+
+        .nav-item-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .nav-item-text {
+            white-space: nowrap;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.collapsed .nav-item-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .sidebar.collapsed .nav-item {
+            justify-content: center;
+            padding: 12px;
+        }
+
+        /* Submenu */
+        .nav-item-submenu {
+            display: none;
+            padding-left: 28px;
+            margin-top: 4px;
+        }
+
+        .nav-item-submenu.active {
+            display: block !important;
+        }
+
+        .sidebar.collapsed .nav-item-submenu {
+            display: none !important;
+        }
+
+        .nav-item-chevron {
+            margin-left: auto;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .nav-item.expanded .nav-item-chevron {
+            transform: rotate(90deg);
+        }
+
+        .nav-item.expanded .nav-item-chevron i {
+            transform: rotate(90deg);
+        }
+
+        .sidebar.collapsed .nav-item-chevron {
+            display: none;
+        }
+
+        /* Online Counter */
+        .online-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            margin: 12px;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                opacity: 1;
+                box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+            }
+            50% {
+                opacity: 0.8;
+                box-shadow: 0 0 20px rgba(236, 72, 153, 0.8);
+            }
+        }
+
+        .sidebar.collapsed .online-counter {
+            flex-direction: column;
+            gap: 4px;
+            padding: 8px;
+        }
+
+        .sidebar.collapsed .online-counter span {
+            display: none;
+        }
+
+        /* Mobile - Complete Rework */
+        @media (max-width: 768px) {
+            /* Sidebar Base */
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                height: 100dvh; /* Dynamic viewport height für iOS Safari */
+                height: -webkit-fill-available; /* Fallback für ältere iOS */
+                width: 280px;
+                transform: translateX(-280px);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch; /* Smooth scroll auf iOS */
+                overscroll-behavior: contain; /* Verhindert Scroll-Bleeding zur Hauptseite */
+                background: rgba(18, 18, 18, 0.98);
+                backdrop-filter: blur(10px);
+                padding-bottom: env(safe-area-inset-bottom, 20px); /* Safe area für iPhone mit Home-Indicator */
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0) !important;
+            }
+
+            .sidebar:not(.mobile-open) {
+                transform: translateX(-280px) !important;
+            }
+
+            /* Force show all content - override collapsed state */
+            .sidebar.mobile-open,
+            .sidebar.mobile-open.collapsed {
+                width: 280px !important;
+                transform: translateX(0) !important;
+            }
+
+            .sidebar.mobile-open .logo-text,
+            .sidebar.mobile-open.collapsed .logo-text {
+                opacity: 1 !important;
+                width: auto !important;
+                display: flex !important;
+            }
+
+            .sidebar.mobile-open .logo-icon,
+            .sidebar.mobile-open.collapsed .logo-icon {
+                display: flex !important;
+            }
+
+            .sidebar.mobile-open .nav-item-text,
+            .sidebar.mobile-open.collapsed .nav-item-text {
+                opacity: 1 !important;
+                width: auto !important;
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-section-title,
+            .sidebar.mobile-open.collapsed .nav-section-title {
+                opacity: 1 !important;
+                height: auto !important;
+                padding: 0 12px 8px !important;
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-item,
+            .sidebar.mobile-open.collapsed .nav-item {
+                justify-content: flex-start !important;
+                padding: 12px 16px !important;
+                gap: 12px !important;
+            }
+
+            .sidebar.mobile-open .nav-item-chevron,
+            .sidebar.mobile-open.collapsed .nav-item-chevron {
+                display: flex !important;
+                margin-left: auto !important;
+                opacity: 1 !important;
+            }
+
+            .sidebar.mobile-open .nav-item-submenu,
+            .sidebar.mobile-open.collapsed .nav-item-submenu {
+                display: none;
+                padding-left: 0 !important;
+            }
+
+            .sidebar.mobile-open .nav-item-submenu.active,
+            .sidebar.mobile-open.collapsed .nav-item-submenu.active {
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-item-submenu .nav-item,
+            .sidebar.mobile-open.collapsed .nav-item-submenu .nav-item {
+                padding: 10px 16px 10px 40px !important;
+                font-size: 14px !important;
+            }
+
+            .sidebar.mobile-open .online-counter,
+            .sidebar.mobile-open.collapsed .online-counter {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 8px !important;
+                padding: 12px 16px !important;
+            }
+
+            .sidebar.mobile-open .online-counter span,
+            .sidebar.mobile-open.collapsed .online-counter span {
+                display: inline !important;
+            }
+
+            /* Hide desktop toggle button */
+            .sidebar-toggle {
+                display: none !important;
+            }
+
+            /* Main content no margin on mobile */
+            .main-content {
+                margin-left: 0 !important;
+            }
+
+            /* Mobile overlay */
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.75);
+                z-index: 999;
+                backdrop-filter: blur(3px);
+            }
+
+            .mobile-overlay.active {
+                display: block;
+            }
+
+            /* Clean spacing */
+            .sidebar-logo {
+                padding: 24px 20px;
+                gap: 12px;
+            }
+
+            .search-container {
+                padding: 16px 20px;
+            }
+
+            .nav-section {
+                padding: 16px 12px;
+            }
+
+            .nav-item {
+                margin: 2px 0;
+            }
+
+            .nav-section-title {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        /* Top Bar Mobile */
+        .top-bar-mobile {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 998;
+            padding: 0 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+            .top-bar-mobile {
+                display: flex;
+            }
+
+            .main-content {
+                padding-top: 80px;
+            }
+        }
+
+        /* Category Pills */
+        .category-pills {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 16px 0;
+            scrollbar-width: none;
+        }
+
+        .category-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-pill {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .category-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .category-pill.active {
+            background: rgba(230, 56, 181, 0.15);
+            border-color: rgba(230, 56, 181, 0.3);
+            color: #E638B5;
+        }
+
+        /* Search */
+        .search-container {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 16px 12px 40px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(230, 56, 181, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 32px;
+            top: 28px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Notification Bell Styles */
+        .notification-bell-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .notification-bell:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+            line-height: 1.2;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.5);
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 100%;
+            margin-top: 8px;
+            width: 380px;
+            max-width: calc(100vw - 40px);
+            background: rgba(18, 18, 18, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 10000;
+            display: none;
+            overflow: hidden;
+        }
+
+        /* Desktop: Öffne nach rechts (außerhalb der Sidebar) */
+        .sidebar .notification-bell-container .notification-dropdown.show {
+            position: fixed !important;
+            z-index: 10001 !important;
+            display: block !important;
+        }
+
+        /* Mobile: Öffne nach links (oben rechts im Viewport) */
+        .mobile-notification-bell .notification-dropdown {
+            right: 0;
+            left: auto;
+        }
+
+        .notification-dropdown.show {
+            display: block !important;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-header {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+        }
+
+        .notification-mark-all {
+            background: none;
+            border: none;
+            color: rgba(230, 56, 181, 0.8);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .notification-mark-all:hover {
+            background: rgba(230, 56, 181, 0.1);
+            color: #E638B5;
+        }
+
+        .notification-header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .notification-delete-all {
+            background: none;
+            border: none;
+            color: rgba(239, 68, 68, 0.8);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .notification-delete-all:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notification-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .notification-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .notification-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            gap: 12px;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .notification-item.unread {
+            background: rgba(230, 56, 181, 0.05);
+        }
+
+        .notification-item.unread:hover {
+            background: rgba(230, 56, 181, 0.1);
+        }
+
+        .notification-item-actions {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .notification-item:hover .notification-item-actions {
+            opacity: 1;
+        }
+
+        .notification-action-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 12px;
+        }
+
+        .notification-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .notification-action-btn.mark-read {
+            color: rgba(34, 197, 94, 0.8);
+        }
+
+        .notification-action-btn.mark-read:hover {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .notification-action-btn.delete {
+            color: rgba(239, 68, 68, 0.8);
+        }
+
+        .notification-action-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(230, 56, 181, 0.2), rgba(147, 51, 234, 0.2));
+        }
+
+        .notification-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 4px;
+        }
+
+        .notification-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .notification-empty i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        /* Mobile Notification Bell */
+        .mobile-notification-bell {
+            position: relative;
+            margin-right: 12px;
+        }
+
+        .mobile-notification-bell .notification-bell {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- Mobile Top Bar -->
+    <div class="top-bar-mobile">
+        <div class="flex items-center gap-3">
+            <button id="mobileSidebarToggle" class="text-white">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <div class="logo-circle">
+                <span style="color: white; font-weight: 900; font-size: 16px;">OF</span>
+            </div>
+            <span style="font-size: 1.2rem; font-weight: 800; background: linear-gradient(90deg, #E638B5, #9333EA); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">OFLeaks.tv</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="mobile-notification-bell notification-bell-container">
+                <div class="notification-bell" onclick="toggleNotificationDropdown(event)">
+                    <i class="fas fa-bell text-xl"></i>
+                    <span class="notification-badge" id="mobileNotificationBadge" style="display: none;">0</span>
+                </div>
+                <div class="notification-dropdown" id="mobileNotificationDropdown">
+                    <div class="notification-header">
+                        <h3>Benachrichtigungen</h3>
+                        <div class="notification-header-actions">
+                            <button class="notification-mark-all" onclick="markAllNotificationsAsRead()">Alle als gelesen</button>
+                            <button class="notification-delete-all" onclick="deleteAllNotifications()">Alle löschen</button>
+                        </div>
+                    </div>
+                    <div class="notification-list" id="mobileNotificationList">
+                        <div class="notification-empty">
+                            <i class="fas fa-bell-slash"></i>
+                            <p>Keine Benachrichtigungen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <a href="home.html" class="sidebar-logo" style="text-decoration: none;">
+            <div class="logo-icon">
+                <div class="logo-circle" style="animation: pulse-shadow 2s infinite;">
+                    <span style="color: white; font-weight: 900; font-size: 18px; letter-spacing: -1px;">OF</span>
+                    <span class="premium-indicator">VIP</span>
+                </div>
+            </div>
+            <div class="logo-text">
+                <span style="font-size: 1.7rem; font-weight: 900; line-height: 1; background: linear-gradient(90deg, #ff007f, #a145ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; filter: drop-shadow(0 2px 3px rgba(255, 0, 127, 0.3));">
+                    OFLeaks<span style="color: white; -webkit-text-fill-color: white;">.tv</span>
+                </span>
+                <span style="font-size: 0.7rem; color: rgba(255,255,255,0.6); margin-left: auto;">Premium Content</span>
+            </div>
+        </a>
+
+        <!-- Search -->
+        <div class="search-container" style="position: relative;">
+            <i class="fas fa-search search-icon"></i>
+                        <input type="search" id="search" name="search" class="search-input" placeholder="Suche..." autocomplete="off" disabled style="cursor: not-allowed; opacity: 0.5;">
+            <p style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); margin-top: 4px; text-align: center;">Du benötigst einen Rang zum Suchen</p>
+                    </div>
+
+        <!-- Online Counter -->
+        <div class="online-counter">
+            <div class="online-dot"></div>
+            <span>
+                133 online            </span>
+        </div>
+
+        <!-- Main Navigation -->
+        <div class="nav-section">
+            <div class="nav-section-title" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>Hauptmenü</span>
+                <div class="notification-bell-container" style="margin-left: auto;">
+                    <div class="notification-bell" onclick="toggleNotificationDropdown(event)">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="desktopNotificationBadge" style="display: none;">0</span>
+                    </div>
+                    <div class="notification-dropdown" id="desktopNotificationDropdown">
+                        <div class="notification-header">
+                            <h3>Benachrichtigungen</h3>
+                            <div class="notification-header-actions">
+                                <button class="notification-mark-all" onclick="markAllNotificationsAsRead()">Alle als gelesen</button>
+                                <button class="notification-delete-all" onclick="deleteAllNotifications()">Alle löschen</button>
+                            </div>
+                        </div>
+                        <div class="notification-list" id="desktopNotificationList">
+                            <div class="notification-empty">
+                                <i class="fas fa-bell-slash"></i>
+                                <p>Keine Benachrichtigungen</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="home.html" class="nav-item active">
+                <div class="nav-item-icon">🏠</div>
+                <div class="nav-item-text">Startseite</div>
+            </a>
+                        <a href="referral-program.html" class="nav-item nav-item-free-access " onclick="trackReferralSidebarClick(event)">
+                <div class="nav-item-icon">🎁</div>
+                <div class="nav-item-text">Kostenlos Zugang</div>
+            </a>
+                        <a href="customdl.php" class="nav-item ">
+                <div class="nav-item-icon">📥</div>
+                <div class="nav-item-text">Downloader</div>
+            </a>
+            <a href="undress.html" class="nav-item " style="position: relative; overflow: hidden;">
+                <div class="nav-item-icon">✨</div>
+                <div class="nav-item-text" style="background: linear-gradient(90deg, #8b5cf6, #ec4899, #8b5cf6); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradient-shift 3s ease infinite; font-weight: 600;">AI Undress</div>
+                <span style="position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: bold; animation: pulse-glow 2s ease-in-out infinite;">NEU</span>
+            </a>
+            <a href="teenleaks.html" class="nav-item ">
+                <div class="nav-item-icon">🔞</div>
+                <div class="nav-item-text">Leaks</div>
+            </a>
+            <a href="enhance.php" class="nav-item ">
+                <div class="nav-item-icon">✨</div>
+                <div class="nav-item-text">AI Enhancer</div>
+            </a>
+            <a href="porntok.html" class="nav-item ">
+                <div class="nav-item-icon">🎥</div>
+                <div class="nav-item-text">PornTok</div>
+            </a>
+            <a href="bbc.html" class="nav-item ">
+                <div class="nav-item-icon">🍆</div>
+                <div class="nav-item-text">Porn Videos</div>
+            </a>
+                    </div>
+
+        <!-- Categories Dropdown -->
+        <div class="nav-section">
+            <div class="nav-section-title">Kategorien</div>
+            <div class="nav-item" id="categoriesToggle" style="cursor: pointer;">
+                <div class="nav-item-icon">📂</div>
+                <div class="nav-item-text">Alle Kategorien</div>
+                <div class="nav-item-chevron">
+                    <i class="fas fa-chevron-right" style="font-size: 12px;"></i>
+                </div>
+            </div>
+
+<div class="nav-item-submenu" id="categoriesSubmenu">
+  <a href="home.html?c=0" class="nav-item" style="padding-left:24px; text-decoration:none;">
+    <div class="nav-item-icon" style="font-size:16px;">🌐</div>
+    <div class="nav-item-text">Main</div>
+  </a>
+
+  <a href="home.html?c=1" class="nav-item" style="padding-left:24px; text-decoration:none;">
+    <div class="nav-item-icon" style="font-size:16px;">✨</div>
+    <div class="nav-item-text">Beliebt</div>
+  </a>
+
+  <a href="fehler.html" class="nav-item" style="padding-left:24px; text-decoration:none;">
+    <div class="nav-item-icon" style="font-size:16px;">❤️</div>
+    <div class="nav-item-text">Favoriten</div>
+  </a>
+
+  <a href="home.html?c=27" class="nav-item" style="padding-left:24px; text-decoration:none;">
+    <div class="nav-item-icon" style="font-size:16px;">💙</div>
+    <div class="nav-item-text">OnlyFans</div>
+  </a>
+
+  <a href="home.html?c=29" class="nav-item" style="padding-left:24px; text-decoration:none;">
+    <div class="nav-item-icon" style="font-size:16px;">🇩🇪</div>
+    <div class="nav-item-text">Deutsche</div>
+  </a>
+
+  <a href="fehler.html" class="nav-item" style="padding-left:24px; text-decoration:none;">
+    <div class="nav-item-icon" style="font-size:16px;">📁</div>
+    <div class="nav-item-text">Mega Post</div>
+  </a>
+</div>
+
+
+
+        <!-- Shop Navigation -->
+        <div class="nav-section">
+            <div class="nav-section-title">Shop</div>
+            
+            <a href="rankupgrade.html" class="nav-item">
+                <div class="nav-item-icon">💎</div>
+                <div class="nav-item-text">Rang Shop</div>
+            </a>
+            <a href="/upgrade" class="nav-item">
+                <div class="nav-item-icon">⬆️</div>
+                <div class="nav-item-text">Rang Upgraden</div>
+            </a>
+        </div>
+
+        <!-- Extras -->
+        <div class="nav-section">
+            <div class="nav-section-title">Extras</div>
+            <a href="/smash_or_pass" class="nav-item">
+                <div class="nav-item-icon">❤️</div>
+                <div class="nav-item-text">Smash/Pass</div>
+            </a>
+            <a href="/amateur" class="nav-item">
+                <div class="nav-item-icon">📸</div>
+                <div class="nav-item-text">Amateur Content</div>
+            </a>
+        </div>
+
+        <!-- Account -->
+        <div class="nav-section">
+            <div class="nav-section-title">Account</div>
+            <a href="/profile" class="nav-item ">
+                <div class="nav-item-icon">👤</div>
+                <div class="nav-item-text">Profil</div>
+            </a>
+            <a href="javascript:SignOut()" class="nav-item">
+                <div class="nav-item-icon">🚪</div>
+                <div class="nav-item-text">Logout</div>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Sidebar Toggle -->
+    <div class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-chevron-left text-white"></i>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+
+    <script>
+        // Tracking für Referral Sidebar-Klicks
+        function trackReferralSidebarClick(event) {
+            // Tracking asynchron senden (blockiert Navigation nicht)
+            fetch('/api/track_referral_event.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'event_type=sidebar_click',
+                keepalive: true
+            }).catch(err => console.error('Tracking error:', err));
+            
+            // Navigation normal weiterleiten
+            // event.preventDefault() wird NICHT aufgerufen, damit der Link normal funktioniert
+        }
+        
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const toggleIcon = sidebarToggle.querySelector('i');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+
+        // Desktop Toggle
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            if (sidebar.classList.contains('collapsed')) {
+                toggleIcon.classList.remove('fa-chevron-left');
+                toggleIcon.classList.add('fa-chevron-right');
+            } else {
+                toggleIcon.classList.remove('fa-chevron-right');
+                toggleIcon.classList.add('fa-chevron-left');
+            }
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+
+        // Mobile Toggle - mit Body Scroll Lock für iOS
+        mobileSidebarToggle?.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+            mobileOverlay.classList.toggle('active');
+            // Verhindere Body-Scroll wenn Sidebar offen
+            if (sidebar.classList.contains('mobile-open')) {
+                document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+                document.body.style.top = `-${window.scrollY}px`;
+            } else {
+                const scrollY = document.body.style.top;
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+                document.body.style.top = '';
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
+        });
+
+        mobileOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('active');
+            // Body-Scroll wieder aktivieren
+            const scrollY = document.body.style.top;
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.top = '';
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        });
+
+        // Remember sidebar state
+        const sidebarCollapsed = localStorage.getItem('sidebarCollapsed');
+        if (sidebarCollapsed === 'true') {
+            sidebar.classList.add('collapsed');
+            toggleIcon.classList.remove('fa-chevron-left');
+            toggleIcon.classList.add('fa-chevron-right');
+        }
+
+        // iOS Safari: Verhindere Scroll-Bleeding von Sidebar zur Hauptseite
+        sidebar.addEventListener('touchmove', function(e) {
+            // Erlaube Scrollen nur wenn Sidebar scrollbar ist
+            const isScrollable = sidebar.scrollHeight > sidebar.clientHeight;
+            const isAtTop = sidebar.scrollTop === 0;
+            const isAtBottom = sidebar.scrollTop + sidebar.clientHeight >= sidebar.scrollHeight;
+            
+            // Bestimme Scroll-Richtung
+            const touch = e.touches[0];
+            const lastTouchY = sidebar._lastTouchY || touch.clientY;
+            const deltaY = lastTouchY - touch.clientY;
+            sidebar._lastTouchY = touch.clientY;
+            
+            // Verhindere Scroll wenn am Ende/Anfang und in diese Richtung gescrollt wird
+            if (!isScrollable || (isAtTop && deltaY < 0) || (isAtBottom && deltaY > 0)) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        sidebar.addEventListener('touchstart', function(e) {
+            sidebar._lastTouchY = e.touches[0].clientY;
+        }, { passive: true });
+
+        // Categories Dropdown Toggle
+        const categoriesToggle = document.getElementById('categoriesToggle');
+        const categoriesSubmenu = document.getElementById('categoriesSubmenu');
+
+        if (categoriesToggle && categoriesSubmenu) {
+            // Check if any category is active and expand automatically
+            const hasActiveCategory = categoriesSubmenu.querySelector('.nav-item.active');
+            if (hasActiveCategory) {
+                categoriesSubmenu.classList.add('active');
+                categoriesToggle.classList.add('expanded');
+                console.log('Auto-expanded categories because active category found');
+            }
+
+            categoriesToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const isActive = categoriesSubmenu.classList.toggle('active');
+                categoriesToggle.classList.toggle('expanded');
+
+                console.log('Categories dropdown toggled:', isActive ? 'open' : 'closed');
+            });
+
+            // Log to verify element exists
+            console.log('Categories toggle initialized');
+        } else {
+            console.error('Categories elements not found!', {
+                toggle: !!categoriesToggle,
+                submenu: !!categoriesSubmenu
+            });
+        }
+
+        // Search Autocomplete
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search');
+            const searchResults = document.getElementById('search-results');
+            const searchResultsContainer = searchResults?.querySelector('.search-results-container');
+            let searchTimeout;
+
+            if (searchInput && searchResults && searchResultsContainer) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.trim();
+
+                    clearTimeout(searchTimeout);
+
+                    if (query.length < 2) {
+                        searchResults.classList.add('hidden');
+                        return;
+                    }
+
+                    searchTimeout = setTimeout(() => {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'search_suggestions.php', true);
+                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                try {
+                                    const results = JSON.parse(xhr.responseText);
+
+                                    if (results.error) {
+                                        searchResults.classList.add('hidden');
+                                        return;
+                                    }
+
+                                    if (results && results.length > 0) {
+                                        searchResultsContainer.innerHTML = results.map(result => `
+                                            <a href="/gallery?post_id=${result.id}"
+                                               class="block px-4 py-3 text-white hover:bg-[#373747] transition-colors" style="text-decoration: none;">
+                                                <div class="flex items-center gap-3">
+                                                    ${result.thumbnail ?
+                                                        `<img src="./uploads/${result.thumbnail}" alt="${result.title}" class="w-10 h-10 rounded object-cover flex-shrink-0">` :
+                                                        `<i class="fas fa-image text-gray-400 w-10 h-10 flex items-center justify-center"></i>`
+                                                    }
+                                                    <span class="flex-1 truncate">${result.title}</span>
+                                                </div>
+                                            </a>
+                                        `).join('');
+                                        searchResults.classList.remove('hidden');
+                                    } else {
+                                        searchResults.classList.add('hidden');
+                                    }
+                                } catch (e) {
+                                    searchResults.classList.add('hidden');
+                                }
+                            }
+                        };
+
+                        xhr.onerror = function() {
+                            searchResults.classList.add('hidden');
+                        };
+
+                        xhr.send('query=' + encodeURIComponent(query));
+                    }, 300);
+                });
+
+                // Hide results when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                        searchResults.classList.add('hidden');
+                    }
+                });
+            }
+        });
+
+        // Notification System
+        let notificationUpdateInterval = null;
+        
+        function toggleNotificationDropdown(event) {
+            event.stopPropagation();
+            const isMobile = window.innerWidth < 768;
+            const dropdown = isMobile ? document.getElementById('mobileNotificationDropdown') : document.getElementById('desktopNotificationDropdown');
+            const bellButton = event.currentTarget;
+            const isOpen = dropdown.classList.contains('show');
+            
+            // Schließe alle Dropdowns
+            document.querySelectorAll('.notification-dropdown').forEach(d => {
+                d.classList.remove('show');
+                d.style.left = '';
+                d.style.top = '';
+                d.style.right = '';
+                d.style.display = '';
+            });
+            
+            if (!isOpen) {
+                // Desktop: Verschiebe Dropdown außerhalb der Sidebar ins Body
+                if (!isMobile) {
+                    const bellRect = bellButton.getBoundingClientRect();
+                    const sidebar = document.getElementById('sidebar');
+                    
+                    // Verschiebe Dropdown ins Body, falls es noch in der Sidebar ist
+                    if (dropdown.parentElement && dropdown.parentElement.closest('.sidebar')) {
+                        document.body.appendChild(dropdown);
+                    }
+                    
+                    if (sidebar) {
+                        const sidebarRect = sidebar.getBoundingClientRect();
+                        dropdown.style.position = 'fixed';
+                        dropdown.style.left = (sidebarRect.right + 8) + 'px';
+                        dropdown.style.top = bellRect.top + 'px';
+                        dropdown.style.right = 'auto';
+                        dropdown.style.zIndex = '10001';
+                        dropdown.style.display = 'block';
+                    }
+                }
+                
+                // Zeige Dropdown
+                dropdown.classList.add('show');
+                
+                // Prüfe Position nach Rendering (nur Desktop)
+                if (!isMobile) {
+                    setTimeout(() => {
+                        const dropdownRect = dropdown.getBoundingClientRect();
+                        const sidebar = document.getElementById('sidebar');
+                        if (sidebar) {
+                            const sidebarRect = sidebar.getBoundingClientRect();
+                            
+                            // Prüfe ob Dropdown über den rechten Bildschirmrand hinausgeht
+                            if (dropdownRect.right > window.innerWidth - 20) {
+                                dropdown.style.left = 'auto';
+                                dropdown.style.right = (window.innerWidth - sidebarRect.left + 8) + 'px';
+                            }
+                            
+                            // Prüfe ob Dropdown über den unteren Bildschirmrand hinausgeht
+                            if (dropdownRect.bottom > window.innerHeight - 20) {
+                                dropdown.style.top = (window.innerHeight - dropdownRect.height - 20) + 'px';
+                            }
+                            
+                            // Prüfe ob Dropdown über den oberen Bildschirmrand hinausgeht
+                            if (dropdownRect.top < 20) {
+                                dropdown.style.top = '20px';
+                            }
+                        }
+                    }, 50);
+                }
+                
+                loadNotifications();
+            }
+        }
+        
+        function loadNotifications() {
+            fetch('/api/get_notifications.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateNotificationBadge(data.unread_count);
+                        renderNotifications(data.notifications);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading notifications:', error);
+                });
+        }
+        
+        function updateNotificationBadge(count) {
+            const mobileBadge = document.getElementById('mobileNotificationBadge');
+            const desktopBadge = document.getElementById('desktopNotificationBadge');
+            
+            if (count > 0) {
+                // Zeige "9+" wenn mehr als 9 ungelesene Notifications
+                const badgeText = count > 9 ? '9+' : count.toString();
+                mobileBadge.textContent = badgeText;
+                mobileBadge.style.display = 'block';
+                desktopBadge.textContent = badgeText;
+                desktopBadge.style.display = 'block';
+            } else {
+                mobileBadge.style.display = 'none';
+                desktopBadge.style.display = 'none';
+            }
+        }
+        
+        function renderNotifications(notifications) {
+            const isMobile = window.innerWidth < 768;
+            const list = isMobile ? document.getElementById('mobileNotificationList') : document.getElementById('desktopNotificationList');
+            
+            if (notifications.length === 0) {
+                list.innerHTML = `
+                    <div class="notification-empty">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>Keine Benachrichtigungen</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = notifications.map(notif => {
+                const icon = getNotificationIcon(notif.type);
+                const unreadClass = notif.is_read ? '' : 'unread';
+                return `
+                    <div class="notification-item ${unreadClass}" onclick="handleNotificationClick(${notif.id}, '${notif.link || ''}')">
+                        <div class="notification-icon">
+                            <i class="${icon}"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">${escapeHtml(notif.title)}</div>
+                            <div class="notification-message">${escapeHtml(notif.message || '')}</div>
+                            <div class="notification-time">${notif.time_ago}</div>
+                        </div>
+                        <div class="notification-item-actions" onclick="event.stopPropagation()">
+                            ${!notif.is_read ? `
+                                <button class="notification-action-btn mark-read" onclick="markNotificationAsRead(${notif.id}, event)" title="Als gelesen markieren">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            <button class="notification-action-btn delete" onclick="deleteNotification(${notif.id}, event)" title="Löschen">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getNotificationIcon(type) {
+            const icons = {
+                'customdl_complete': 'fas fa-download',
+                'customdl_update': 'fas fa-sync-alt',
+                'default': 'fas fa-bell'
+            };
+            return icons[type] || icons['default'];
+        }
+        
+        function handleNotificationClick(notificationId, link) {
+            // Markiere als gelesen
+            fetch('/api/mark_notification_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `notification_id=${notificationId}`
+            });
+            
+            // Schließe Dropdown
+            document.querySelectorAll('.notification-dropdown').forEach(d => d.classList.remove('show'));
+            
+            // Navigiere zur Link-Zielseite
+            if (link) {
+                window.location.href = link;
+            } else {
+                // Fallback: Gehe zu CustomDL
+                window.location.href = '/customdl.php';
+            }
+            
+            // Aktualisiere Badge
+            setTimeout(() => {
+                loadNotifications();
+            }, 500);
+        }
+        
+        function markAllNotificationsAsRead() {
+            fetch('/api/mark_all_notifications_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error marking all as read:', error);
+            });
+        }
+
+        function deleteAllNotifications() {
+            if (!confirm('Möchtest du wirklich alle Benachrichtigungen löschen?')) {
+                return;
+            }
+            
+            fetch('/api/delete_all_notifications.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting all notifications:', error);
+            });
+        }
+
+        function markNotificationAsRead(notificationId, event) {
+            event.stopPropagation();
+            
+            fetch('/api/mark_notification_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `notification_id=${notificationId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error marking notification as read:', error);
+            });
+        }
+
+        function deleteNotification(notificationId, event) {
+            event.stopPropagation();
+            
+            fetch('/api/delete_notification.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `notification_id=${notificationId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting notification:', error);
+            });
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Schließe Dropdown beim Klick außerhalb
+        document.addEventListener('click', function(e) {
+            const bellContainer = e.target.closest('.notification-bell-container');
+            const dropdown = e.target.closest('.notification-dropdown');
+            const actionBtn = e.target.closest('.notification-action-btn');
+            const headerBtn = e.target.closest('.notification-mark-all, .notification-delete-all');
+            
+            // Schließe nicht, wenn auf Bell, Dropdown, Action-Button oder Header-Button geklickt wird
+            if (bellContainer || dropdown || actionBtn || headerBtn) {
+                return;
+            }
+            
+            // Schließe alle Dropdowns
+            document.querySelectorAll('.notification-dropdown').forEach(d => {
+                d.classList.remove('show');
+                d.style.display = '';
+            });
+        });
+        
+        // Lade Notifications beim Seitenaufruf
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNotifications();
+            
+            // Aktualisiere alle 30 Sekunden
+            notificationUpdateInterval = setInterval(() => {
+                loadNotifications();
+            }, 30000);
+        });
+    </script>
+<style>
+/* Custom Gallery Styles */
+.gallery-page {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(180deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%);
+    min-height: 100vh;
+}
+
+/* Hero Header */
+.gallery-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(230, 56, 181, 0.08) 0%, rgba(99, 102, 241, 0.05) 50%, transparent 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gallery-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(230, 56, 181, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+/* Thumbnail mit Glow */
+.hero-thumbnail {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-thumbnail::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: linear-gradient(135deg, #E638B5, #6366f1);
+    border-radius: 1.25rem;
+    opacity: 0.6;
+    filter: blur(15px);
+    z-index: -1;
+}
+
+.hero-thumbnail img {
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Stats Cards */
+.stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(230, 56, 181, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Filter Pills - Horizontal Scroll auf Mobile */
+.filter-scroll {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.filter-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.filter-pill:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.filter-pill.active {
+    background: linear-gradient(135deg, rgba(230, 56, 181, 0.2) 0%, rgba(99, 102, 241, 0.15) 100%);
+    border-color: rgba(230, 56, 181, 0.4);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(230, 56, 181, 0.2);
+}
+
+/* Media Grid */
+.media-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 640px) {
+    .media-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .media-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .media-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* Media Card */
+.media-card {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: #1a1a22;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Loading Skeleton Animation */
+.media-card .skeleton {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #1a1a22 0%, #252530 50%, #1a1a22 100%);
+    background-size: 200% 100%;
+    animation: skeleton-pulse 1.2s ease-in-out infinite;
+    z-index: 1;
+}
+
+.media-card img.loaded ~ .skeleton {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes skeleton-pulse {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.media-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.media-card img.loaded {
+    opacity: 1;
+}
+
+.media-card:hover {
+    border-color: rgba(230, 56, 181, 0.3);
+    transform: scale(1.02);
+    box-shadow: 0 10px 40px rgba(230, 56, 181, 0.15);
+    z-index: 10;
+}
+
+.media-card:hover img.loaded {
+    transform: scale(1.1);
+}
+
+/* Media Overlay */
+.media-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 40%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.media-card:hover .media-overlay {
+    opacity: 1;
+}
+
+/* Video Badge */
+.video-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Play Button für Videos */
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(230, 56, 181, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(230, 56, 181, 0.5);
+    transition: all 0.3s ease;
+}
+
+.media-card:hover .play-button {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 0 40px rgba(230, 56, 181, 0.7);
+}
+
+/* Action Buttons */
+.action-btn-modern {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.action-btn-modern:hover {
+    background: rgba(230, 56, 181, 0.15);
+    border-color: rgba(230, 56, 181, 0.3);
+    transform: translateY(-2px);
+}
+
+.action-btn-modern.primary {
+    background: linear-gradient(135deg, rgba(230, 56, 181, 0.2) 0%, rgba(99, 102, 241, 0.15) 100%);
+    border-color: rgba(230, 56, 181, 0.4);
+}
+
+.action-btn-modern.primary:hover {
+    background: linear-gradient(135deg, rgba(230, 56, 181, 0.3) 0%, rgba(99, 102, 241, 0.25) 100%);
+    box-shadow: 0 5px 30px rgba(230, 56, 181, 0.25);
+}
+
+/* Like Button Animation */
+.like-heart {
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.like-heart:hover {
+    transform: scale(1.2);
+}
+
+.like-heart:active {
+    transform: scale(0.9);
+}
+
+/* Pagination Modern */
+.pagination-modern {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.page-btn {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.page-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.page-btn.active {
+    background: linear-gradient(135deg, #E638B5, #6366f1);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(230, 56, 181, 0.3);
+}
+
+.page-btn.nav {
+    padding: 0 1rem;
+}
+
+/* Category Pill */
+.category-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+    .hero-title {
+        font-size: 1.5rem !important;
+    }
+}
+</style>
+
+<div id="top"></div>
+
+<div class="gallery-page">
+    <!-- Hero Header Section -->
+    <div class="gallery-hero py-8 md:py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
+                
+                <!-- Thumbnail -->
+                <div class="hero-thumbnail flex-shrink-0 animate-fade-in-up">
+                    <div id="cover"
+     class="w-28 h-28 md:w-36 md:h-36 rounded-xl overflow-hidden shadow-2xl">
+</div>
+                </div>
+
+                <!-- Content -->
+                <div class="flex-1 text-center md:text-left space-y-4 animate-fade-in-up animation-delay-100">
+                    <!-- Title -->
+                    <h1 id="title"
+    class="hero-title text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight">
+</h1>
+
+                    <!-- Category & Stats Row -->
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
+                        <div class="category-pill">
+    <span id="catEmoji" class="text-lg"></span>
+    <span id="catLabel"></span>
+</div>
+                        
+                        <div class="flex items-center gap-2">
+                            <div class="stat-card flex items-center gap-2 px-3 py-1.5 rounded-lg">
+                                <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span id="imgCount" class="text-sm font-medium text-gray-300"></span>
+                            </div>
+                            
+                            <div class="stat-card flex items-center gap-2 px-3 py-1.5 rounded-lg">
+                                <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span id="vidCount" class="text-sm font-medium text-gray-300"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2 animate-fade-in-up animation-delay-200">
+                        <!-- Like Button -->
+                                                    <div class="flex items-center gap-2 action-btn-modern">
+                                                                    <span data-post="414" class="like-btn cursor-pointer like-heart">
+                                        <i class="far fa-heart text-gray-400 text-lg"></i>
+                                    </span>
+                                    <span data-post="414" class="unlike-btn hidden cursor-pointer like-heart">
+                                        <i class="fas fa-heart text-red-500 text-lg"></i>
+                                    </span>
+                                                               <span id="likes" class="text-sm font-medium text-gray-300"></span>
+                            </div>
+                        
+                        <!-- Download Button -->
+                                                    <!-- Non-rank User: Button zeigen aber auf Rang hinweisen -->
+                            <a href="/rank_upgrade" class="action-btn-modern primary group opacity-75">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <span class="hidden sm:inline">ZIP Download</span>
+                                <span class="px-2 py-0.5 bg-gray-600 text-gray-300 text-xs font-bold rounded-full">Nur mit Rang</span>
+                            </a>
+                                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="sticky top-0 z-30 bg-gradient-to-b from-[#0a0a0f] via-[#0a0a0f] to-transparent pt-4 pb-6 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="filter-scroll overflow-x-auto -mx-4 px-4">
+                <div class="flex items-center gap-2 min-w-max">
+                    <span class="text-sm text-gray-500 mr-2 hidden sm:inline">Sortieren:</span>
+                    
+                    <button id="sortNewest"
+        class="filter-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium active">
+  Neueste
+</button>
+
+<button id="sortImages"
+        class="filter-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-gray-400">
+  Bilder zuerst
+</button>
+
+<button id="sortVideos"
+        class="filter-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-gray-400">
+  Videos zuerst
+</button>
+
+<div id="pageInfo" class="ml-auto text-sm text-gray-500"></div>
+                    
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 pb-8">
+  <div id="grid" class="media-grid"></div>
+
+  <div class="pagination-modern mt-10 mb-6">
+    <button id="prevBtn" class="page-btn nav">Zurück</button>
+    <div id="pageBtns" class="flex gap-2 flex-wrap justify-center"></div>
+    <button id="nextBtn" class="page-btn nav">Weiter</button>
+  </div>
+</div>     
+
+    <!-- Progress Modal -->
+    <div id="progressModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#12121a] p-6 md:p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-white/10">
+            <div class="flex flex-col items-center justify-center space-y-6">
+                <div class="relative w-20 h-20">
+                    <div class="absolute inset-0 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
+                    <div class="absolute inset-3 border-4 border-indigo-500 border-b-transparent rounded-full animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+                    <div class="absolute inset-6 bg-gradient-to-br from-pink-500 to-indigo-500 rounded-full animate-pulse"></div>
+                </div>
+                
+                <div class="text-center space-y-2">
+                    <h3 class="text-xl font-bold text-white">ZIP-Download</h3>
+                    <p id="statusText" class="text-gray-400">Bereite Download vor...</p>
+                </div>
+                
+                <div class="bg-white/5 border border-white/10 rounded-xl p-4 w-full">
+                    <p id="estimatedTime" class="text-sm text-gray-400 text-center">
+                        Bitte warten...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="purchaseConfirmModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#12121a] p-6 md:p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/10">
+            <div class="flex flex-col items-center justify-center space-y-5">
+                <div class="w-16 h-16 bg-gradient-to-br from-pink-500/20 to-indigo-500/20 rounded-2xl flex items-center justify-center">
+                    <svg class="w-8 h-8 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                </div>
+                
+                <div class="text-center space-y-2">
+                    <h3 class="text-2xl font-bold text-white">ZIP Download freischalten</h3>
+                    <p class="text-gray-500 text-sm">Einmalzahlung • Für alle Galerien</p>
+                </div>
+                
+                <div class="w-full bg-white/5 rounded-xl p-4 space-y-3">
+                    <div class="text-sm font-semibold text-white mb-2">Das bekommst du:</div>
+                    <div class="flex items-center gap-3 text-sm text-gray-300">
+                        <span class="text-green-400">✓</span>
+                        <span>Alle Medien als ZIP herunterladen</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm text-gray-300">
+                        <span class="text-green-400">✓</span>
+                        <span>Funktioniert für <strong class="text-white">alle</strong> Galerien</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm text-gray-300">
+                        <span class="text-green-400">✓</span>
+                        <span>Dauerhaft freigeschaltet</span>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <span class="text-4xl font-bold bg-gradient-to-r from-pink-400 to-indigo-400 bg-clip-text text-transparent">4,99€</span>
+                    <span class="text-gray-500 text-sm ml-2">einmalig</span>
+                </div>
+                
+                <div class="flex gap-3 w-full">
+                    <button onclick="closePurchaseModal()" class="flex-1 px-4 py-3 bg-white/5 hover:bg-white/10 text-white font-medium rounded-xl transition-all">
+                        Abbrechen
+                    </button>
+                    <button onclick="confirmPurchase()" class="flex-1 px-4 py-3 bg-gradient-to-r from-pink-500 to-indigo-500 hover:from-pink-600 hover:to-indigo-600 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-pink-500/25">
+                        Jetzt kaufen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div> <!-- End main-content -->
+
+    <footer class="footer flex justify-center items-center p-4 text-neutral-content mt-8 w-full">
+        <div class="flex items-center space-x-4">
+            <a class="text-lg font-bold text-white" href="/">🎀 • OFLeaks.tv</a>
+            <span class="border-l border-gray-400 h-6 mx-2"></span>
+            <a href="https://discord.celebroom.de" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Discord">
+                <i class="fab fa-discord fa-lg"></i>
+                <span class="sr-only">Discord</span>
+            </a>
+            <a href="https://ofleaks.tv/shop" target="_blank" class="text-white hover:text-[#E638B5] transition-colors duration-300" aria-label="Shop">
+                <i class="fa fa-shopping-cart fa-lg"></i>
+                <span class="sr-only">Shop</span>
+            </a>
+        </div>
+    </footer>
+
+    <!-- Popup Include -->
+    
+    <script type="text/javascript" src="./assets/vendor/toastify/toastify.min.js"></script>
+    <script src="./assets/vendor/flowbite/flowbite.min.js"></script>
+
+<script>
+    // Initialize lozad
+    const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+    observer.observe();
+    
+</script>                     
+    <!-- <script src="./assets/js/main.js?v=1770682271"></script> -->
+
+    <!-- Debug Flowbite Dropdowns -->
+    <script>
+        console.log('Checking Flowbite...');
+        
+        // Warte bis alles geladen ist
+        window.addEventListener('load', function() {
+            console.log('Page loaded, checking dropdowns...');
+            
+            // Finde alle dropdown toggles
+            const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
+            console.log('Found dropdown toggles:', dropdownToggles.length);
+            
+            dropdownToggles.forEach((toggle, index) => {
+                const targetId = toggle.getAttribute('data-dropdown-toggle');
+                const target = document.getElementById(targetId);
+                console.log(`Dropdown ${index + 1}: Toggle found, Target ID: ${targetId}, Target exists:`, !!target);
+            });
+            
+            // Prüfe ob Flowbite geladen ist
+            console.log('Flowbite available:', typeof Flowbite !== 'undefined');
+            console.log('initFlowbite available:', typeof initFlowbite !== 'undefined');
+            
+            // Force Flowbite init wenn verfügbar
+            if (typeof initFlowbite !== 'undefined') {
+                setTimeout(() => {
+                    initFlowbite();
+                    console.log('Flowbite manually initialized');
+                }, 500);
+            }
+            
+            // Z-Index Fix für geöffnete Dropdowns
+            setTimeout(() => {
+                const allDropdowns = document.querySelectorAll('[id^="mod-dropdown-"]');
+                
+                allDropdowns.forEach(dropdown => {
+                    // MutationObserver um auf Klassen-Änderungen zu reagieren
+                    const observer = new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
+                            if (mutation.attributeName === 'class') {
+                                const postCard = dropdown.closest('.post-card');
+                                if (postCard) {
+                                    if (dropdown.classList.contains('hidden')) {
+                                        // Dropdown geschlossen - normaler z-index
+                                        postCard.style.zIndex = '1';
+                                    } else {
+                                        // Dropdown geöffnet - hoher z-index
+                                        postCard.style.zIndex = '9998';
+                                    }
+                                }
+                            }
+                        });
+                    });
+                    
+                    observer.observe(dropdown, { attributes: true });
+                });
+                
+                console.log('Z-Index observers attached to', allDropdowns.length, 'dropdowns');
+            }, 600);
+        });
+    </script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+<!-- ✅ GALLERY SCRIPT -->
+<script>
+  const byId = (id) => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+  const postId = Number(params.get("post_id"));
+
+  let post = null;
+  let sortMode = "newest";
+  let page = 1;
+  const perPage = 25;
+
+  function setActive(btnId) {
+    ["sortNewest","sortImages","sortVideos"].forEach(id => byId(id)?.classList.remove("active"));
+    byId(btnId)?.classList.add("active");
+  }
+
+  function buildMediaList() {
+    const imgs = (post?.images || []).map(src => ({ type:"image", src }));
+    const vids = (post?.videos || []).map(src => ({ type:"video", src }));
+    if (sortMode === "images") return [...imgs, ...vids];
+    if (sortMode === "videos") return [...vids, ...imgs];
+    return [...imgs, ...vids];
+  }
+
+  function render() {
+    const all = buildMediaList();
+    const totalPages = Math.max(1, Math.ceil(all.length / perPage));
+    page = Math.min(page, totalPages);
+
+    const slice = all.slice((page-1)*perPage, (page-1)*perPage + perPage);
+    const grid = byId("grid");
+    if (!grid) return;
+
+    grid.innerHTML = "";
+    const group = `post-${postId}`;
+
+    slice.forEach(item => {
+      if (item.type === "image") {
+        grid.insertAdjacentHTML("beforeend", `
+          <a class="media-card block" href="${item.src}" data-fancybox="${group}">
+            <div class="skeleton"></div>
+            <img src="${item.src}" alt="" onload="this.classList.add('loaded')">
+          </a>
+        `);
+      } else {
+        grid.insertAdjacentHTML("beforeend", `
+          <a class="media-card block" href="${item.src}" data-fancybox="${group}" data-type="video">
+            <div class="video-badge"><i class="fas fa-play"></i> VIDEO</div>
+            <div class="play-button">▶</div>
+          </a>
+        `);
+      }
+    });
+
+    byId("pageInfo").textContent = `Seite ${page} von ${totalPages}`;
+
+    byId("prevBtn")?.toggleAttribute("disabled", page <= 1);
+    byId("nextBtn")?.toggleAttribute("disabled", page >= totalPages);
+
+    Fancybox.bind("[data-fancybox]", {
+      Toolbar: { display: ["close","prev","next","zoom","fullscreen","thumbs"] },
+      Thumbs: { autoStart: true },
+      Video: { autoStart: false }
+    });
+  }
+
+  async function load() {
+    console.log("✅ GALLERY SCRIPT LOADED");
+    console.log("URL:", location.href);
+    console.log("postId:", postId);
+
+    if (!postId) return console.warn("❌ Keine post_id in der URL!");
+
+    const res = await fetch("./data/posts.json", { cache:"no-store" });
+    console.log("posts.json status:", res.status);
+
+    const posts = await res.json();
+    post = posts.find(p => Number(p.id) === postId);
+
+    console.log("found post:", post);
+    if (!post) return console.warn("❌ Post nicht gefunden:", postId);
+
+    document.title = `Gallery – ${post.title || "Post"}`;
+    byId("title").textContent = post.title || "Post";
+    byId("catEmoji").textContent = post.category_emoji || "📁";
+    byId("catLabel").textContent = post.category_label || post.category || "Kategorie";
+
+    const imgs = post.images || [];
+    const vids = post.videos || [];
+
+    byId("imgCount").textContent = imgs.length;
+    byId("vidCount").textContent = vids.length;
+    byId("likes").textContent = post.likes ?? 0;
+
+    if (imgs[0]) byId("cover").innerHTML = `<img src="${imgs[0]}" class="w-full h-full object-cover" alt="">`;
+
+    render();
+  }
+
+  byId("sortNewest")?.addEventListener("click", () => { sortMode="newest"; page=1; setActive("sortNewest"); render(); });
+  byId("sortImages")?.addEventListener("click", () => { sortMode="images"; page=1; setActive("sortImages"); render(); });
+  byId("sortVideos")?.addEventListener("click", () => { sortMode="videos"; page=1; setActive("sortVideos"); render(); });
+
+  byId("prevBtn")?.addEventListener("click", () => { if (page>1) { page--; render(); }});
+  byId("nextBtn")?.addEventListener("click", () => { page++; render(); });
+
+  document.addEventListener("DOMContentLoaded", () => load().catch(console.error));
+</script>
+
+</body>
+</html>
