@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OFLeaks.tv – Overview</title>
+  <style>
+    :root{
+  /* Shopify-like neutrals */
+  --page: #0b0414;         /* outer background (can be dark) */
+  --app:  #f6f7fb;         /* main surface */
+  --card: #ffffff;
+  --side: #f3f4f7;
+  --line: #e7e9f2;
+
+  --text: #0f172a;
+  --muted:#667085;
+
+  /* Shopify-ish blue */
+  --blue:#2563eb;
+  --green:#16a34a;
+  --red:#dc2626;
+
+  /* VERY subtle shadows like Shopify */
+  --shadow: 0 1px 2px rgba(16,24,40,.06);
+  --shadow2: 0 6px 18px rgba(16,24,40,.08);
+
+  /* Shopify radii are smaller than your current */
+  --r: 14px;
+  --r2: 18px;
+
+  /* macOS Safari font stack close to Shopify */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text","SF Pro Display",
+          system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Safari: Shopify feels not too tight */
+  --ls: -0.003em;
+}
+
+*{ box-sizing:border-box; }
+html, body{ height:100%; }
+
+html{
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  font-kerning: normal;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+body{
+  margin:0;
+  font-family: var(--font);
+  letter-spacing: var(--ls);
+  line-height: 1.45;
+
+  /* IMPORTANT: remove the “glow” look for Shopify vibe */
+  background: linear-gradient(180deg, #07020d, var(--page));
+  padding:18px;
+  color:var(--text);
+}
+
+/* Shell */
+.shell{
+  max-width: 1320px;
+  margin: 0 auto;
+  background: var(--app);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 22px;
+  box-shadow: var(--shadow2);
+  overflow:hidden;
+  display:grid;
+  grid-template-columns: 264px 1fr; /* Shopify sidebar is a bit slimmer */
+  min-height: calc(100vh - 36px);
+}
+
+/* Sidebar */
+.sidebar{
+  background: var(--side);
+  border-right: 1px solid var(--line);
+  padding: 16px 12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding: 10px 10px 14px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+
+.logo{
+  width:34px;
+  height:34px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  box-shadow: none; /* Shopify: no glow */
+}
+
+.brand b{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing: -0.002em;
+}
+
+.brand small{
+  display:block;
+  color: var(--muted);
+  font-size:12px;
+  margin-top:2px;
+  font-weight:500;
+}
+
+/* Nav */
+.nav h4{
+  margin: 16px 10px 8px;
+  font-size:11px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color: #8a93a6;
+  font-weight:600;
+}
+
+.nav a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  margin: 4px 6px;
+  border-radius: 12px;
+  text-decoration:none;
+  color: #111827;
+  font-size:13px;
+  font-weight:600;
+  border: 1px solid transparent;
+  transition: background .12s ease, border-color .12s ease;
+}
+
+/* Shopify hover = very subtle, no glow */
+.nav a:hover{
+  background: rgba(255,255,255,.85);
+  border-color: rgba(231,233,242,.85);
+}
+
+/* Shopify active = light grey fill + thin border (NOT purple pill) */
+.nav a.active{
+  background: #ffffff;
+  border-color: rgba(231,233,242,1);
+  color:#111827;
+  box-shadow: var(--shadow);
+}
+
+/* badge: small, neutral */
+.nav .badge{
+  margin-left:auto;
+  font-size:11px;
+  padding:3px 8px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #e0e7ff;
+  font-weight:600;
+}
+
+/* Main */
+.main{ padding: 18px 18px 28px; }
+
+/* Topbar */
+.topbar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  padding: 8px 6px 14px;
+}
+
+.topbar h1{
+  margin:0;
+  font-size: 24px;
+  font-weight: 650;
+  letter-spacing: -0.012em;
+}
+
+.subtitle{
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Buttons (Shopify: neutral + one primary) */
+.top-actions{ display:flex; align-items:center; gap:10px; }
+
+.btn{
+  height:36px;
+  padding:0 12px;
+  border-radius: 12px;
+  border:1px solid var(--line);
+  background:#fff;
+  color:#111827;
+  font-weight:600;
+  font-size:13px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  transition: box-shadow .12s ease, transform .12s ease;
+}
+
+.btn:hover{
+  box-shadow: var(--shadow);
+}
+
+.btn.primary{
+  border: 1px solid rgba(0,0,0,.0);
+  color:#fff;
+  background: linear-gradient(180deg, #a855f7, #7c3aed);
+  box-shadow: var(--shadow);
+}
+
+/* Filters */
+.filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  padding: 0 6px 14px;
+}
+
+.chip{
+  height:34px;
+  padding:0 12px;
+  border-radius: 12px;
+  border:1px solid var(--line);
+  background:#fff;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+  color:#111827;
+  font-weight:600;
+}
+
+/* Cards */
+.card{
+  background: var(--card);
+  border:1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+}
+
+/* KPI grid */
+.kpis{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0 6px 14px;
+}
+
+.kpi{
+  padding: 14px 14px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  min-height: 90px;
+}
+
+.kpi .label{
+  font-size:12px;
+  color: var(--muted);
+  font-weight:500;
+}
+
+.kpi .value{
+  font-size:18px;
+  font-weight:650;
+  margin-top:6px;
+  letter-spacing: -0.006em;
+}
+
+.kpi .delta{
+  font-size:12px;
+  margin-top:4px;
+  color: var(--muted);
+  font-weight:500;
+}
+
+.up{ color: var(--green); }
+.down{ color: var(--red); }
+
+/* Spark: Shopify has a very light container */
+.spark{
+  width:100px;
+  height:42px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #eef1f7;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+
+/* Main grid */
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 360px;
+  gap: 12px;
+  padding: 0 6px;
+  align-items:start;
+}
+
+.big{ padding: 14px; }
+
+.big-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.big-title{
+  font-size:13px;
+  color: var(--muted);
+  font-weight:600;
+}
+
+.big-amount{
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.014em;
+}
+
+.big-sub{
+  font-size:12px;
+  color: var(--muted);
+  font-weight:500;
+  margin-top:6px;
+}
+
+.legend{
+  display:flex;
+  gap:12px;
+  font-size:12px;
+  color: var(--muted);
+  font-weight:600;
+  align-items:center;
+}
+
+.sw{ width:10px; height:10px; border-radius:50%; }
+.sw.a{ background: var(--blue); box-shadow: 0 0 0 6px rgba(37,99,235,.10); }
+.sw.b{ background: #c7cbd6; }
+
+/* Chart */
+.chartWrap{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius: var(--r);
+  padding: 10px 12px 14px;
+}
+
+svg{ display:block; width:100%; }
+
+.gridline{ stroke:#eef1f7; stroke-width:1; }
+
+.axis{
+  fill:#9aa3b2;
+  font-size:12px;
+  font-weight:500;
+}
+
+.mainLine{
+  fill:none;
+  stroke: var(--blue);
+  stroke-width:3.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.compLine{
+  fill:none;
+  stroke:#c7cbd6;
+  stroke-width:3.2;
+  stroke-dasharray:6 8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.area{ fill: rgba(37,99,235,.10); }
+
+/* Breakdown */
+.side{
+  padding: 14px;
+  position: sticky;
+  top: 18px;
+}
+
+.side h3{
+  margin: 4px 0 10px;
+  font-size:14px;
+  font-weight:650;
+  letter-spacing: -0.004em;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border:1px solid #eef1f7;
+  background:#fbfcff;
+  margin-bottom:8px;
+}
+
+.row b{
+  font-size:12px;
+  font-weight:650;
+  color:#111827;
+}
+
+.row small{
+  display:block;
+  font-size:11px;
+  color: var(--muted);
+  font-weight:500;
+  margin-top:4px;
+}
+
+.row .r{ text-align:right; }
+
+/* Shopify total row: VERY subtle highlight (not strong purple) */
+.totalRow{
+  background: #ffffff;
+  border-color: #e0e7ff;
+}
+
+/* Bottom widgets */
+.bottom{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  padding: 12px 6px 0;
+}
+
+.widget{ padding:14px; }
+
+.widget h4{
+  margin:0 0 10px;
+  font-size:13px;
+  color: var(--muted);
+  font-weight:650;
+}
+
+.miniBox{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius: var(--r);
+  padding: 12px;
+}
+
+.barrow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:10px 0;
+}
+
+.barname{
+  flex:1;
+  font-size:12px;
+  font-weight:600;
+  color:#111827;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.track{
+  flex:1;
+  height:10px;
+  border-radius:999px;
+  background:#eef1f7;
+  overflow:hidden;
+}
+
+.fill{
+  height:100%;
+  border-radius:999px;
+  background: linear-gradient(90deg, #a855f7, #7c3aed);
+}
+
+.ring{
+  display:grid;
+  place-items:center;
+  min-height:190px;
+}
+
+/* Responsive */
+@media(max-width:1180px){
+  .shell{ grid-template-columns:1fr; }
+  .sidebar{ position:relative; }
+  .grid{ grid-template-columns:1fr; }
+  .side{ position:relative; top:auto; }
+  .kpis{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+  .bottom{ grid-template-columns:1fr; }
+}
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <b>OFLeaks.tv</b>
+          <small>Analytics</small>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="active" href="#">Home</a>
+        <a href="#">Orders <span class="badge">2.977</span></a>
+        <a href="#">Products</a>
+        <a href="#">Customers</a>
+        <a href="#">Content</a>
+        <a href="#">Finance</a>
+
+        <h4>Analytics</h4>
+        <a class="active" href="#">Reports</a>
+        <a href="#">Live View</a>
+
+        <h4>Marketing</h4>
+        <a href="#">Campaigns</a>
+        <a href="#">Discounts</a>
+
+        <h4>Apps</h4>
+        <a href="#">Email</a>
+        <a href="#">Shop</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <h1>Overview</h1>
+        <div class="top-actions">
+          <button class="btn" type="button">⚙︎</button>
+          <button class="btn primary" type="button">Customize</button>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="chip">📅 Last 365 days</div>
+        <div class="chip">Compare to: Feb 14, 2023 – Feb 12, 2024</div>
+      </div>
+
+      <section class="kpis">
+        <div class="card">
+          <div class="kpi">
+            <div>
+              <div class="label">Sales today</div>
+<div class="value">1.557,54 €</div>
+<div class="delta"><span class="up">▲ 17,9%</span> vs. yesterday</div>
+            </div>
+            <div class="spark">
+              <svg width="100" height="42" viewBox="0 0 100 42" aria-hidden="true">
+                <path d="M3 30 L16 27 L29 28 L42 18 L55 20 L68 16 L81 22 L97 14"
+                      fill="none" stroke="rgba(59,130,246,.95)" stroke-width="2.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="kpi">
+            <div>
+              <div class="label">Returning customer rate</div>
+              <div class="value">43,36%</div>
+              <div class="delta"><span class="up">▲ 4,5%</span> vs. Vorjahr</div>
+            </div>
+            <div class="spark">
+              <svg width="100" height="42" viewBox="0 0 100 42" aria-hidden="true">
+                <path d="M3 26 L16 24 L29 20 L42 22 L55 16 L68 18 L81 14 L97 16"
+                      fill="none" stroke="rgba(147,51,234,.90)" stroke-width="2.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="kpi">
+            <div>
+              <div class="label">Orders fulfilled</div>
+              <div class="value">160</div>
+              <div class="delta"><span class="up">▲ 3,1%</span> vs. Vorjahr</div>
+            </div>
+            <div class="spark">
+              <svg width="100" height="42" viewBox="0 0 100 42" aria-hidden="true">
+                <path d="M3 28 L16 30 L29 24 L42 20 L55 22 L68 19 L81 17 L97 18"
+                      fill="none" stroke="rgba(230,56,181,.85)" stroke-width="2.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="kpi">
+            <div>
+              <div class="label">Orders</div>
+              <div class="value">162</div>
+              <div class="delta"><span class="up">▲ 3,3%</span> vs. Vorjahr</div>
+            </div>
+            <div class="spark">
+              <svg width="100" height="42" viewBox="0 0 100 42" aria-hidden="true">
+                <path d="M3 30 L16 26 L29 27 L42 23 L55 20 L68 18 L81 20 L97 16"
+                      fill="none" stroke="rgba(107,114,128,.70)" stroke-width="2.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div>
+          <div class="card big">
+            <div class="big-head">
+              <div>
+                <div class="big-title">Total sales over time</div>
+                <div class="big-amount">148.961,78 €</div>
+                <div class="big-sub"><span class="up">▲ 31%</span> · Feb 16, 2024 – Feb 18, 2025</div>
+              </div>
+              <div class="legend" aria-label="Legend">
+                <span class="sw a"></span> Current
+                <span class="sw b"></span> Compare
+              </div>
+            </div>
+
+            <div class="chartWrap">
+              <svg viewBox="0 0 1000 300" preserveAspectRatio="none" aria-label="Sales Chart">
+                <line class="gridline" x1="60" y1="50" x2="980" y2="50"/>
+                <line class="gridline" x1="60" y1="110" x2="980" y2="110"/>
+                <line class="gridline" x1="60" y1="170" x2="980" y2="170"/>
+                <line class="gridline" x1="60" y1="230" x2="980" y2="230"/>
+
+                <text class="axis" x="14" y="54">$3K</text>
+                <text class="axis" x="14" y="114">$2K</text>
+                <text class="axis" x="14" y="174">$1K</text>
+                <text class="axis" x="22" y="234">$0</text>
+
+                <path id="areaMain" class="area" d=""></path>
+                <path id="lineCompare" class="compLine" d=""></path>
+                <path id="lineMain" class="mainLine" d=""></path>
+
+                <text class="axis" x="70"  y="287">Feb 2024</text>
+                <text class="axis" x="250" y="287">Apr 2024</text>
+                <text class="axis" x="430" y="287">Jun 2024</text>
+                <text class="axis" x="610" y="287">Aug 2024</text>
+                <text class="axis" x="780" y="287">Oct 2024</text>
+                <text class="axis" x="900" y="287">Dec 2024</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="bottom">
+            <div class="card widget">
+              <h4>Total sales by sales channel</h4>
+              <div class="miniBox ring">
+                <svg width="220" height="220" viewBox="0 0 220 220" aria-label="Sales by channel">
+                  <defs>
+                    <linearGradient id="ringG" x1="0" x2="1">
+                      <stop offset="0" stop-color="#E638B5"/>
+                      <stop offset="1" stop-color="#9333EA"/>
+                    </linearGradient>
+                  </defs>
+                  <circle cx="110" cy="110" r="72" stroke="#eef1f7" stroke-width="16" fill="none"/>
+                  <circle cx="110" cy="110" r="72" stroke="url(#ringG)" stroke-width="16" fill="none"
+                          stroke-linecap="round"
+                          stroke-dasharray="320 460"
+                          transform="rotate(-90 110 110)"/>
+                  <text x="110" y="110" text-anchor="middle" fill="#111827" font-size="26" font-weight="900">10,3K</text>
+                  <text x="110" y="138" text-anchor="middle" fill="#6b7280" font-size="12" font-weight="800">+31%</text>
+                </svg>
+              </div>
+            </div>
+
+            <div class="card widget">
+              <h4>Average order value over time</h4>
+              <div class="miniBox">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;">
+                  <div style="font-size:26px;font-weight:950;">68,43 €</div>
+                  <div class="up" style="font-size:12px;font-weight:900;">▲ 1,7%</div>
+                </div>
+                <svg width="100%" height="110" viewBox="0 0 520 110" preserveAspectRatio="none" aria-label="AOV chart">
+                  <path d="M10 82 L70 76 L120 78 L180 70 L240 72 L300 68 L360 74 L420 70 L510 64"
+                        fill="none" stroke="rgba(59,130,246,.95)" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M10 82 L70 76 L120 78 L180 70 L240 72 L300 68 L360 74 L420 70 L510 64 L510 110 L10 110 Z"
+                        fill="rgba(59,130,246,.10)"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="card widget">
+              <h4>Total sales by product</h4>
+              <div class="miniBox">
+                <div class="barrow">
+                  <div class="barname">Premium – 1,99€</div>
+                  <div class="track"><div class="fill" style="width:72%"></div></div>
+                  <div style="min-width:64px;text-align:right;font-size:12px;font-weight:900;">5.805€</div>
+                </div>
+                <div class="barrow">
+                  <div class="barname">Exklusiv – 4,99€</div>
+                  <div class="track"><div class="fill" style="width:46%"></div></div>
+                  <div style="min-width:64px;text-align:right;font-size:12px;font-weight:900;">3.110€</div>
+                </div>
+                <div class="barrow">
+                  <div class="barname">Supreme – 9,99€</div>
+                  <div class="track"><div class="fill" style="width:31%"></div></div>
+                  <div style="min-width:64px;text-align:right;font-size:12px;font-weight:900;">1.402€</div>
+                </div>
+                <div class="barrow">
+                  <div class="barname">Upsells</div>
+                  <div class="track"><div class="fill" style="width:16%"></div></div>
+                  <div style="min-width:64px;text-align:right;font-size:12px;font-weight:900;">780€</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="card side">
+          <h3>Total sales breakdown</h3>
+
+          <div class="row">
+            <div>
+              <b>Gross sales</b>
+              <small>Brutto</small>
+            </div>
+            <div class="r">
+              <b>13.394,01 €</b>
+              <small class="up">▲ 28%</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <b>Discounts</b>
+              <small>Rabatte</small>
+            </div>
+            <div class="r">
+              <b>-2.308,20 €</b>
+              <small class="down">▼ 4%</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <b>Returns</b>
+              <small>Rückgaben</small>
+            </div>
+            <div class="r">
+              <b>-1.034,80 €</b>
+              <small class="down">▼ 39%</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <b>Net sales</b>
+              <small>Netto</small>
+            </div>
+            <div class="r">
+              <b>10.051,01 €</b>
+              <small class="up">▲ 31%</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <b>Shipping/Processing</b>
+              <small>Gebühren</small>
+            </div>
+            <div class="r">
+              <b>-91,09 €</b>
+              <small>—</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <b>Taxes</b>
+              <small>Steuern</small>
+            </div>
+            <div class="r">
+              <b>-174,96 €</b>
+              <small class="up">▲ 47%</small>
+            </div>
+          </div>
+
+          <div class="row totalRow">
+            <div>
+              <b>Total sales</b>
+              <small>Summe</small>
+            </div>
+            <div class="r">
+              <b>10.317,06 €</b>
+              <small class="up">▲ 31%</small>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Shopify-like curves
+    const mainPoints = [210,205,198,190,160,120,130,175,220,180,165,170,175,160,150,145,155,140,135,130,125,155,120,110];
+    const compPoints = [180,175,170,165,160,155,150,140,130,120,110,120,130,140,150,155,150,145,140,135,130,128,126,124];
+
+    const W = 1000, leftPad = 60, rightPad = 20;
+    const yMin = 55, yMax = 235; // chart area
+    const pMin = 90, pMax = 240; // value range
+
+    function makePath(points){
+      const n = points.length;
+      const xStep = (W - leftPad - rightPad) / (n - 1);
+      const pts = points.map((v,i)=> {
+        const x = leftPad + i*xStep;
+        const y = yMin + ((v - pMin) / (pMax - pMin)) * (yMax - yMin);
+        return {x,y};
+      });
+
+      let d = `M ${pts[0].x.toFixed(2)} ${pts[0].y.toFixed(2)}`;
+      for(let i=1;i<pts.length;i++){
+        const p = pts[i-1], c = pts[i];
+        const cx = (p.x + c.x)/2;
+        d += ` Q ${p.x.toFixed(2)} ${p.y.toFixed(2)} ${cx.toFixed(2)} ${((p.y+c.y)/2).toFixed(2)}`;
+        if(i===pts.length-1) d += ` T ${c.x.toFixed(2)} ${c.y.toFixed(2)}`;
+      }
+      return {d, pts};
+    }
+
+    const main = makePath(mainPoints);
+    const comp = makePath(compPoints);
+
+    document.getElementById("lineMain").setAttribute("d", main.d);
+    document.getElementById("lineCompare").setAttribute("d", comp.d);
+
+    const last = main.pts[main.pts.length-1];
+    const first = main.pts[0];
+    const area = `${main.d} L ${last.x.toFixed(2)} ${yMax} L ${first.x.toFixed(2)} ${yMax} Z`;
+    document.getElementById("areaMain").setAttribute("d", area);
+  </script>
+</body>
+</html>
+
